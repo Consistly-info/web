@@ -56,11 +56,11 @@ Deployment to GitHub Pages is included but **turned off**. GitHub does not offer
 3. In **Settings > Secrets and variables > Actions > Variables**, add `DEPLOY_PAGES` with the value `true`.
 4. Re-run the workflow or push to `main`.
 
-To use the custom domain, set `www.consistly.com` under **Settings > Pages > Custom domain** and point DNS at GitHub. The workflow picks up the new base path by itself.
+To use the custom domain, set `www.consistly.info` under **Settings > Pages > Custom domain** and point DNS at GitHub. The workflow picks up the new base path by itself.
 
 The output is plain static files, so any static host also works. Use `npm run build` as the build command and `dist` as the output directory.
 
 | Variable    | Default                     | Purpose                              |
 | ----------- | --------------------------- | ------------------------------------ |
 | `BASE_PATH` | `/`                         | Path the site is served from         |
-| `SITE_URL`  | `https://www.consistly.com` | Site origin used by the Astro config |
+| `SITE_URL`  | `https://www.consistly.info` | Site origin used by the Astro config |
