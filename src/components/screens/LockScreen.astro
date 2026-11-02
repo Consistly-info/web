@@ -1,0 +1,153 @@
+---
+import Heat from "../Heat.astro";
+import { DAYS, statsOf } from "../../lib/sample";
+
+const streak = statsOf(DAYS).current;
+---
+
+<div class="lock" aria-hidden="true">
+  <p class="date">Monday, November 2</p>
+  <p class="clock">9:41</p>
+
+  <div class="row">
+    <div class="circle">
+      <svg viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="21" class="t"></circle>
+        <circle
+          cx="25"
+          cy="25"
+          r="21"
+          class="v"
+          pathLength="100"
+          stroke-dasharray="60 100"
+        ></circle>
+      </svg>
+      <span>3/5</span>
+    </div>
+    <div class="circle plain">
+      <b>{streak}</b>
+      <span>days</span>
+    </div>
+    <div class="rect">
+      <Heat weeks={14} />
+    </div>
+  </div>
+
+  <div class="actions">
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<style>
+  .lock {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: calc(var(--u) * 70);
+    background: linear-gradient(180deg, #123d27 0%, #16512f 50%, #2d8250 100%);
+    color: #fff;
+  }
+
+  .date {
+    font-size: calc(var(--u) * 20);
+    font-weight: 600;
+  }
+
+  .clock {
+    font-size: calc(var(--u) * 96);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .row {
+    display: flex;
+    align-items: stretch;
+    gap: calc(var(--u) * 10);
+    margin-top: calc(var(--u) * 10);
+  }
+
+  .circle {
+    position: relative;
+    display: grid;
+    place-content: center;
+    width: calc(var(--u) * 70);
+    height: calc(var(--u) * 70);
+    border-radius: 50%;
+    font-size: calc(var(--u) * 15);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .circle svg {
+    position: absolute;
+    inset: 0;
+    transform: rotate(-90deg);
+  }
+
+  .circle circle {
+    fill: none;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+  }
+
+  .t {
+    stroke: rgb(255 255 255 / 0.25);
+  }
+
+  .v {
+    stroke: #fff;
+  }
+
+  .plain {
+    background: rgb(255 255 255 / 0.16);
+    line-height: 1.05;
+  }
+
+  .plain b {
+    font-size: calc(var(--u) * 22);
+  }
+
+  .plain span {
+    font-size: calc(var(--u) * 11);
+    font-weight: 500;
+  }
+
+  .rect {
+    display: flex;
+    align-items: center;
+    width: calc(var(--u) * 150);
+    padding: calc(var(--u) * 7) calc(var(--u) * 9);
+    background: rgb(255 255 255 / 0.16);
+    border-radius: calc(var(--u) * 16);
+    --gap: calc(var(--u) * 1.5);
+  }
+
+  .rect :global(.heat) {
+    width: 100%;
+    /* Lock Screen widgets are monochrome on iOS */
+    --heat-0: rgb(255 255 255 / 0.14);
+    --heat-1: rgb(255 255 255 / 0.35);
+    --heat-2: rgb(255 255 255 / 0.55);
+    --heat-3: rgb(255 255 255 / 0.78);
+    --heat-4: #fff;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: auto;
+    padding: 0 calc(var(--u) * 44) calc(var(--u) * 42);
+  }
+
+  .actions span {
+    width: calc(var(--u) * 50);
+    height: calc(var(--u) * 50);
+    background: rgb(255 255 255 / 0.16);
+    border-radius: 50%;
+  }
+</style>

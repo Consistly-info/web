@@ -1,0 +1,211 @@
+---
+// iOS widget mockups. Sizes follow the iPhone 158pt / 338pt widget grid and
+// scale through --u, which the phone frame or a parent wrapper provides.
+import Heat from "./Heat.astro";
+import Mascot from "./Mascot.astro";
+import { statsOf, DAYS } from "../lib/sample";
+
+interface Props {
+  kind: "graph" | "streak" | "progress" | "checklist";
+}
+
+const { kind } = Astro.props;
+const streak = statsOf(DAYS).current;
+const checklist = [
+  { name: "Morning walk", done: true },
+  { name: "Read 20 pages", done: true },
+  { name: "Drink water", done: true },
+  { name: "Meditate", done: false },
+];
+---
+
+{kind === "graph" && (
+  <div class="widget medium graph">
+    <div class="top">
+      <b>Consistency</b>
+      <span>Last 24 weeks</span>
+    </div>
+    <Heat weeks={24} />
+  </div>
+)}
+
+{kind === "streak" && (
+  <div class="widget small streak">
+    <p class="streak-num">{streak}</p>
+    <p class="streak-cap">day streak</p>
+    <div class="streak-art">
+      <Mascot stage="sprout" />
+    </div>
+  </div>
+)}
+
+{kind === "progress" && (
+  <div class="widget small progress">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="42" class="track" />
+      <circle
+        cx="50"
+        cy="50"
+        r="42"
+        class="value"
+        pathLength="100"
+        stroke-dasharray="60 100"
+      />
+    </svg>
+    <div class="progress-text">
+      <b>3/5</b>
+      <span>Today</span>
+    </div>
+  </div>
+)}
+
+{kind === "checklist" && (
+  <div class="widget medium checklist">
+    <div class="top">
+      <b>Today</b>
+      <span>3 of 4 done</span>
+    </div>
+    <ul>
+      {checklist.map((item) => (
+        <li class:list={{ done: item.done }}>
+          <i />
+          {item.name}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+<style>
+  .widget {
+    height: calc(var(--u) * 158);
+    background: #fff;
+    border-radius: calc(var(--u) * 22);
+    color: #171717;
+    box-shadow: 0 calc(var(--u) * 4) calc(var(--u) * 18) rgb(10 40 20 / 0.1);
+    overflow: hidden;
+  }
+
+  .small {
+    width: calc(var(--u) * 158);
+  }
+
+  .medium {
+    width: calc(var(--u) * 338);
+    padding: calc(var(--u) * 15) calc(var(--u) * 17);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: calc(var(--u) * 10);
+    font-size: calc(var(--u) * 14);
+  }
+
+  .top span {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 12);
+  }
+
+  .graph {
+    --gap: calc(var(--u) * 2);
+    --cell-r: 18%;
+  }
+
+  .streak {
+    position: relative;
+    padding: calc(var(--u) * 14) calc(var(--u) * 15);
+    background: var(--green-deep);
+    color: #fff;
+  }
+
+  .streak-num {
+    font-size: calc(var(--u) * 48);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .streak-cap {
+    font-size: calc(var(--u) * 14);
+    font-weight: 500;
+  }
+
+  .streak-art {
+    position: absolute;
+    right: calc(var(--u) * 4);
+    bottom: calc(var(--u) * -6);
+    width: calc(var(--u) * 84);
+  }
+
+  .progress {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .progress svg {
+    width: calc(var(--u) * 122);
+    transform: rotate(-90deg);
+  }
+
+  .progress circle {
+    fill: none;
+    stroke-width: 11;
+    stroke-linecap: round;
+  }
+
+  .track {
+    stroke: var(--mint);
+  }
+
+  .value {
+    stroke: var(--green);
+  }
+
+  .progress-text {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+
+  .progress-text b {
+    font-size: calc(var(--u) * 30);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .progress-text span {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 13);
+  }
+
+  .checklist ul {
+    display: grid;
+    gap: calc(var(--u) * 6);
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 10);
+    font-size: calc(var(--u) * 14.5);
+    font-weight: 500;
+  }
+
+  .checklist i {
+    flex: none;
+    width: calc(var(--u) * 19);
+    height: calc(var(--u) * 19);
+    border: calc(var(--u) * 2) solid #d4d9d4;
+    border-radius: 50%;
+  }
+
+  .checklist .done i {
+    background: var(--green);
+    border-color: var(--green);
+  }
+</style>

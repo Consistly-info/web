@@ -1,0 +1,329 @@
+---
+import Heat from "../Heat.astro";
+import Mascot from "../Mascot.astro";
+
+interface Props {
+  /** Render habit rows as working toggles that update the progress ring. */
+  interactive?: boolean;
+}
+
+const { interactive = false } = Astro.props;
+const Row = interactive ? "button" : "div";
+
+const habits = [
+  { name: "Morning walk", note: "14 day streak", done: true, tone: "#2ea043" },
+  { name: "Read 20 pages", note: "9 day streak", done: true, tone: "#0e9f8e" },
+  { name: "Drink water", note: "21 day streak", done: true, tone: "#3b82c4" },
+  { name: "Meditate", note: "3 of 5 this week", done: false, tone: "#8a6fd1" },
+  { name: "Stretch", note: "Evening", done: false, tone: "#d99a1c" },
+];
+
+const done = habits.filter((h) => h.done).length;
+const RADIUS = 21;
+const CIRC = 2 * Math.PI * RADIUS;
+---
+
+<div class="today" data-today={interactive ? "" : undefined}>
+  <p class="date">Monday, November 2</p>
+  <p class="big">Today</p>
+
+  <div class="buddy">
+    <div class="buddy-art">
+      <Mascot stage="sprout" />
+    </div>
+    <div class="buddy-text">
+      <p class="buddy-level">Level 12</p>
+      <div class="xp">
+        <span style="width:96.7%"></span>
+      </div>
+      <p class="buddy-xp">2,900 / 3,000 XP</p>
+    </div>
+    <div class="ring">
+      <svg viewBox="0 0 50 50" aria-hidden="true">
+        <circle cx="25" cy="25" r={RADIUS} class="track"></circle>
+        <circle
+          cx="25"
+          cy="25"
+          r={RADIUS}
+          class="value"
+          pathLength="100"
+          stroke-dasharray={`${(done / habits.length) * 100} 100`}
+          data-ring
+          data-circ={CIRC}
+        ></circle>
+      </svg>
+      <span>
+        <b data-count>{done}</b>/{habits.length}
+      </span>
+    </div>
+  </div>
+
+  <ul class="list">
+    {habits.map((habit) => (
+      <li>
+        <Row
+          class:list={["row", { done: habit.done }]}
+          type={interactive ? "button" : undefined}
+          aria-pressed={
+            interactive ? (habit.done ? "true" : "false") : undefined
+          }
+        >
+          <span class="check" style={`--tone:${habit.tone}`}>
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M3.5 8.5 6.6 11.5 12.5 4.8" />
+            </svg>
+          </span>
+          <span class="row-text">
+            <span class="name">{habit.name}</span>
+            <span class="sub">{habit.note}</span>
+          </span>
+        </Row>
+      </li>
+    ))}
+  </ul>
+
+  <div class="year" aria-hidden="true">
+    <p>Last 24 weeks</p>
+    <Heat weeks={24} />
+  </div>
+
+  <div class="tabs" aria-hidden="true">
+    <span class="on">Today</span>
+    <span>Graph</span>
+    <span>Buddy</span>
+    <span>Insights</span>
+  </div>
+</div>
+
+<style>
+  .today {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: calc(var(--u) * 62) calc(var(--u) * 16) 0;
+  }
+
+  .date {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 13);
+    font-weight: 600;
+  }
+
+  .big {
+    font-size: calc(var(--u) * 34);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .buddy {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 10);
+    margin-top: calc(var(--u) * 12);
+    padding: calc(var(--u) * 10) calc(var(--u) * 14) calc(var(--u) * 10)
+      calc(var(--u) * 8);
+    background: var(--mint);
+    border-radius: calc(var(--u) * 20);
+  }
+
+  .buddy-art {
+    flex: none;
+    width: calc(var(--u) * 66);
+  }
+
+  .buddy-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .buddy-level {
+    color: var(--green-deep);
+    font-size: calc(var(--u) * 16);
+    font-weight: 700;
+  }
+
+  .xp {
+    height: calc(var(--u) * 6);
+    margin-block: calc(var(--u) * 5);
+    overflow: hidden;
+    background: rgb(22 101 52 / 0.14);
+    border-radius: 99px;
+  }
+
+  .xp span {
+    display: block;
+    height: 100%;
+    background: var(--green);
+    border-radius: 99px;
+  }
+
+  .buddy-xp {
+    color: var(--green-deep);
+    font-size: calc(var(--u) * 12);
+    font-weight: 500;
+  }
+
+  .ring {
+    position: relative;
+    flex: none;
+    width: calc(var(--u) * 58);
+  }
+
+  .ring svg {
+    transform: rotate(-90deg);
+  }
+
+  .ring circle {
+    fill: none;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+  }
+
+  .track {
+    stroke: rgb(22 101 52 / 0.14);
+  }
+
+  .value {
+    stroke: var(--green);
+    transition: stroke-dasharray 0.45s var(--ease);
+  }
+
+  .ring > span {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-deep);
+    font-size: calc(var(--u) * 13);
+    font-weight: 600;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 6);
+    margin-top: calc(var(--u) * 8);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 12);
+    width: 100%;
+    padding: calc(var(--u) * 7) calc(var(--u) * 14);
+    background: #fff;
+    border-radius: calc(var(--u) * 16);
+    text-align: left;
+    transition: transform 0.2s var(--ease);
+  }
+
+  button.row:active {
+    transform: scale(0.98);
+  }
+
+  .check {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    border: calc(var(--u) * 2) solid #d4d9d4;
+    border-radius: 50%;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
+  }
+
+  .done .check {
+    background: var(--tone);
+    border-color: var(--tone);
+  }
+
+  .check svg {
+    width: 62%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .done .check svg {
+    opacity: 1;
+  }
+
+  .row-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .name {
+    font-size: calc(var(--u) * 16);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .sub {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 12.5);
+  }
+
+  .year {
+    margin-top: calc(var(--u) * 8);
+    padding: calc(var(--u) * 11) calc(var(--u) * 14) calc(var(--u) * 13);
+    background: #fff;
+    border-radius: calc(var(--u) * 16);
+    --gap: calc(var(--u) * 2);
+  }
+
+  .year p {
+    margin-bottom: calc(var(--u) * 8);
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 12.5);
+    font-weight: 600;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: auto;
+    margin-inline: calc(var(--u) * -16);
+    padding: calc(var(--u) * 14) calc(var(--u) * 10) calc(var(--u) * 28);
+    background: #fff;
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 12);
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .tabs .on {
+    color: var(--green-text);
+    font-weight: 650;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-today]").forEach((root) => {
+    const rows = root.querySelectorAll<HTMLButtonElement>("button.row");
+    const ring = root.querySelector<SVGCircleElement>("[data-ring]");
+    const count = root.querySelector<HTMLElement>("[data-count]");
+
+    rows.forEach((row) =>
+      row.addEventListener("click", () => {
+        const isDone = row.classList.toggle("done");
+        row.setAttribute("aria-pressed", String(isDone));
+        const done = root.querySelectorAll("button.row.done").length;
+        ring?.setAttribute(
+          "stroke-dasharray",
+          `${(done / rows.length) * 100} 100`,
+        );
+        if (count) count.textContent = String(done);
+      }),
+    );
+  });
+</script>

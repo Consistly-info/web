@@ -1,0 +1,686 @@
+---
+import Mascot from "../Mascot.astro";
+import SectionHead from "../SectionHead.astro";
+
+const challenges = [
+  { name: "Complete 3 habits", xp: 30, gems: 5 },
+  { name: "Check in before noon", xp: 20, gems: 5 },
+  { name: "Finish your whole day", xp: 50, gems: 10 },
+];
+
+const badges = [
+  {
+    name: "First Step",
+    text: "Complete your very first habit.",
+    icon: "M12 20v-7m0 0C12 9 9 6.5 5 6.5 5 10.5 8 13 12 13Zm0-3c0-3 2.4-5 6-5 0 3.5-2.4 5-6 5Z",
+    earned: true,
+  },
+  {
+    name: "One Week",
+    text: "Keep a habit going for 7 days in a row.",
+    icon: "M12 3c1 4 5 5.5 5 10.5a5 5 0 0 1-10 0c0-2 1-3.2 2-4 .3 1.6 1 2.3 2 2.5C10.7 9 11 6 12 3Z",
+    earned: true,
+  },
+  {
+    name: "Early Bird",
+    text: "Finish a habit before 8 AM, five times.",
+    icon: "M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0-4v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4m0-12.8L17 7M7 17l-1.4 1.4",
+    earned: true,
+  },
+  {
+    name: "Bookworm",
+    text: "Log a reading habit on 30 different days.",
+    icon: "M12 7c-2-1.5-4.5-2-8-2v13c3.5 0 6 .5 8 2 2-1.5 4.5-2 8-2V5c-3.5 0-6 .5-8 2Zm0 0v13",
+    earned: true,
+  },
+  {
+    name: "Perfect Week",
+    text: "Complete everything you planned for a full week.",
+    icon: "m12 4 2.5 5.2 5.7.8-4.1 4 1 5.7L12 17l-5.1 2.7 1-5.7-4.1-4 5.7-.8L12 4Z",
+    earned: true,
+  },
+  {
+    name: "One Month",
+    text: "Reach a 30-day streak on any habit.",
+    icon: "M19 14.5A8 8 0 0 1 9.5 5a8 8 0 1 0 9.5 9.5Z",
+    earned: false,
+  },
+  {
+    name: "Hundred Club",
+    text: "Reach a 100-day streak on any habit.",
+    icon: "M3 19 9 9l3.5 5 2.5-3.5L21 19Z",
+    earned: false,
+  },
+  {
+    name: "Full Circle",
+    text: "Show up on 365 days in total.",
+    icon: "M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17Zm-3.5 8.7 2.5 2.5 4.5-5",
+    earned: false,
+  },
+];
+
+const milestones = [
+  { days: 7, reached: true },
+  { days: 30, reached: true },
+  { days: 100, reached: false },
+  { days: 365, reached: false },
+];
+
+const accessories = [
+  { id: "scarf", name: "Scarf" },
+  { id: "glasses", name: "Glasses" },
+  { id: "hat", name: "Sun hat" },
+];
+---
+
+<section class="section" aria-labelledby="rewards-title">
+  <div class="page">
+    <SectionHead
+      id="rewards-title"
+      eyebrow="Gamification"
+      title="Make progress rewarding."
+      lead="Motivation fades. A good reward loop gives you one more reason to show up on the days it does."
+    />
+
+    <div class="board reveal" data-rewards>
+      <section class="tile level" aria-label="Level and rewards">
+        <div class="level-top">
+          <div>
+            <p class="tile-name">Level</p>
+            <p class="level-num" data-level>
+              12
+            </p>
+          </div>
+          <div class="gems">
+            <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+              <path d="M7 4h10l4 5.5L12 21 3 9.5 7 4Z" fill="#14b8a6"></path>
+              <path d="M3 9.5h18L12 21 3 9.5Z" fill="#0e9f8e"></path>
+              <path d="M8.5 9.5 12 21l3.5-11.5Z" fill="#2dd4bf"></path>
+            </svg>
+            <p>
+              <b data-gems>480</b>
+              <span>gems</span>
+            </p>
+          </div>
+        </div>
+        <div
+          class="meter"
+          role="progressbar"
+          aria-label="Experience points"
+          aria-valuemin="0"
+          aria-valuemax="3000"
+          aria-valuenow="2900"
+          data-xp-meter
+        >
+          <span style="width:96.67%" data-xp-bar></span>
+        </div>
+        <p class="meter-text">
+          <span data-xp>2,900</span> / 3,000 XP to the next level
+        </p>
+      </section>
+
+      <section class="tile" aria-label="Daily challenges">
+        <p class="tile-name">Daily challenges</p>
+        <ul class="challenges">
+          {challenges.map((c) => (
+            <li>
+              <button
+                type="button"
+                aria-pressed="false"
+                data-xp-gain={c.xp}
+                data-gem-gain={c.gems}
+              >
+                <i aria-hidden="true" />
+                <span class="c-name">{c.name}</span>
+                <span class="c-gain">+{c.xp} XP</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p class="note">Try it: finish all three to reach level 13.</p>
+      </section>
+
+      <section class="tile badges-tile" aria-label="Achievement badges">
+        <p class="tile-name">Achievements</p>
+        <div class="badges">
+          {badges.map((badge, i) => (
+            <button
+              type="button"
+              class:list={["badge", { locked: !badge.earned }]}
+              aria-pressed={i === 0 ? "true" : "false"}
+              data-badge-name={badge.name}
+              data-badge-text={badge.text}
+              data-badge-state={badge.earned ? "Earned" : "Locked"}
+              aria-label={`${badge.name}, ${badge.earned ? "earned" : "locked"}`}
+            >
+              <span class="medal">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={badge.icon} />
+                </svg>
+              </span>
+              <span class="badge-name">{badge.name}</span>
+            </button>
+          ))}
+        </div>
+        <p class="badge-detail" aria-live="polite" data-badge-detail>
+          <b>{badges[0].name}.</b> {badges[0].text}
+        </p>
+      </section>
+
+      <section
+        class="tile dress"
+        aria-label="Character customization"
+        data-dress
+        data-scarf
+      >
+        <p class="tile-name">Customization</p>
+        <div class="dress-art">
+          <Mascot
+            stage="sapling"
+            dressable
+            label="The companion wearing the chosen accessories"
+          />
+        </div>
+        <div class="chips" role="group" aria-label="Accessories">
+          {accessories.map((a) => (
+            <button
+              type="button"
+              aria-pressed={a.id === "scarf" ? "true" : "false"}
+              data-acc={a.id}
+            >
+              {a.name}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section class="tile" aria-label="Weekly challenge">
+        <p class="tile-name">Weekly challenge</p>
+        <p class="weekly">Show up 6 days this week</p>
+        <ol class="week" aria-label="4 of 6 days complete">
+          {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => (
+            <li class:list={{ on: i < 4 }}>
+              <span>{d}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="note">Reward: 100 XP and 25 gems</p>
+      </section>
+
+      <section class="tile miles" aria-label="Milestones">
+        <p class="tile-name">Milestones</p>
+        <ol class="line">
+          {milestones.map((m) => (
+            <li class:list={{ on: m.reached }}>
+              <i aria-hidden="true" />
+              <b>{m.days}</b>
+              <span>days</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+    <p class="note foot reveal">
+      Concept design. Names, numbers, and rewards are examples and may change
+      before launch.
+    </p>
+  </div>
+</section>
+
+<style>
+  .board {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+
+  .tile {
+    grid-column: span 5;
+    padding: clamp(20px, 2.4vw, 28px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+  }
+
+  .tile-name {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 550;
+  }
+
+  .level {
+    grid-column: span 7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--green-ink);
+    border-color: var(--green-ink);
+    color: #fff;
+  }
+
+  .level .tile-name {
+    color: #b7dcc3;
+  }
+
+  .level-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .level-num {
+    font-size: clamp(72px, 10vw, 120px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gems {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gems p {
+    display: grid;
+    line-height: 1.15;
+  }
+
+  .gems b {
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gems span {
+    color: #b7dcc3;
+    font-size: 13px;
+  }
+
+  .meter {
+    height: 10px;
+    margin-top: 28px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.16);
+    border-radius: 99px;
+  }
+
+  .meter span {
+    display: block;
+    height: 100%;
+    background: #6fe08f;
+    border-radius: 99px;
+    transition: width 0.6s var(--ease);
+  }
+
+  .meter-text {
+    margin-top: 10px;
+    color: #b7dcc3;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .challenges {
+    margin-block: 10px 12px;
+  }
+
+  .challenges button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 50px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+
+  .challenges i {
+    position: relative;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #cfd5cf;
+    border-radius: 50%;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
+  }
+
+  .challenges button:hover i {
+    border-color: var(--green);
+  }
+
+  .challenges [aria-pressed="true"] i {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .challenges [aria-pressed="true"] i::after {
+    content: "";
+    position: absolute;
+    inset: 3px 6px 6px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(40deg);
+  }
+
+  .c-name {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+  }
+
+  .c-gain {
+    color: var(--green-deep);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .badges-tile {
+    grid-column: span 8;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .badges {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 8px;
+    margin-block: auto;
+    padding-block: 20px;
+  }
+
+  .badge {
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    padding-block: 6px;
+    border-radius: 14px;
+  }
+
+  .medal {
+    display: grid;
+    place-items: center;
+    width: min(100%, 60px);
+    aspect-ratio: 1;
+    background: var(--mint);
+    border-radius: 50%;
+    color: var(--green-deep);
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s;
+  }
+
+  .medal svg {
+    width: 56%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .badge:hover .medal {
+    transform: translateY(-2px);
+  }
+
+  .badge[aria-pressed="true"] .medal {
+    box-shadow:
+      0 0 0 2px var(--bg),
+      0 0 0 4px var(--green);
+  }
+
+  .locked .medal {
+    background: #eff1ef;
+    color: #8a8f8a;
+  }
+
+  .badge-name {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .badge-detail {
+    min-height: 3em;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+  }
+
+  .dress {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    background: var(--mint-soft);
+    border-color: transparent;
+  }
+
+  .dress-art {
+    width: min(70%, 210px);
+    margin: auto;
+    padding-block: 8px;
+  }
+
+  .dress :global(.acc) {
+    display: none;
+  }
+
+  .dress[data-scarf] :global(.acc-scarf),
+  .dress[data-glasses] :global(.acc-glasses),
+  .dress[data-hat] :global(.acc-hat) {
+    display: block;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .chips button {
+    min-height: 36px;
+    padding-inline: 14px;
+    background: #fff;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .chips [aria-pressed="true"] {
+    background: var(--green-deep);
+    color: #fff;
+  }
+
+  .weekly {
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+    margin-block: 18px 14px;
+  }
+
+  .week li {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    background: var(--heat-0);
+    border-radius: 25%;
+    color: #5f5f5f;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .week .on {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .miles {
+    grid-column: span 7;
+  }
+
+  .line {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 32px;
+  }
+
+  .line::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 25%;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .line li {
+    position: relative;
+    display: grid;
+    gap: 2px;
+  }
+
+  .line i {
+    width: 18px;
+    height: 18px;
+    margin-bottom: 14px;
+    background: var(--surface);
+    border: 2px solid #cfd5cf;
+    border-radius: 50%;
+  }
+
+  .line .on i {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .line b {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 680;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+
+  .line li:not(.on) b {
+    color: #808580;
+  }
+
+  .line span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .foot {
+    margin-top: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .tile,
+    .level,
+    .badges-tile,
+    .dress,
+    .miles {
+      grid-column: 1 / -1;
+    }
+
+    .badges {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .dress-art {
+      width: min(52%, 210px);
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-rewards]");
+
+  if (root) {
+    const LEVEL_XP = 3000;
+    let level = 12;
+    let xp = 2900;
+    let gems = 480;
+
+    const text = (selector: string, value: string) => {
+      const el = root.querySelector(selector);
+      if (el) el.textContent = value;
+    };
+
+    const render = () => {
+      text("[data-level]", String(level));
+      text("[data-xp]", xp.toLocaleString("en-US"));
+      text("[data-gems]", gems.toLocaleString("en-US"));
+      root
+        .querySelector("[data-xp-meter]")
+        ?.setAttribute("aria-valuenow", String(xp));
+      const bar = root.querySelector<HTMLElement>("[data-xp-bar]");
+      if (bar) bar.style.width = `${(xp / LEVEL_XP) * 100}%`;
+    };
+
+    root
+      .querySelectorAll<HTMLButtonElement>("[data-xp-gain]")
+      .forEach((button) =>
+        button.addEventListener("click", () => {
+          const on = button.getAttribute("aria-pressed") !== "true";
+          const sign = on ? 1 : -1;
+          button.setAttribute("aria-pressed", String(on));
+          xp += sign * Number(button.dataset.xpGain);
+          gems += sign * Number(button.dataset.gemGain);
+          // Levels roll over in both directions so unticking stays consistent.
+          if (xp >= LEVEL_XP) {
+            xp -= LEVEL_XP;
+            level += 1;
+          } else if (xp < 0) {
+            xp += LEVEL_XP;
+            level -= 1;
+          }
+          render();
+        }),
+      );
+
+    const badges = root.querySelectorAll<HTMLButtonElement>(".badge");
+    const detail = root.querySelector<HTMLElement>("[data-badge-detail]");
+    badges.forEach((badge) =>
+      badge.addEventListener("click", () => {
+        badges.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b === badge)),
+        );
+        if (!detail) return;
+        const { badgeName, badgeText, badgeState } = badge.dataset;
+        detail.replaceChildren(
+          Object.assign(document.createElement("b"), {
+            textContent: `${badgeName}.`,
+          }),
+          ` ${badgeText} ${badgeState === "Locked" ? "Not earned yet." : ""}`,
+        );
+      }),
+    );
+
+    const dress = root.querySelector<HTMLElement>("[data-dress]");
+    root.querySelectorAll<HTMLButtonElement>("[data-acc]").forEach((chip) =>
+      chip.addEventListener("click", () => {
+        const on = chip.getAttribute("aria-pressed") !== "true";
+        chip.setAttribute("aria-pressed", String(on));
+        dress?.toggleAttribute(`data-${chip.dataset.acc}`, on);
+      }),
+    );
+  }
+</script>

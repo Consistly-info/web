@@ -1,0 +1,227 @@
+---
+/**
+ * Temporary Consistly mascot, drawn as inline SVG.
+ *
+ * To swap in final artwork, replace the markup in this one file (an <img> works
+ * too) and keep the props. Every appearance on the site goes through here.
+ */
+export type Stage = "seed" | "sprout" | "sapling" | "bloom" | "grove";
+
+interface Props {
+  stage?: Stage;
+  /** Render every accessory layer, hidden until a parent sets data-* to show it. */
+  dressable?: boolean;
+  scarf?: boolean;
+  label?: string;
+}
+
+const {
+  stage = "sprout",
+  dressable = false,
+  scarf = false,
+  label,
+} = Astro.props;
+
+// Each stage grows the same body, so progression reads as one character.
+const scale = {
+  seed: 0.68,
+  sprout: 0.82,
+  sapling: 0.92,
+  bloom: 1,
+  grove: 1.06,
+}[stage];
+const hasArms = stage !== "seed";
+const showScarf = scarf || dressable;
+---
+
+<svg
+  class="mascot"
+  viewBox="0 0 240 240"
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+>
+  <ellipse
+    cx="120"
+    cy="222"
+    rx={66 * scale}
+    ry="7"
+    fill="#166534"
+    opacity=".13"
+  ></ellipse>
+
+  <g transform={`translate(120 222) scale(${scale}) translate(-120 -222)`}>
+    <!-- Foliage sits behind the body -->
+    {stage === "seed" && (
+      <path d="M120 76c-1-14 5-25 20-30 3 15-3 27-20 30Z" fill="#2ea043" />
+    )}
+    {stage === "sprout" && (
+      <g>
+        <path d="M119 78c-20 2-34-8-38-27 20-3 35 7 38 27Z" fill="#2ea043" />
+        <path d="M121 78c1-22 13-36 35-39 2 22-11 37-35 39Z" fill="#3fb45a" />
+      </g>
+    )}
+    {stage === "sapling" && (
+      <g>
+        <path d="M118 78c-25 4-43-7-50-30 25-5 44 7 50 30Z" fill="#238636" />
+        <path d="M122 78c4-26 21-42 48-43-1 27-20 44-48 43Z" fill="#2ea043" />
+        <path d="M120 76c-11-15-10-34 3-49 12 16 11 34-3 49Z" fill="#3fb45a" />
+      </g>
+    )}
+    {(stage === "bloom" || stage === "grove") && (
+      <g>
+        <path d="M116 80c-29 7-50-3-61-29 29-8 51 3 61 29Z" fill="#238636" />
+        <path d="M124 80c29 7 50-3 61-29-29-8-51 3-61 29Z" fill="#238636" />
+        <path
+          d="M116 74c-20-16-23-38-10-58 18 15 22 37 10 58Z"
+          fill="#2ea043"
+        />
+        <path d="M124 74c20-16 23-38 10-58-18 15-22 37-10 58Z" fill="#3fb45a" />
+      </g>
+    )}
+    {stage === "grove" && (
+      <g>
+        <path d="M88 86C63 99 41 94 25 73c24-14 47-9 63 13Z" fill="#166534" />
+        <path d="M152 86c25 13 47 8 63-13-24-14-47-9-63 13Z" fill="#166534" />
+      </g>
+    )}
+
+    <!-- Feet -->
+    <ellipse cx="94" cy="214" rx="19" ry="10" fill="#238636"></ellipse>
+    <ellipse cx="146" cy="214" rx="19" ry="10" fill="#238636"></ellipse>
+
+    <!-- Arms -->
+    {hasArms && (
+      <g fill="#3fb45a">
+        <ellipse
+          cx="50"
+          cy="154"
+          rx="11"
+          ry="19"
+          transform="rotate(24 50 154)"
+        />
+        <ellipse
+          cx="190"
+          cy="154"
+          rx="11"
+          ry="19"
+          transform="rotate(-24 190 154)"
+        />
+      </g>
+    )}
+
+    <!-- Body -->
+    <path
+      d="M120 70c44 0 76 33 76 77 0 45-33 71-76 71s-76-26-76-71c0-44 32-77 76-77Z"
+      fill="#57c773"
+    ></path>
+    <path
+      d="M120 132c29 0 49 18 49 42 0 25-21 37-49 37s-49-12-49-37c0-24 20-42 49-42Z"
+      fill="#dcfce7"
+    ></path>
+
+    <!-- Face -->
+    <g class="face">
+      <circle cx="93" cy="130" r="11" fill="#14261a"></circle>
+      <circle cx="147" cy="130" r="11" fill="#14261a"></circle>
+      <circle cx="97" cy="126" r="3.8" fill="#fff"></circle>
+      <circle cx="151" cy="126" r="3.8" fill="#fff"></circle>
+    </g>
+    <ellipse
+      cx="74"
+      cy="149"
+      rx="11"
+      ry="7"
+      fill="#f59e9e"
+      opacity=".75"
+    ></ellipse>
+    <ellipse
+      cx="166"
+      cy="149"
+      rx="11"
+      ry="7"
+      fill="#f59e9e"
+      opacity=".75"
+    ></ellipse>
+    <path
+      d="M109 145c4 7 18 7 22 0"
+      fill="none"
+      stroke="#14261a"
+      stroke-width="4.5"
+      stroke-linecap="round"
+    ></path>
+
+    <!-- Bloom -->
+    {(stage === "bloom" || stage === "grove") && (
+      <g transform="translate(120 66)">
+        {[0, 72, 144, 216, 288].map((a) => (
+          <ellipse
+            cy="-11"
+            rx="8.5"
+            ry="12"
+            fill="#fff"
+            stroke="#f4e3b5"
+            transform={`rotate(${a})`}
+          />
+        ))}
+        <circle r="7" fill="#f2b632" />
+      </g>
+    )}
+
+    <!-- Accessories -->
+    {showScarf && (
+      <g class="acc acc-scarf">
+        <path
+          d="M57 174c38 17 88 17 126 0l4 17c-41 18-93 18-134 0Z"
+          fill="#e4572e"
+        />
+        <path d="M150 186l27-6 9 35-22 4Z" fill="#c9431d" />
+      </g>
+    )}
+    {dressable && (
+      <g class="acc acc-glasses" fill="none" stroke="#14261a" stroke-width="4">
+        <circle cx="93" cy="130" r="21" />
+        <circle cx="147" cy="130" r="21" />
+        <path d="M114 128c4-3 8-3 12 0" />
+      </g>
+    )}
+    {dressable && (
+      <g class="acc acc-hat">
+        <path
+          d="M60 86c22 11 98 11 120 0 2 8-4 15-16 18-27 7-61 7-88 0-12-3-18-10-16-18Z"
+          fill="#c98f3b"
+        />
+        <path
+          d="M82 92c0-26 16-40 38-40s38 14 38 40c-24 5-52 5-76 0Z"
+          fill="#e0ad5c"
+        />
+        <path d="M82 84c24 6 52 6 76 0l1 10c-25 5-53 5-78 0Z" fill="#166534" />
+      </g>
+    )}
+  </g>
+</svg>
+
+<style>
+  .mascot {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .face {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: blink 5.5s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    95%,
+    100% {
+      transform: scaleY(1);
+    }
+    97.5% {
+      transform: scaleY(0.1);
+    }
+  }
+</style>

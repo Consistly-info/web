@@ -1,0 +1,406 @@
+---
+import SectionHead from "../SectionHead.astro";
+import { DAYS, habitRates, levelOf, monthsOf, statsOf } from "../../lib/sample";
+
+const stats = statsOf(DAYS);
+const months = monthsOf(DAYS);
+const latest = months[months.length - 1];
+const previous = months[months.length - 2];
+const change = latest.rate - previous.rate;
+const habits = habitRates(30);
+const points = Math.abs(change);
+const changeText = change
+  ? `${change > 0 ? "Up" : "Down"} ${points} ${points === 1 ? "point" : "points"} from ${previous.label}`
+  : `Level with ${previous.label}`;
+
+const fmt = (iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+
+// Weekly completion, smoothed over four weeks so the trend reads clearly.
+const weekly: number[] = [];
+for (let w = 0; w * 7 < DAYS.length; w++) {
+  const from = Math.max(0, w - 3) * 7;
+  const slice = DAYS.slice(from, (w + 1) * 7);
+  const done = slice.reduce((n, d) => n + levelOf(d.mask), 0);
+  weekly.push((done / (slice.length * 4)) * 100);
+}
+
+const W = 640;
+const H = 220;
+const x = (i: number) => (i / (weekly.length - 1)) * W;
+const y = (v: number) => H - (v / 100) * H;
+const line = weekly
+  .map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`)
+  .join("");
+const area = `${line}L${W} ${H}L0 ${H}Z`;
+const endRate = Math.round(weekly[weekly.length - 1]);
+
+// Milestones come from the same sample data as the graphs.
+let total = 0;
+let run = 0;
+const found = new Map<string, string>();
+for (const day of DAYS) {
+  total += levelOf(day.mask);
+  run = day.mask ? run + 1 : 0;
+  if (total >= 1 && !found.has("First check-in"))
+    found.set("First check-in", day.date);
+  if (run >= 7 && !found.has("First 7-day streak"))
+    found.set("First 7-day streak", day.date);
+  if (total >= 100 && !found.has("100 check-ins"))
+    found.set("100 check-ins", day.date);
+  if (run >= 30 && !found.has("First 30-day streak"))
+    found.set("First 30-day streak", day.date);
+  if (total >= 500 && !found.has("500 check-ins"))
+    found.set("500 check-ins", day.date);
+}
+const milestones = [...found].sort((a, b) => a[1].localeCompare(b[1]));
+---
+
+<section class="section" aria-labelledby="insights-title">
+  <div class="page">
+    <SectionHead
+      id="insights-title"
+      eyebrow="Personal insights"
+      title="Understand your consistency."
+      lead="See what's working, what slipped, and how far the line has moved since you started."
+    />
+
+    <dl class="numbers reveal">
+      <div>
+        <dt>Completion this month</dt>
+        <dd>{latest.rate}%</dd>
+      </div>
+      <div>
+        <dt>Current streak</dt>
+        <dd>
+          {stats.current}
+          <small> days</small>
+        </dd>
+      </div>
+      <div>
+        <dt>Longest streak</dt>
+        <dd>
+          {stats.longest}
+          <small> days</small>
+        </dd>
+      </div>
+      <div>
+        <dt>Total check-ins</dt>
+        <dd>{stats.completions.toLocaleString("en-US")}</dd>
+      </div>
+    </dl>
+
+    <div class="charts reveal">
+      <figure class="chart over-time">
+        <figcaption>
+          <h3>Progress over time</h3>
+          <p>Completion rate, four-week average</p>
+        </figcaption>
+        <div class="plot">
+          <div class="y" aria-hidden="true">
+            <span>100%</span>
+            <span>50%</span>
+            <span>0%</span>
+          </div>
+          <div class="area">
+            <svg
+              viewBox={`0 0 ${W} ${H}`}
+              preserveAspectRatio="none"
+              role="img"
+              aria-label={`Sample completion rate rising over the year to ${endRate} percent.`}
+            >
+              <line
+                x1="0"
+                x2={W}
+                y1="0.5"
+                y2="0.5"
+                class="rule"
+                vector-effect="non-scaling-stroke"
+              ></line>
+              <line
+                x1="0"
+                x2={W}
+                y1={H / 2}
+                y2={H / 2}
+                class="rule"
+                vector-effect="non-scaling-stroke"
+              ></line>
+              <line
+                x1="0"
+                x2={W}
+                y1={H - 0.5}
+                y2={H - 0.5}
+                class="rule"
+                vector-effect="non-scaling-stroke"
+              ></line>
+              <path d={area} class="fill"></path>
+              <path
+                d={line}
+                class="stroke"
+                vector-effect="non-scaling-stroke"
+              ></path>
+            </svg>
+            <div class="x" aria-hidden="true">
+              <span>{months[0].label}</span>
+              <span>{months[6].label}</span>
+              <span>{latest.label}</span>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <figure class="chart miles">
+        <figcaption>
+          <h3>Personal milestones</h3>
+        </figcaption>
+        <ol>
+          {milestones.map(([name, date]) => (
+            <li>
+              <span>{name}</span>
+              <time datetime={date}>{fmt(date)}</time>
+            </li>
+          ))}
+        </ol>
+      </figure>
+
+      <figure class="chart compare">
+        <figcaption>
+          <h3>Monthly comparison</h3>
+          <p>{changeText}</p>
+        </figcaption>
+        <div class="pairs">
+          {[previous, latest].map((month, i) => (
+            <div class:list={["pair", { now: i === 1 }]}>
+              <span class="pair-name">{month.label}</span>
+              <span class="track">
+                <span style={`width:${month.rate}%`}></span>
+              </span>
+              <span class="pair-rate">{month.rate}%</span>
+            </div>
+          ))}
+        </div>
+      </figure>
+
+      <figure class="chart perf">
+        <figcaption>
+          <h3>Habit performance</h3>
+          <p>Last 30 days</p>
+        </figcaption>
+        <div class="pairs">
+          {habits.map((habit) => (
+            <div class="pair now wide">
+              <span class="pair-name">{habit.name}</span>
+              <span class="track">
+                <span style={`width:${habit.rate}%`}></span>
+              </span>
+              <span class="pair-rate">{habit.rate}%</span>
+            </div>
+          ))}
+        </div>
+      </figure>
+    </div>
+    <p class="note foot">Concept design with sample data.</p>
+  </div>
+</section>
+
+<style>
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: clamp(40px, 6vw, 72px);
+    padding-block: 28px;
+    border-block: 1px solid var(--line);
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  dd {
+    margin-top: 2px;
+    font-size: clamp(38px, 5.4vw, 64px);
+    font-weight: 680;
+    letter-spacing: -0.04em;
+    line-height: 1.08;
+    font-variant-numeric: tabular-nums;
+  }
+
+  small {
+    color: var(--muted);
+    font-size: 0.34em;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 56px) clamp(32px, 5vw, 64px);
+    margin-top: clamp(40px, 5vw, 56px);
+  }
+
+  .over-time {
+    grid-column: span 8;
+  }
+
+  .miles {
+    grid-column: span 4;
+  }
+
+  .compare {
+    grid-column: span 5;
+  }
+
+  .perf {
+    grid-column: span 7;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 620;
+    letter-spacing: -0.014em;
+  }
+
+  figcaption p {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .plot {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .y {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 240px;
+    margin-block: -7px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .area svg {
+    width: 100%;
+    height: 226px;
+    overflow: visible;
+  }
+
+  .rule {
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .fill {
+    fill: var(--mint);
+    opacity: 0.6;
+  }
+
+  .stroke {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+
+  .x {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .miles ol {
+    margin-top: 12px;
+  }
+
+  .miles li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+
+  time {
+    flex: none;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pairs {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .wide {
+    grid-template-columns: 108px minmax(0, 1fr) 44px;
+  }
+
+  .track {
+    height: 12px;
+    overflow: hidden;
+    background: var(--heat-0);
+    border-radius: 99px;
+  }
+
+  .track span {
+    display: block;
+    height: 100%;
+    background: var(--heat-2);
+    border-radius: 99px;
+  }
+
+  .now .track span {
+    background: var(--green);
+  }
+
+  .pair-rate {
+    font-weight: 600;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .foot {
+    margin-top: 32px;
+  }
+
+  @media (max-width: 860px) {
+    .numbers {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .charts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .over-time,
+    .miles,
+    .compare,
+    .perf {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

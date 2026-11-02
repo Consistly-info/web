@@ -1,0 +1,564 @@
+---
+import SectionHead from "../SectionHead.astro";
+import {
+  DAYS,
+  HABITS,
+  WEEKS,
+  levelOf,
+  monthsOf,
+  statsOf,
+} from "../../lib/sample";
+
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const stats = statsOf(DAYS);
+const months = monthsOf(DAYS);
+
+// Month labels sit above the first full week of each month.
+const monthLabels: { label: string; col: number }[] = [];
+let seen = "";
+for (let col = 0; col < WEEKS; col++) {
+  const date = DAYS[col * 7].date;
+  const key = date.slice(0, 7);
+  if (key !== seen) {
+    seen = key;
+    monthLabels.push({
+      col,
+      label: new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {
+        month: "short",
+        timeZone: "UTC",
+      }),
+    });
+  }
+}
+
+const rows = WEEKDAYS.map((_, row) =>
+  Array.from({ length: WEEKS }, (_, col) => col * 7 + row),
+);
+const selected = DAYS.length - 1;
+---
+
+<section class="section graph" aria-labelledby="graph-title">
+  <div class="page">
+    <SectionHead
+      id="graph-title"
+      eyebrow="Contribution graph"
+      title="See how far you've come."
+      lead="Every habit you complete fills in a square. Over weeks and months, your routine becomes a picture of everything you've shown up for."
+      center
+    />
+
+    <div class="panel reveal" data-graph>
+      <div class="controls">
+        <div class="filters" role="group" aria-label="Show graph for">
+          <button type="button" aria-pressed="true" data-filter="-1">
+            All habits
+          </button>
+          {HABITS.map((habit, i) => (
+            <button type="button" aria-pressed="false" data-filter={i}>
+              {habit}
+            </button>
+          ))}
+        </div>
+        <span class="note">Sample data</span>
+      </div>
+
+      <div class="scroller" data-scroller>
+        <div class="canvas" style={`--weeks:${WEEKS}`}>
+          <div class="month-row" aria-hidden="true">
+            {monthLabels.map((m) => (
+              <span style={`grid-column-start:${m.col + 1}`}>{m.label}</span>
+            ))}
+          </div>
+          <div
+            class="grid"
+            role="grid"
+            aria-label="Sample year of habit activity. Use the arrow keys to move between days."
+            data-grid
+          >
+            {rows.map((row) => (
+              <div role="row" class="row">
+                {row.map((index) => (
+                  <button
+                    type="button"
+                    role="gridcell"
+                    class={`cell l${levelOf(DAYS[index].mask)}`}
+                    data-i={index}
+                    tabindex={index === selected ? 0 : -1}
+                    aria-selected={index === selected ? "true" : "false"}
+                    aria-label={DAYS[index].date}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="under">
+        <p class="detail" aria-live="polite" data-detail></p>
+        <div class="legend" aria-hidden="true">
+          Less
+          <i class="l0"></i>
+          <i class="l1"></i>
+          <i class="l2"></i>
+          <i class="l3"></i>
+          <i class="l4"></i>
+          More
+        </div>
+      </div>
+    </div>
+
+    <div class="below reveal">
+      <dl class="stats">
+        <div>
+          <dt>Current streak</dt>
+          <dd>
+            <b data-stat="current">{stats.current}</b> days
+          </dd>
+        </div>
+        <div>
+          <dt>Longest streak</dt>
+          <dd>
+            <b data-stat="longest">{stats.longest}</b> days
+          </dd>
+        </div>
+        <div>
+          <dt>Active days</dt>
+          <dd>
+            <b data-stat="activeDays">{stats.activeDays}</b> of {DAYS.length}
+          </dd>
+        </div>
+        <div>
+          <dt>Check-ins</dt>
+          <dd>
+            <b data-stat="completions">
+              {stats.completions.toLocaleString("en-US")}
+            </b>{" "}
+            this year
+          </dd>
+        </div>
+      </dl>
+
+      <div class="months">
+        <h3>Monthly consistency</h3>
+        <ol class="month-bars">
+          {months.map((month) => (
+            <li>
+              <span class="bar-wrap">
+                <span
+                  class="bar"
+                  data-month={month.key}
+                  style={`height:${month.rate}%`}
+                />
+              </span>
+              <span class="month-rate" data-rate={month.key}>
+                {month.rate}%
+              </span>
+              <span class="month-name">{month.label}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panel {
+    margin-top: clamp(40px, 6vw, 72px);
+    padding: clamp(16px, 2.6vw, 32px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .filters {
+    display: flex;
+    gap: 4px;
+    min-width: 0;
+    margin: -4px;
+    padding: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .filters button {
+    flex: none;
+    min-height: 36px;
+    padding-inline: 14px;
+    border-radius: 99px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.006em;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .filters button:hover {
+    color: var(--ink);
+  }
+
+  .filters [aria-pressed="true"] {
+    background: var(--mint);
+    color: var(--green-deep);
+    font-weight: 600;
+  }
+
+  .controls .note {
+    flex: none;
+  }
+
+  .scroller {
+    margin-inline: -6px;
+    padding: 6px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .canvas {
+    display: grid;
+    gap: 8px;
+    min-width: 760px;
+  }
+
+  .month-row {
+    display: grid;
+    grid-template-columns: repeat(var(--weeks), 1fr);
+    gap: 4px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .month-row span {
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  .grid {
+    display: grid;
+    gap: 4px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(var(--weeks), 1fr);
+    gap: 4px;
+  }
+
+  .cell {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 22%;
+    background: var(--heat-0);
+    transition:
+      background 0.3s,
+      transform 0.15s var(--ease);
+  }
+
+  .cell:hover,
+  .cell[aria-selected="true"] {
+    transform: scale(1.15);
+  }
+
+  .cell[aria-selected="true"] {
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .l0 {
+    background: var(--heat-0);
+  }
+
+  .l1 {
+    background: var(--heat-1);
+  }
+
+  .l2 {
+    background: var(--heat-2);
+  }
+
+  .l3 {
+    background: var(--heat-3);
+  }
+
+  .l4 {
+    background: var(--heat-4);
+  }
+
+  .under {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 20px;
+  }
+
+  .detail {
+    min-height: 44px;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  .detail :global(span) {
+    color: var(--muted);
+  }
+
+  .legend {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .legend i {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .below {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 6vw, 80px);
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 24px;
+    align-content: start;
+  }
+
+  dt,
+  h3 {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  dd {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  dd b {
+    color: var(--ink);
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 680;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .month-bars {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(3px, 0.8vw, 10px);
+    margin-top: 14px;
+  }
+
+  .month-bars li {
+    display: grid;
+    justify-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .bar-wrap {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 112px;
+    background: var(--mint-soft);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .bar {
+    display: block;
+    width: 100%;
+    background: var(--green);
+    border-radius: 6px 6px 0 0;
+    transition: height 0.5s var(--ease);
+  }
+
+  .month-rate {
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .month-name {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 860px) {
+    .below {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .under {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .controls .note {
+      display: none;
+    }
+
+    .month-rate {
+      font-size: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .month-name {
+      font-size: 10.5px;
+    }
+  }
+</style>
+
+<script>
+  import { DAYS, HABITS, levelOf, monthsOf, statsOf } from "../../lib/sample";
+
+  const root = document.querySelector<HTMLElement>("[data-graph]");
+  const section = root?.closest("section");
+  const grid = root?.querySelector<HTMLElement>("[data-grid]");
+  const detail = root?.querySelector<HTMLElement>("[data-detail]");
+  const scroller = root?.querySelector<HTMLElement>("[data-scroller]");
+
+  if (root && section && grid && detail && scroller) {
+    const cells = [...grid.querySelectorAll<HTMLButtonElement>("[data-i]")];
+    const byIndex = new Map(cells.map((c) => [Number(c.dataset.i), c]));
+    const filters = root.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    let filter = -1;
+    let selected = DAYS.length - 1;
+
+    const describe = (index: number) => {
+      const day = DAYS[index];
+      const date = new Date(`${day.date}T00:00:00Z`).toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          timeZone: "UTC",
+        },
+      );
+      const done = HABITS.filter((_, i) => (day.mask >> i) & 1);
+      return { date, done };
+    };
+
+    const label = (index: number) => {
+      const { date, done } = describe(index);
+      return `${date}: ${done.length} of ${HABITS.length} habits${done.length ? `, ${done.join(", ")}` : ""}`;
+    };
+
+    const show = (index: number) => {
+      const { date, done } = describe(index);
+      const summary = document.createElement("span");
+      summary.textContent = done.length
+        ? `${done.length} of ${HABITS.length}: ${done.join(", ")}`
+        : "A rest day. Nothing wrong with that.";
+      detail.replaceChildren(
+        Object.assign(document.createElement("b"), { textContent: date }),
+        document.createElement("br"),
+        summary,
+      );
+    };
+
+    const select = (index: number, focus = false) => {
+      const previous = byIndex.get(selected);
+      const next = byIndex.get(index);
+      if (!next || !previous) return;
+      previous.setAttribute("aria-selected", "false");
+      previous.tabIndex = -1;
+      next.setAttribute("aria-selected", "true");
+      next.tabIndex = 0;
+      selected = index;
+      show(index);
+      if (focus) next.focus();
+    };
+
+    const applyFilter = () => {
+      for (const [index, cell] of byIndex) {
+        cell.className = `cell l${levelOf(DAYS[index].mask, filter)}`;
+      }
+      const stats = statsOf(DAYS, filter);
+      for (const [key, value] of Object.entries(stats)) {
+        const el = section.querySelector(`[data-stat="${key}"]`);
+        if (el) el.textContent = value.toLocaleString("en-US");
+      }
+      for (const month of monthsOf(DAYS, filter)) {
+        const bar = section.querySelector<HTMLElement>(
+          `[data-month="${month.key}"]`,
+        );
+        const rate = section.querySelector(`[data-rate="${month.key}"]`);
+        if (bar) bar.style.height = `${month.rate}%`;
+        if (rate) rate.textContent = `${month.rate}%`;
+      }
+    };
+
+    cells.forEach((cell) =>
+      cell.setAttribute("aria-label", label(Number(cell.dataset.i))),
+    );
+    show(selected);
+    // On small screens the graph scrolls; start at the most recent weeks.
+    scroller.scrollLeft = scroller.scrollWidth;
+
+    grid.addEventListener("click", (event) => {
+      const cell = (event.target as Element).closest<HTMLElement>("[data-i]");
+      if (cell) select(Number(cell.dataset.i));
+    });
+
+    grid.addEventListener("mouseover", (event) => {
+      const cell = (event.target as Element).closest<HTMLElement>("[data-i]");
+      if (cell) show(Number(cell.dataset.i));
+    });
+
+    grid.addEventListener("mouseleave", () => show(selected));
+
+    grid.addEventListener("keydown", (event) => {
+      const steps: Record<string, number> = {
+        ArrowUp: selected % 7 === 0 ? 0 : -1,
+        ArrowDown: selected % 7 === 6 ? 0 : 1,
+        ArrowLeft: -7,
+        ArrowRight: 7,
+      };
+      const step = steps[event.key];
+      if (step === undefined) return;
+      event.preventDefault();
+      const next = selected + step;
+      if (byIndex.has(next)) select(next, true);
+    });
+
+    filters.forEach((button) =>
+      button.addEventListener("click", () => {
+        filter = Number(button.dataset.filter);
+        filters.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b === button)),
+        );
+        applyFilter();
+      }),
+    );
+  }
+</script>

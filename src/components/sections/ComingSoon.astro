@@ -1,0 +1,94 @@
+---
+import Mascot from "../Mascot.astro";
+---
+
+<section class="soon-section" aria-labelledby="soon-title">
+  <div class="page inner reveal">
+    <div class="art">
+      <Mascot stage="seed" label="The Consistly companion as a tiny seedling" />
+    </div>
+    <h2 class="title" id="soon-title">
+      Your journey starts with one small habit.
+    </h2>
+    <p class="lead">Something good is growing. Consistly is coming soon.</p>
+
+    <div class="grow" aria-hidden="true">
+      {Array.from({ length: 14 }, (_, i) => (
+        <i style={`--i:${i}`} />
+      ))}
+    </div>
+    <p class="soon">Coming Soon</p>
+  </div>
+</section>
+
+<style>
+  .soon-section {
+    padding-block: var(--section-y);
+    background: var(--mint);
+    text-align: center;
+  }
+
+  .inner {
+    display: grid;
+    justify-items: center;
+  }
+
+  .art {
+    width: clamp(150px, 19vw, 230px);
+  }
+
+  .title {
+    max-width: 840px;
+    margin-top: 12px;
+  }
+
+  .lead {
+    margin-top: 20px;
+    color: #2f5a3d;
+  }
+
+  /* A row of days filling in on a loop: the site's one ambient animation. */
+  .grow {
+    display: flex;
+    gap: 5px;
+    margin-block: 40px 20px;
+  }
+
+  .grow i {
+    width: clamp(12px, 3vw, 18px);
+    aspect-ratio: 1;
+    border-radius: 22%;
+    background: rgb(22 101 52 / 0.14);
+    animation: fill 6s calc(var(--i) * 0.28s) var(--ease) infinite;
+  }
+
+  @keyframes fill {
+    0% {
+      background: rgb(22 101 52 / 0.14);
+    }
+    12%,
+    72% {
+      background: var(--green);
+    }
+    88%,
+    100% {
+      background: rgb(22 101 52 / 0.14);
+    }
+  }
+
+  .soon {
+    background: var(--green-deep);
+    color: #fff;
+  }
+
+  .soon::before {
+    background: #86e6a2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grow i {
+      animation: none;
+      background: var(--green);
+    }
+  }
+</style>

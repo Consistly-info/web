@@ -1,0 +1,43 @@
+---
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  center?: boolean;
+}
+
+const { id, eyebrow, title, lead, center = false } = Astro.props;
+---
+
+<header class:list={["head reveal", { center }]}>
+  <p class="eyebrow">{eyebrow}</p>
+  <h2 class="title" id={id}>
+    {title}
+  </h2>
+  {lead && <p class="lead">{lead}</p>}
+</header>
+
+<style>
+  .head {
+    max-width: 760px;
+  }
+
+  .center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .title {
+    margin-top: 12px;
+  }
+
+  .lead {
+    max-width: 640px;
+    margin-top: 20px;
+  }
+
+  .center .lead {
+    margin-inline: auto;
+  }
+</style>

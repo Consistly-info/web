@@ -1,0 +1,122 @@
+---
+import IPhone from "../IPhone.astro";
+import SectionHead from "../SectionHead.astro";
+import NewHabitScreen from "../screens/NewHabitScreen.astro";
+import TodayScreen from "../screens/TodayScreen.astro";
+
+const features = [
+  ["Daily tracking", "Check off what you did today in a single tap."],
+  ["Custom habits", "Name it, color it, and make it yours."],
+  ["Daily and weekly goals", "Every day, or six times a week. Your call."],
+  ["Scheduling", "Pick the days that fit your actual life."],
+  ["Streaks", "Watch the run grow, one day at a time."],
+  ["Completion progress", "See how today is going at a glance."],
+];
+---
+
+<section class="section" id="features" aria-labelledby="habits-title">
+  <div class="page layout">
+    <div class="copy">
+      <SectionHead
+        id="habits-title"
+        eyebrow="Habit tracking"
+        title="Small actions. Big progress."
+        lead="Consistly is being designed to make tracking the easy part, so your energy goes into the habit itself."
+      />
+      <dl class="features reveal">
+        {features.map(([name, text]) => (
+          <div>
+            <dt>{name}</dt>
+            <dd>{text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <figure class="showcase reveal">
+      <div class="phones">
+        <IPhone label="Working sample of the Today screen. Tap a habit to check it off.">
+          <TodayScreen interactive />
+        </IPhone>
+        <div class="second">
+          <IPhone label="Concept of the New Habit screen">
+            <NewHabitScreen />
+          </IPhone>
+        </div>
+      </div>
+      <figcaption class="note">Try it: tap a habit to check it off.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(48px, 7vw, 96px);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 32px;
+    margin-top: 48px;
+  }
+
+  dt {
+    font-size: 16px;
+    font-weight: 620;
+    letter-spacing: -0.012em;
+  }
+
+  dd {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  .phones {
+    display: flex;
+    justify-content: center;
+    gap: clamp(14px, 2vw, 24px);
+    --phone-w: clamp(240px, 23vw, 300px);
+  }
+
+  .second {
+    margin-top: 56px;
+  }
+
+  .note {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .phones {
+      --phone-w: min(44vw, 300px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+
+    .phones {
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      --phone-w: min(78vw, 300px);
+    }
+
+    .second {
+      margin-top: 0;
+    }
+  }
+</style>

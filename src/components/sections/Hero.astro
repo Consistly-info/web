@@ -1,0 +1,136 @@
+---
+import Heat from "../Heat.astro";
+import IPhone from "../IPhone.astro";
+import Mascot from "../Mascot.astro";
+import TodayScreen from "../screens/TodayScreen.astro";
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="page intro">
+    <p class="soon">Coming Soon</p>
+    <h1 id="hero-title">
+      Build habits.
+      <br />
+      <span>Watch yourself grow.</span>
+    </h1>
+    <p class="lead">
+      Your personal growth companion. Build better habits, visualize your
+      progress, earn rewards, and celebrate every little step forward.
+    </p>
+  </div>
+
+  <div class="stage">
+    <div class="strip">
+      <Heat weeks={52} />
+    </div>
+    <div class="phone">
+      <IPhone label="Concept of the Consistly Today screen">
+        <TodayScreen />
+      </IPhone>
+    </div>
+    <div class="buddy">
+      <Mascot
+        stage="bloom"
+        label="The Consistly companion, a small green sprout character"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(48px, 7vw, 84px);
+    overflow: clip;
+    text-align: center;
+  }
+
+  h1 {
+    margin-top: 22px;
+    font-size: clamp(44px, 8.4vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+  }
+
+  h1 span {
+    color: var(--green-deep);
+  }
+
+  .lead {
+    max-width: 620px;
+    margin: 24px auto 0;
+  }
+
+  /* The year of activity runs behind the phone like a landscape, and the
+     companion stands on it. */
+  .stage {
+    --phone-w: clamp(250px, 26vw, 330px);
+    --strip-top: calc(var(--phone-w) * 0.62);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(48px, 6vw, 72px);
+    /* Crop the phone so the page flows on into the next section */
+    height: calc(var(--phone-w) * 1.86);
+    overflow: hidden;
+    animation: rise 1s var(--ease) both;
+  }
+
+  .phone {
+    position: relative;
+    z-index: 1;
+  }
+
+  .strip {
+    position: absolute;
+    top: var(--strip-top);
+    left: 50%;
+    width: max(100%, 1180px);
+    max-width: 1560px;
+    padding-inline: 24px;
+    transform: translateX(-50%);
+    --gap: 4px;
+    animation: wipe 1.8s 0.15s var(--ease) both;
+  }
+
+  .buddy {
+    position: absolute;
+    z-index: 2;
+    top: calc(var(--strip-top) - var(--buddy) * 0.93);
+    left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 1.12);
+    width: var(--buddy);
+    --buddy: clamp(112px, 15vw, 196px);
+    animation: settle 1s 0.5s var(--ease) both;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+
+  @keyframes wipe {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes settle {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.92);
+    }
+  }
+
+  @media (max-width: 680px) {
+    .buddy {
+      left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 0.56);
+      top: calc(var(--strip-top) + var(--phone-w) * 0.62);
+      z-index: 2;
+    }
+  }
+</style>

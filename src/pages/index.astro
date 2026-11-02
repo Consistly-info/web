@@ -1,0 +1,37 @@
+---
+import Footer from "../components/Footer.astro";
+import Nav from "../components/Nav.astro";
+import About from "../components/sections/About.astro";
+import Companion from "../components/sections/Companion.astro";
+import ComingSoon from "../components/sections/ComingSoon.astro";
+import Faq from "../components/sections/Faq.astro";
+import Graph from "../components/sections/Graph.astro";
+import Habits from "../components/sections/Habits.astro";
+import Hero from "../components/sections/Hero.astro";
+import Insights from "../components/sections/Insights.astro";
+import Privacy from "../components/sections/Privacy.astro";
+import Rewards from "../components/sections/Rewards.astro";
+import Widgets from "../components/sections/Widgets.astro";
+import Base from "../layouts/Base.astro";
+---
+
+<Base
+  title="Consistly: Build habits. Watch yourself grow."
+  description="Consistly is an upcoming habit tracker and personal growth companion for iPhone, with contribution graphs, a character that grows with you, rewards, and widgets. Coming soon."
+>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <About />
+    <Habits />
+    <Graph />
+    <Companion />
+    <Rewards />
+    <Widgets />
+    <Insights />
+    <Privacy />
+    <Faq />
+    <ComingSoon />
+  </main>
+  <Footer />
+</Base>

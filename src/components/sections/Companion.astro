@@ -1,0 +1,381 @@
+---
+import Mascot, { type Stage } from "../Mascot.astro";
+import SectionHead from "../SectionHead.astro";
+
+const stages: { id: Stage; name: string; level: number; text: string }[] = [
+  {
+    id: "seed",
+    name: "Seed",
+    level: 1,
+    text: "A tiny beginning, and your very first habit.",
+  },
+  {
+    id: "sprout",
+    name: "Sprout",
+    level: 5,
+    text: "Two new leaves. Your first routine is taking root.",
+  },
+  {
+    id: "sapling",
+    name: "Sapling",
+    level: 10,
+    text: "Stronger every week, with its first scarf unlocked.",
+  },
+  {
+    id: "bloom",
+    name: "Bloom",
+    level: 20,
+    text: "Your first flower opens, and so does the garden around it.",
+  },
+  {
+    id: "grove",
+    name: "Grove",
+    level: 40,
+    text: "Fully grown, in a world you built one day at a time.",
+  },
+];
+
+const steps = [
+  ["Earn XP", "Completing a habit earns experience points."],
+  ["Level up", "XP raises your companion's level over time."],
+  ["Unlock accessories", "New things to wear arrive as you progress."],
+  ["Discover new stages", "Your character changes form as you grow."],
+  ["Grow your environment", "Its world fills in along with your routine."],
+];
+---
+
+<section class="section companion" aria-labelledby="companion-title">
+  <div class="page">
+    <SectionHead
+      id="companion-title"
+      eyebrow="Personal companion"
+      title="Grow together, one habit at a time."
+      lead="Your habits raise a small character who changes as you do. Show up, and it thrives."
+    />
+
+    <div class="layout reveal">
+      <div class="showcase" data-companion data-stage="0">
+        <div class="scene">
+          <svg
+            class="world"
+            viewBox="0 0 800 480"
+            preserveAspectRatio="xMidYMax slice"
+            aria-hidden="true"
+          >
+            <rect width="800" height="480" fill="#dff4e5"></rect>
+            <g class="env e3">
+              <circle cx="660" cy="96" r="44" fill="#fbe6a8"></circle>
+            </g>
+            <g class="env e4" fill="#fff">
+              <ellipse cx="170" cy="96" rx="58" ry="17"></ellipse>
+              <ellipse cx="206" cy="82" rx="36" ry="17"></ellipse>
+              <ellipse cx="500" cy="62" rx="40" ry="12"></ellipse>
+            </g>
+            <g class="env e4">
+              <path
+                d="M0 340C120 250 250 260 400 330S680 270 800 310V480H0Z"
+                fill="#c9edd3"
+              ></path>
+              <g fill="#7ccc92">
+                <circle cx="110" cy="248" r="40"></circle>
+                <circle cx="150" cy="268" r="30"></circle>
+                <circle cx="664" cy="258" r="34"></circle>
+              </g>
+              <rect
+                x="104"
+                y="270"
+                width="10"
+                height="46"
+                fill="#a58a65"
+              ></rect>
+              <rect x="659" y="280" width="9" height="30" fill="#a58a65"></rect>
+            </g>
+            <g class="env e2">
+              <path
+                d="M0 386C200 350 600 350 800 386V480H0Z"
+                fill="#a6e0b5"
+              ></path>
+            </g>
+            <path d="M120 480C180 404 620 404 680 480Z" fill="#82cf98"></path>
+            <g class="env e1" fill="#3fa75c">
+              <path d="M200 442c-3-14 0-24 8-30 6 10 4 21-8 30Z"></path>
+              <path d="M590 442c3-14 0-24-8-30-6 10-4 21 8 30Z"></path>
+            </g>
+            <g class="env e3">
+              <g transform="translate(120 408)">
+                <path d="M0 40V6" stroke="#2f8f4b" stroke-width="4"></path>
+                <circle r="11" fill="#fff"></circle>
+                <circle r="4.5" fill="#f2b632"></circle>
+              </g>
+              <g transform="translate(700 420)">
+                <path d="M0 32V6" stroke="#2f8f4b" stroke-width="4"></path>
+                <circle r="11" fill="#f7c3b5"></circle>
+                <circle r="4.5" fill="#f2b632"></circle>
+              </g>
+              <g transform="translate(236 424)">
+                <path d="M0 26V4" stroke="#2f8f4b" stroke-width="3"></path>
+                <circle r="8" fill="#f7c3b5"></circle>
+                <circle r="3.2" fill="#f2b632"></circle>
+              </g>
+            </g>
+          </svg>
+
+          <div class="characters">
+            {stages.map((stage, i) => (
+              <div class="character" data-char={i} hidden={i !== 0}>
+                <Mascot
+                  stage={stage.id}
+                  scarf={i === 2}
+                  label={`The companion at the ${stage.name} stage`}
+                />
+              </div>
+            ))}
+          </div>
+          <span class="note sample">Example levels</span>
+        </div>
+
+        <div class="picker" role="group" aria-label="Choose a character stage">
+          {stages.map((stage, i) => (
+            <button
+              type="button"
+              aria-pressed={i === 0 ? "true" : "false"}
+              data-stage-btn={i}
+              data-text={stage.text}
+            >
+              <b>{stage.name}</b>
+              <span>Level {stage.level}</span>
+            </button>
+          ))}
+        </div>
+        <p class="stage-text" aria-live="polite" data-stage-text>
+          {stages[0].text}
+        </p>
+      </div>
+
+      <ol class="steps">
+        {steps.map(([name, text], i) => (
+          <li>
+            <span class="n" aria-hidden="true">
+              {i + 1}
+            </span>
+            <div>
+              <h3>{name}</h3>
+              <p>{text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .companion {
+    background: var(--mint-soft);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: clamp(40px, 6vw, 80px);
+    align-items: center;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+
+  .scene {
+    position: relative;
+    aspect-ratio: 5 / 3;
+    overflow: hidden;
+    border-radius: 24px;
+  }
+
+  .world {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .env {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s var(--ease),
+      transform 0.7s var(--ease);
+  }
+
+  [data-stage="1"] .e1,
+  [data-stage="2"] .e1,
+  [data-stage="3"] .e1,
+  [data-stage="4"] .e1,
+  [data-stage="2"] .e2,
+  [data-stage="3"] .e2,
+  [data-stage="4"] .e2,
+  [data-stage="3"] .e3,
+  [data-stage="4"] .e3,
+  [data-stage="4"] .e4 {
+    opacity: 1;
+    transform: none;
+  }
+
+  .characters {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    align-items: end;
+    justify-items: center;
+    padding-bottom: 3.4%;
+  }
+
+  .character {
+    grid-area: 1 / 1;
+    width: 40%;
+    animation: pop 0.55s var(--ease);
+  }
+
+  .character[hidden] {
+    display: none;
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.9);
+    }
+  }
+
+  .sample {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+  }
+
+  .picker {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-top: 16px;
+    border-top: 2px solid rgb(22 101 52 / 0.14);
+  }
+
+  .picker button {
+    display: flex;
+    flex-direction: column;
+    margin-top: -2px;
+    padding: 12px 4px 4px 0;
+    border-top: 2px solid transparent;
+    text-align: left;
+    transition: border-color 0.25s;
+  }
+
+  .picker b {
+    font-size: 15px;
+    font-weight: 620;
+    letter-spacing: -0.012em;
+  }
+
+  .picker span {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .picker button:hover b {
+    color: var(--green-deep);
+  }
+
+  .picker [aria-pressed="true"] {
+    border-color: var(--green);
+  }
+
+  .picker [aria-pressed="true"] b {
+    color: var(--green-deep);
+  }
+
+  .stage-text {
+    min-height: 3em;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .steps {
+    display: grid;
+    gap: 26px;
+  }
+
+  .steps li {
+    display: flex;
+    gap: 14px;
+  }
+
+  .n {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    background: var(--mint);
+    border-radius: 50%;
+    color: var(--green-deep);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 620;
+    letter-spacing: -0.014em;
+    line-height: 1.5;
+  }
+
+  .steps p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .scene {
+      aspect-ratio: 1;
+    }
+
+    .character {
+      width: 62%;
+    }
+
+    .picker b {
+      font-size: 13px;
+    }
+
+    .picker span {
+      font-size: 11px;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-companion]");
+
+  if (root) {
+    const buttons =
+      root.querySelectorAll<HTMLButtonElement>("[data-stage-btn]");
+    const characters = root.querySelectorAll<HTMLElement>("[data-char]");
+    const text = root.querySelector<HTMLElement>("[data-stage-text]");
+
+    buttons.forEach((button, index) =>
+      button.addEventListener("click", () => {
+        root.dataset.stage = String(index);
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b === button)),
+        );
+        characters.forEach((c, i) => (c.hidden = i !== index));
+        if (text) text.textContent = button.dataset.text ?? "";
+      }),
+    );
+  }
+</script>

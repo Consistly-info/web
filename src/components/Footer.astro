@@ -1,0 +1,98 @@
+---
+import Logo from "./Logo.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="page footer-grid">
+    <div class="about">
+      <p class="brand">
+        <Logo size={22} /> Consistly
+      </p>
+      <p class="blurb">
+        A personal growth companion for iPhone. Build better habits, see your
+        consistency, and celebrate every little step forward.
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        <li>
+          <a href="#features">Features</a>
+        </li>
+        <li>
+          <a href="#about">About</a>
+        </li>
+        <li>
+          <a href="#privacy">Privacy</a>
+        </li>
+        <li>
+          <a href="#faq">FAQ</a>
+        </li>
+      </ul>
+    </nav>
+    <p class="legal">
+      © {year} Consistly. Screens shown are concept designs with sample data.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: 48px 40px;
+    font-size: 14px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px 48px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .blurb {
+    max-width: 38ch;
+    margin-top: 12px;
+    color: var(--muted);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 28px;
+  }
+
+  a {
+    display: inline-block;
+    padding-block: 6px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--ink);
+  }
+
+  .legal {
+    grid-column: 1 / -1;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 680px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
