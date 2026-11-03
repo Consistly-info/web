@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="src/assets/mascot/mascot-pink-480.webp" width="200" alt="The pink Consistly companion">
+  <img src="src/assets/mascot/mascot-blue-480.webp" width="170" alt="The blue Consistly companion">
+  <img src="src/assets/mascot/mascot-pink-480.webp" width="170" alt="The pink Consistly companion">
 </p>
 
 <h1 align="center">Consistly</h1>
