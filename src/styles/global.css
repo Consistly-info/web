@@ -55,6 +55,7 @@
   --page: 1160px;
   --section-y: clamp(88px, 13vw, 176px);
   --band-r: clamp(28px, 5vw, 64px);
+  --offer-h: 38px; /* The offer banner stuck above the nav */
   --ease: cubic-bezier(0.22, 0.8, 0.26, 1);
 }
 
@@ -67,7 +68,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 72px;
+  scroll-padding-top: calc(72px + var(--offer-h));
 }
 
 body {

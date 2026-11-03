@@ -1,0 +1,253 @@
+---
+import {
+  CLAIMED,
+  LIFETIME_PRICE,
+  REMAINING,
+  TOTAL_SPOTS,
+} from "../../lib/launch";
+import Mascot from "../Mascot.astro";
+
+// Any form service that accepts a POST works here. Until it's set, the form
+// stays visible but can't be submitted, so no one's signup is silently lost.
+const endpoint = import.meta.env.PUBLIC_WHITELIST_URL;
+---
+
+<section class="whitelist" id="whitelist" aria-labelledby="whitelist-title">
+  <div class="page">
+    <div class="card reveal">
+      <div class="art" aria-hidden="true">
+        <div>
+          <Mascot accessories={["crown"]} sizes="180px" idle />
+        </div>
+        <div>
+          <Mascot character="pink" sizes="180px" idle />
+        </div>
+      </div>
+
+      <div class="copy">
+        <p class="eyebrow">Founding members</p>
+        <h2 id="whitelist-title">Pay once. Keep it for life.</h2>
+        <p class="lead">
+          The first {TOTAL_SPOTS} members get everything in Bloom for a one-time
+          ${LIFETIME_PRICE}, with no subscription. That's less than 3 months of
+          Bloom on the monthly plan.
+        </p>
+
+        <div class="meter">
+          <p>
+            <b>
+              {REMAINING} of {TOTAL_SPOTS} spots left
+            </b>
+            <span>{CLAIMED} already joined</span>
+          </p>
+          <div
+            class="bar"
+            role="img"
+            aria-label={`${CLAIMED} of ${TOTAL_SPOTS} spots claimed`}
+          >
+            <span style={`width:${(CLAIMED / TOTAL_SPOTS) * 100}%`}></span>
+          </div>
+        </div>
+
+        <form action={endpoint} method="post" data-whitelist-form>
+          <label class="visually-hidden" for="whitelist-email">
+            Email address
+          </label>
+          <input
+            id="whitelist-email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+            disabled={!endpoint}
+          />
+          <button type="submit" disabled={!endpoint}>
+            Join the whitelist
+          </button>
+        </form>
+        <p class="status" role="status" data-whitelist-status>
+          {endpoint
+            ? "Free to join. No payment today, and we'll only email you about your spot and the launch."
+            : "The whitelist opens soon."}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .whitelist {
+    padding-bottom: var(--section-y);
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(24px, 5vw, 64px);
+    padding: clamp(24px, 5vw, 64px);
+    background: linear-gradient(135deg, var(--blue-soft), var(--pink-soft));
+    border-radius: 32px;
+  }
+
+  .art {
+    display: flex;
+    justify-content: center;
+  }
+
+  .art > div {
+    width: 50%;
+  }
+
+  .art > div + div {
+    margin-left: -4%;
+  }
+
+  h2 {
+    margin-top: 8px;
+    font-size: clamp(32px, 4.6vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.036em;
+    line-height: 1.06;
+    text-wrap: balance;
+  }
+
+  .lead {
+    margin-top: 14px;
+    color: #3b4657;
+  }
+
+  .meter {
+    margin-top: 24px;
+  }
+
+  .meter p {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2px 12px;
+    font-size: 15px;
+  }
+
+  .meter b {
+    font-weight: 650;
+  }
+
+  .meter span {
+    color: #3b4657;
+  }
+
+  .bar {
+    height: 10px;
+    margin-top: 8px;
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.8);
+    border-radius: 99px;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-accent), var(--pink-accent));
+    border-radius: 99px;
+  }
+
+  form {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  form[hidden] {
+    display: none;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    min-height: 48px;
+    padding-inline: 18px;
+    background: var(--surface);
+    border: 1px solid transparent;
+    border-radius: 99px;
+    color: var(--ink);
+    font: inherit;
+    font-size: 16px;
+  }
+
+  input::placeholder {
+    color: var(--muted);
+  }
+
+  button {
+    flex: none;
+    min-height: 48px;
+    padding-inline: 22px;
+    background: var(--blue-deep);
+    border-radius: 99px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    transition: background 0.2s;
+  }
+
+  button:hover:enabled {
+    background: var(--navy);
+  }
+
+  input:disabled,
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .status {
+    margin-top: 10px;
+    color: #3b4657;
+    font-size: 13px;
+  }
+
+  @media (max-width: 760px) {
+    .card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .art {
+      width: min(100%, 300px);
+      margin-inline: auto;
+    }
+
+    form {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-whitelist-form]");
+  const status = document.querySelector("[data-whitelist-status]");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!status) return;
+    const button = form.querySelector("button");
+    if (button) button.disabled = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      form.hidden = true;
+      status.textContent =
+        "You're on the list. We'll email you about your spot.";
+    } catch {
+      if (button) button.disabled = false;
+      status.textContent = "That didn't go through. Please try again.";
+    }
+  });
+</script>
