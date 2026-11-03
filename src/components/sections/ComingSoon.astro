@@ -1,4 +1,5 @@
 ---
+import AppStoreBadge from "../AppStoreBadge.astro";
 import Mascot from "../Mascot.astro";
 ---
 
@@ -18,6 +19,9 @@ import Mascot from "../Mascot.astro";
       ))}
     </div>
     <p class="soon">Coming Soon</p>
+    <div class="store">
+      <AppStoreBadge />
+    </div>
   </div>
 </section>
 
@@ -74,6 +78,10 @@ import Mascot from "../Mascot.astro";
     100% {
       background: rgb(28 79 146 / 0.14);
     }
+  }
+
+  .store {
+    margin-top: 20px;
   }
 
   .soon {

@@ -66,7 +66,8 @@ To use the custom domain, set `www.consistly.info` under **Settings > Pages > Cu
 
 The output is plain static files, so any static host also works. Use `npm run build` as the build command and `dist` as the output directory.
 
-| Variable    | Default                      | Purpose                              |
-| ----------- | ---------------------------- | ------------------------------------ |
-| `BASE_PATH` | `/`                          | Path the site is served from         |
-| `SITE_URL`  | `https://www.consistly.info` | Site origin used by the Astro config |
+| Variable               | Default                      | Purpose                                                 |
+| ---------------------- | ---------------------------- | ------------------------------------------------------- |
+| `BASE_PATH`            | `/`                          | Path the site is served from                            |
+| `SITE_URL`             | `https://www.consistly.info` | Site origin used by the Astro config                    |
+| `PUBLIC_APP_STORE_URL` | Not set                      | App Store listing. Turns the badge into a link when set |
