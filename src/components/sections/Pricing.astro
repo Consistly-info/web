@@ -2,93 +2,153 @@
 import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 
-// Prices aren't decided. Add them here, not as placeholder numbers, once they are.
+const usd = (amount: number) => `$${amount.toFixed(2)}`;
+
+// Planned launch prices in USD. Everything shown on the page derives from these.
 const plans = [
   {
-    id: "solo",
-    name: "Solo",
-    who: "For your own journey",
+    id: "seed",
+    name: "Seed",
+    pitch: "All you need to start your first streak.",
     features: [
-      "Habits, goals, and streaks",
+      "Up to 3 habits",
       "Your contribution graph",
-      "A companion that grows with you",
-      "Rewards, widgets, and insights",
+      "One companion to grow with",
+      "2 widgets",
     ],
   },
   {
-    id: "duo",
-    name: "Duo",
-    who: "For you and a partner or best friend",
+    id: "grow",
+    name: "Grow",
+    pitch: "No limits, and someone to do it with.",
+    monthly: 3.99,
+    annual: 29.99,
+    includes: "Everything in Seed, plus",
     features: [
-      "Everything in Solo, for both of you",
-      "A shared contribution graph",
-      "Challenges for two",
-      "Rewards you earn together",
+      "Unlimited habits",
+      "Every Home and Lock Screen widget",
+      "Duo mode: share a graph with a partner or friend",
+      "More outfits and colors for your companion",
     ],
   },
   {
-    id: "family",
-    name: "Family",
-    who: "For everyone at home",
+    id: "bloom",
+    name: "Bloom",
+    pitch: "All of Consistly, made completely yours.",
+    monthly: 6.99,
+    annual: 49.99,
+    includes: "Everything in Grow, plus",
     features: [
-      "Everything in Duo, for the whole family",
-      "Family challenges",
-      "A family activity feed",
-      "Milestones to celebrate together",
+      "Group challenges with friends and family",
+      "Every outfit, color, and theme",
+      "Full insights and monthly reports",
+      "Early access to new features",
     ],
   },
 ];
+
+const saving = (monthly: number, annual: number) =>
+  Math.round((1 - annual / (monthly * 12)) * 100);
+const bestSaving = Math.max(
+  ...plans.map((p) => (p.monthly ? saving(p.monthly, p.annual) : 0)),
+);
 ---
 
-<section class="section" id="pricing" aria-labelledby="pricing-title">
+<section
+  class="section"
+  id="pricing"
+  aria-labelledby="pricing-title"
+  data-pricing
+  data-billing="annual"
+>
   <div class="page">
     <SectionHead
       id="pricing-title"
       eyebrow="Pricing"
-      title="Grow solo, or bring everyone."
-      lead="Three plans are in the works, so you can start on your own or with the people you love."
+      title="Start free. Grow when you're ready."
+      lead="Every plan is just for you. Upgrade when you want more widgets, a duo partner, or more ways to make Consistly your own."
       center
     />
+
+    <div class="switch reveal" role="group" aria-label="Billing period">
+      <button type="button" aria-pressed="false" data-billing-btn="monthly">
+        Monthly
+      </button>
+      <button type="button" aria-pressed="true" data-billing-btn="annual">
+        Annual <span class="save">Save up to {bestSaving}%</span>
+      </button>
+    </div>
 
     <ul class="plans reveal">
       {plans.map((plan) => (
         <li class:list={["plan", plan.id]}>
+          {plan.id === "grow" && <p class="badge">Recommended</p>}
           <div class="art" aria-hidden="true">
-            {plan.id === "solo" && (
+            {plan.id === "seed" && (
               <div class="one">
                 <Mascot sizes="140px" />
               </div>
             )}
-            {plan.id === "duo" && (
+            {plan.id === "grow" && (
               <>
                 <div class="one">
-                  <Mascot sizes="140px" />
+                  <Mascot accessories={["scarf"]} sizes="140px" />
                 </div>
                 <div class="one">
                   <Mascot character="pink" sizes="140px" />
                 </div>
               </>
             )}
-            {plan.id === "family" && (
+            {plan.id === "bloom" && (
               <>
                 <div class="one">
-                  <Mascot sizes="140px" />
-                </div>
-                <div class="kid">
-                  <Mascot character="pink" sizes="100px" />
-                </div>
-                <div class="kid">
-                  <Mascot sizes="100px" />
+                  <Mascot accessories={["beanie"]} sizes="140px" />
                 </div>
                 <div class="one">
-                  <Mascot character="pink" sizes="140px" />
+                  <Mascot accessories={["crown", "bowtie"]} sizes="140px" />
+                </div>
+                <div class="one">
+                  <Mascot
+                    character="pink"
+                    accessories={["glasses"]}
+                    sizes="140px"
+                  />
                 </div>
               </>
             )}
           </div>
+
           <h3>{plan.name}</h3>
-          <p class="who">{plan.who}</p>
-          <p class="price">Price to be announced</p>
+          <p class="pitch">{plan.pitch}</p>
+
+          {plan.monthly ? (
+            <>
+              <div class="price" data-show="annual">
+                <p>
+                  <b>{usd(plan.annual / 12)}</b> / month
+                </p>
+                <p class="billed">
+                  {usd(plan.annual)} billed annually, save{" "}
+                  {saving(plan.monthly, plan.annual)}%
+                </p>
+              </div>
+              <div class="price" data-show="monthly">
+                <p>
+                  <b>{usd(plan.monthly)}</b> / month
+                </p>
+                <p class="billed">Billed monthly, cancel anytime</p>
+              </div>
+            </>
+          ) : (
+            <div class="price">
+              <p>
+                <b>Free</b>
+              </p>
+              <p class="billed">No payment needed</p>
+            </div>
+          )}
+
+          {plan.includes && <p class="includes">{plan.includes}</p>}
           <ul class="features">
             {plan.features.map((feature) => (
               <li>{feature}</li>
@@ -99,35 +159,96 @@ const plans = [
     </ul>
 
     <p class="note foot reveal">
-      Plans are still being worked out and may change before launch. Prices will
-      be shared here before release.
+      Planned launch pricing in USD. Consistly isn't available yet, and plans,
+      features, and prices may change before release.
     </p>
   </div>
 </section>
 
 <style>
+  .switch {
+    display: flex;
+    width: fit-content;
+    gap: 2px;
+    margin: clamp(28px, 4vw, 40px) auto 0;
+    padding: 3px;
+    background: var(--sky-soft);
+    border-radius: 99px;
+  }
+
+  .switch button {
+    min-height: 40px;
+    padding-inline: 16px;
+    border-radius: 99px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .switch [aria-pressed="true"] {
+    background: var(--surface);
+    color: var(--blue-deep);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgb(18 40 70 / 0.14);
+  }
+
+  .save {
+    margin-left: 4px;
+    color: var(--pink-text);
+    font-weight: 600;
+  }
+
+  [data-billing="annual"] [data-show="monthly"],
+  [data-billing="monthly"] [data-show="annual"] {
+    display: none;
+  }
+
   .plans {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
-    margin-top: clamp(40px, 6vw, 72px);
+    align-items: stretch;
+    margin-top: 28px;
   }
 
   .plan {
+    position: relative;
     padding: clamp(20px, 2.4vw, 30px);
     border-radius: 24px;
   }
 
-  .solo {
+  .seed {
     background: var(--blue-bg);
   }
 
-  .duo {
-    background: var(--pink-bg);
+  /* The plan to look at first. */
+  .grow {
+    --muted: #c6d2e4;
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 18px 44px rgb(18 48 90 / 0.24);
   }
 
-  .family {
+  .bloom {
     background: linear-gradient(135deg, var(--blue-bg), var(--pink-bg));
+  }
+
+  .badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    padding: 4px 11px;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    background: var(--pink-soft);
+    border-radius: 99px;
+    color: var(--pink-text);
+    font-size: 13px;
+    font-weight: 600;
   }
 
   .art {
@@ -140,17 +261,7 @@ const plans = [
 
   .art > div {
     flex: none;
-  }
-
-  .one {
     width: 32%;
-  }
-
-  .kid {
-    position: relative;
-    z-index: 1;
-    width: 20%;
-    margin-inline: -3%;
   }
 
   h3 {
@@ -160,28 +271,50 @@ const plans = [
     line-height: 1.1;
   }
 
-  .who {
+  .pitch {
     margin-top: 6px;
     color: var(--muted);
     font-size: 16px;
     letter-spacing: -0.008em;
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
   .price {
     margin-top: 18px;
     padding-bottom: 18px;
-    border-bottom: 1px solid rgb(23 23 23 / 0.08);
-    font-size: 17px;
-    font-weight: 620;
-    letter-spacing: -0.014em;
+    border-bottom: 1px solid rgb(128 128 128 / 0.22);
+    font-size: 16px;
+  }
+
+  .price b {
+    font-size: clamp(36px, 3.8vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .billed {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .includes {
+    margin-top: 18px;
+    font-size: 15px;
+    font-weight: 600;
   }
 
   .features {
     display: grid;
     gap: 10px;
-    margin-top: 18px;
+    margin-top: 14px;
     font-size: 15px;
+  }
+
+  .seed .features {
+    margin-top: 18px;
   }
 
   .features li {
@@ -201,11 +334,11 @@ const plans = [
     border-radius: 22%;
   }
 
-  .duo .features li::before {
-    background: var(--pink-accent);
+  .grow .features li::before {
+    background: var(--pink-primary);
   }
 
-  .family .features li:nth-child(even)::before {
+  .bloom .features li:nth-child(even)::before {
     background: var(--pink-accent);
   }
 
@@ -226,3 +359,18 @@ const plans = [
     }
   }
 </style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-pricing]");
+  const buttons =
+    root?.querySelectorAll<HTMLButtonElement>("[data-billing-btn]");
+
+  buttons?.forEach((button) =>
+    button.addEventListener("click", () => {
+      if (root) root.dataset.billing = button.dataset.billingBtn;
+      buttons.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button)),
+      );
+    }),
+  );
+</script>
