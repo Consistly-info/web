@@ -1,4 +1,5 @@
 ---
+import { BLOOM_PRICE } from "../../lib/launch";
 import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 
@@ -65,9 +66,8 @@ const plans = [
   {
     id: "bloom",
     name: "Bloom",
-    pitch: "The fun extras that make Consistly completely yours.",
-    monthly: 3.49,
-    annual: 24.99,
+    pitch: "Pay once for the fun extras, and keep them for life.",
+    lifetime: BLOOM_PRICE,
     includes: "Everything in Grow, plus",
     features: [
       [
@@ -110,7 +110,7 @@ const bestSaving = Math.max(
       id="pricing-title"
       eyebrow="Pricing"
       title="Start free. Grow when you're ready."
-      lead={`Seed gets you started. Grow has everything most people need, and Bloom adds the nice-to-haves. Try Grow or Bloom free for ${trialDays} days.`}
+      lead={`Seed gets you started. Grow has everything most people need, and Bloom adds the extras for life. Try Grow free for ${trialDays} days.`}
       center
     />
 
@@ -119,7 +119,7 @@ const bestSaving = Math.max(
         Monthly
       </button>
       <button type="button" aria-pressed="true" data-billing-btn="annual">
-        Annual <span class="save">Save up to {bestSaving}%</span>
+        Annual <span class="save">Save {bestSaving}%</span>
       </button>
     </div>
 
@@ -185,6 +185,14 @@ const bestSaving = Math.max(
                 <p class="billed">Then billed monthly. Cancel anytime.</p>
               </div>
             </>
+          ) : plan.lifetime ? (
+            <div class="price">
+              <p class="trial">Pay once</p>
+              <p>
+                <b>{usd(plan.lifetime)}</b> one time
+              </p>
+              <p class="billed">No subscription. Yours for life.</p>
+            </div>
           ) : (
             <div class="price">
               <p class="trial">Free forever</p>
@@ -209,7 +217,7 @@ const bestSaving = Math.max(
     </ul>
 
     <p class="note foot reveal">
-      Planned launch pricing in USD. The {trialDays}-day trial is for new
+      Planned launch pricing in USD. The {trialDays}-day Grow trial is for new
       subscribers, and you won't be charged if you cancel at least 24 hours
       before it ends. Consistly isn't available yet, and plans, features, and
       prices may change before release.
