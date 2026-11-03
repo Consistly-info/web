@@ -10,8 +10,8 @@ const trialDays = 7;
 // Planned launch prices in USD. Everything shown on the page derives from these.
 const plans = [
   {
-    id: "seed",
-    name: "Seed",
+    id: "free",
+    name: "Free",
     pitch: "A real start with the habits that matter most.",
     features: [
       [
@@ -36,7 +36,7 @@ const plans = [
     monthly: 2.79,
     annual: 19.99,
     lifetime: PRO_LIFETIME_PRICE,
-    includes: "Everything in Seed, plus",
+    includes: "Everything in Free, plus",
     features: [
       [
         "Unlimited habits",
@@ -90,28 +90,16 @@ const bestSaving = Math.max(
       id="pricing-title"
       eyebrow="Pricing"
       title="Start free. Grow when you're ready."
-      lead={`Seed gets you started for free. Pro has everything else: pay monthly or annually with a ${trialDays}-day free trial, or pay once for lifetime access.`}
+      lead={`Free gets you started. Pro has everything else: pay monthly or annually with a ${trialDays}-day free trial, or pay once for lifetime access.`}
       center
     />
-
-    <div class="switch reveal" role="group" aria-label="Billing period">
-      <button type="button" aria-pressed="false" data-billing-btn="monthly">
-        Monthly
-      </button>
-      <button type="button" aria-pressed="true" data-billing-btn="annual">
-        Annual <span class="save">Save {bestSaving}%</span>
-      </button>
-      <button type="button" aria-pressed="false" data-billing-btn="lifetime">
-        Lifetime
-      </button>
-    </div>
 
     <ul class="plans reveal">
       {plans.map((plan) => (
         <li class:list={["plan", plan.id]}>
           {plan.id === "pro" && <p class="badge">Recommended</p>}
           <div class="art" aria-hidden="true">
-            {plan.id === "seed" && (
+            {plan.id === "free" && (
               <div class="one">
                 <Mascot sizes="140px" />
               </div>
@@ -137,6 +125,29 @@ const bestSaving = Math.max(
 
           {plan.monthly ? (
             <>
+              <div class="switch" role="group" aria-label="Billing period">
+                <button
+                  type="button"
+                  aria-pressed="false"
+                  data-billing-btn="monthly"
+                >
+                  Monthly
+                </button>
+                <button
+                  type="button"
+                  aria-pressed="true"
+                  data-billing-btn="annual"
+                >
+                  Annual <span class="save">Save {bestSaving}%</span>
+                </button>
+                <button
+                  type="button"
+                  aria-pressed="false"
+                  data-billing-btn="lifetime"
+                >
+                  Lifetime
+                </button>
+              </div>
               <div class="price" data-show="annual">
                 <p class="trial">{trialDays} days free</p>
                 <p>
@@ -196,22 +207,26 @@ const bestSaving = Math.max(
 
 <style>
   .switch {
-    display: flex;
-    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 2px;
-    margin: clamp(28px, 4vw, 40px) auto 0;
+    height: var(--switch-h);
+    margin-top: 18px;
     padding: 3px;
-    background: var(--sky-soft);
-    border-radius: 99px;
+    background: rgb(255 255 255 / 0.12);
+    border-radius: 14px;
   }
 
   .switch button {
-    min-height: 40px;
-    padding-inline: 16px;
-    border-radius: 99px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
     color: var(--muted);
     font-size: 14px;
     font-weight: 500;
+    line-height: 1.2;
     transition:
       background 0.2s,
       color 0.2s;
@@ -221,13 +236,16 @@ const bestSaving = Math.max(
     background: var(--surface);
     color: var(--blue-deep);
     font-weight: 600;
-    box-shadow: 0 1px 3px rgb(18 40 70 / 0.14);
   }
 
   .save {
-    margin-left: 4px;
-    color: var(--pink-text);
+    color: var(--pink-soft);
+    font-size: 11px;
     font-weight: 600;
+  }
+
+  [aria-pressed="true"] .save {
+    color: var(--pink-text);
   }
 
   [data-show] {
@@ -241,6 +259,7 @@ const bestSaving = Math.max(
   }
 
   .plans {
+    --switch-h: 54px;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     max-width: 880px;
@@ -256,7 +275,7 @@ const bestSaving = Math.max(
     border-radius: 24px;
   }
 
-  .seed {
+  .free {
     background: var(--blue-bg);
   }
 
@@ -329,7 +348,7 @@ const bestSaving = Math.max(
     font-weight: 600;
   }
 
-  .seed .trial {
+  .free .trial {
     background: var(--surface);
     color: var(--blue-deep);
   }
@@ -361,7 +380,7 @@ const bestSaving = Math.max(
     font-size: 15px;
   }
 
-  .seed .features {
+  .free .features {
     margin-top: 18px;
   }
 
@@ -404,10 +423,14 @@ const bestSaving = Math.max(
     text-align: center;
   }
 
-  /* Keeps the prices lined up across the three cards. */
+  /* Keeps the prices lined up across the two cards. */
   @media (min-width: 861px) {
     .pitch {
       min-height: 2lh;
+    }
+
+    .free .price {
+      margin-top: calc(36px + var(--switch-h));
     }
   }
 
