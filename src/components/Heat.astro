@@ -5,17 +5,24 @@ import { DAYS, levelOf } from "../lib/sample";
 
 interface Props {
   weeks?: number;
-  /** Draw the later half in pink, one side for each companion. */
-  split?: boolean;
+  /** Scatter blue and pink days through the graph, one for each companion. */
+  mix?: boolean;
 }
 
-const { weeks = 52, split = false } = Astro.props;
+const { weeks = 52, mix = false } = Astro.props;
 const cells = DAYS.slice(-weeks * 7).map((day) => levelOf(day.mask));
+
+// A small integer hash, so the scatter looks random but every build matches.
+const isPink = (index: number) => {
+  let hash = Math.imul(index + 1, 0x9e3779b1);
+  hash = Math.imul(hash ^ (hash >>> 15), 0x85ebca77);
+  return ((hash ^ (hash >>> 13)) & 1) === 1;
+};
 ---
 
 <div class="heat" style={`--weeks:${weeks}`} aria-hidden="true">
   {cells.map((level, i) => (
-    <i class:list={[`l${level}`, { p: split && i >= (weeks / 2) * 7 }]} />
+    <i class:list={[`l${level}`, { p: mix && isPink(i) }]} />
   ))}
 </div>
 
@@ -58,11 +65,12 @@ const cells = DAYS.slice(-weeks * 7).map((day) => levelOf(day.mask));
     background: var(--pink-primary);
   }
 
+  /* The deeper pinks match the weight of the blues they sit beside. */
   .p.l3 {
-    background: #f2a9c1;
+    background: #ec8fb0;
   }
 
   .p.l4 {
-    background: #e88fb0;
+    background: #d45c8a;
   }
 </style>

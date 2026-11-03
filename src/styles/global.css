@@ -54,6 +54,7 @@
   --gutter: clamp(20px, 5vw, 48px);
   --page: 1160px;
   --section-y: clamp(88px, 13vw, 176px);
+  --band-r: clamp(28px, 5vw, 64px);
   --ease: cubic-bezier(0.22, 0.8, 0.26, 1);
 }
 
@@ -167,6 +168,11 @@ button {
 
 .section {
   padding-block: var(--section-y);
+}
+
+/* A full-width colored section. It rounds off where it meets the white page. */
+.band {
+  border-radius: var(--band-r);
 }
 
 /* Type */

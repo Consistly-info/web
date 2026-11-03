@@ -21,7 +21,10 @@ import Mascot from "../Mascot.astro";
     <h2 class="title" id="soon-title">
       Your journey starts with one small habit.
     </h2>
-    <p class="lead">Something good is growing. Consistly is coming soon.</p>
+    <p class="lead">
+      Something good is growing, for you and the people you love. Consistly is
+      coming soon.
+    </p>
 
     <div class="grow" aria-hidden="true">
       {Array.from({ length: 14 }, (_, i) => (
@@ -38,7 +41,7 @@ import Mascot from "../Mascot.astro";
 <style>
   .soon-section {
     padding-block: var(--section-y);
-    background: linear-gradient(90deg, var(--blue-bg) 50%, var(--pink-bg) 50%);
+    background: var(--bg);
     text-align: center;
   }
 
@@ -86,7 +89,7 @@ import Mascot from "../Mascot.astro";
     animation: fill 6s calc(var(--i) * 0.28s) var(--ease) infinite;
   }
 
-  .grow i:nth-child(n + 8) {
+  .grow i:nth-child(even) {
     --on: var(--pink-accent);
   }
 

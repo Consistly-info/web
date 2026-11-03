@@ -1,0 +1,229 @@
+---
+import Mascot from "../Mascot.astro";
+
+// Who Social Challenges is for. The habits are ideas, not a fixed list.
+const groups = [
+  {
+    id: "couples",
+    who: "Couples",
+    title: "Little rituals, side by side.",
+    text: "Turn the things you keep saying you'll do into something you do together, and watch your days fill in side by side.",
+    habits: ["Walk after dinner", "Weekly date night", "Phones away at ten"],
+  },
+  {
+    id: "friends",
+    who: "Friends",
+    title: "Keep each other honest.",
+    text: "Gym buddies, book clubs, and group chats full of good intentions. A little friendly competition goes a long way.",
+    habits: ["Gym four times a week", "20 pages a day", "Morning run"],
+  },
+  {
+    id: "families",
+    who: "Families",
+    title: "Make it a family thing.",
+    text: "Give everyone at home a small part to play, and celebrate the wins around the dinner table.",
+    habits: ["Bedtime stories", "Screen-free dinners", "Weekend walk"],
+  },
+];
+---
+
+<ul class="groups reveal">
+  {groups.map((group) => (
+    <li class:list={["group", group.id]}>
+      <div class="art" aria-hidden="true">
+        {group.id === "couples" && (
+          <>
+            <svg class="heart" viewBox="0 0 24 24">
+              <path d="M12 21s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.400-9 12-9 12Z" />
+            </svg>
+            <div class="grown">
+              <Mascot sizes="160px" />
+            </div>
+            <div class="grown">
+              <Mascot character="pink" sizes="160px" />
+            </div>
+          </>
+        )}
+        {group.id === "friends" && (
+          <>
+            <div class="pal">
+              <Mascot accessories={["beanie"]} sizes="160px" />
+            </div>
+            <div class="pal">
+              <Mascot
+                character="pink"
+                accessories={["glasses"]}
+                sizes="160px"
+              />
+            </div>
+            <div class="pal">
+              <Mascot accessories={["scarf"]} sizes="160px" />
+            </div>
+          </>
+        )}
+        {group.id === "families" && (
+          <>
+            <div class="parent">
+              <Mascot sizes="160px" />
+            </div>
+            <div class="kid">
+              <Mascot character="pink" sizes="120px" />
+            </div>
+            <div class="kid">
+              <Mascot sizes="120px" />
+            </div>
+            <div class="parent">
+              <Mascot character="pink" sizes="160px" />
+            </div>
+          </>
+        )}
+      </div>
+      <p class="who">{group.who}</p>
+      <h3>{group.title}</h3>
+      <p class="text">{group.text}</p>
+      <ul
+        class="habits"
+        aria-label={`Habit ideas for ${group.who.toLowerCase()}`}
+      >
+        {group.habits.map((habit) => (
+          <li>{habit}</li>
+        ))}
+      </ul>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(20px, 2.4vw, 30px);
+    border-radius: 24px;
+  }
+
+  .couples {
+    background: var(--pink-bg);
+  }
+
+  .friends {
+    background: var(--blue-bg);
+  }
+
+  .families {
+    background: linear-gradient(135deg, var(--blue-bg), var(--pink-bg));
+  }
+
+  /* Everyone stands on one floor, so the three cards line up. */
+  .art {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    aspect-ratio: 5 / 2;
+    margin-bottom: 20px;
+  }
+
+  .art > div {
+    flex: none;
+  }
+
+  .grown {
+    width: 40%;
+  }
+
+  .pal {
+    width: 34%;
+  }
+
+  .parent {
+    width: 32%;
+  }
+
+  .kid {
+    position: relative;
+    z-index: 1;
+    width: 20%;
+    margin-inline: -3%;
+  }
+
+  .pal + .pal {
+    margin-left: -3%;
+  }
+
+  .heart {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 9%;
+    fill: var(--pink-accent);
+    transform: translateX(-50%);
+  }
+
+  .who {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .couples .who {
+    color: var(--pink-text);
+  }
+
+  .friends .who,
+  .families .who {
+    color: var(--blue-text);
+  }
+
+  h3 {
+    margin-top: 6px;
+    font-size: clamp(22px, 2.3vw, 27px);
+    font-weight: 660;
+    letter-spacing: -0.026em;
+    line-height: 1.14;
+    text-wrap: balance;
+  }
+
+  .text {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 16px;
+    letter-spacing: -0.008em;
+    text-wrap: pretty;
+  }
+
+  .habits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .habits li {
+    padding: 5px 11px;
+    background: var(--surface);
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 860px) {
+    .groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .art {
+      max-width: 380px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+</style>

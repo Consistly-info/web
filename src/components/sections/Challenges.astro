@@ -4,6 +4,7 @@ import ChallengeCreator from "../challenges/ChallengeCreator.astro";
 import Leaderboard from "../challenges/Leaderboard.astro";
 import SharedGraph from "../challenges/SharedGraph.astro";
 import SharedRewards from "../challenges/SharedRewards.astro";
+import Together from "../challenges/Together.astro";
 import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 ---
@@ -23,17 +24,18 @@ import SectionHead from "../SectionHead.astro";
       id="challenges-title"
       eyebrow="Social challenges, coming soon"
       title="Better habits are built together."
-      lead="Challenge your friends, build habits together, and keep each other accountable. Share your progress, celebrate milestones, and turn personal goals into something you achieve together."
+      lead="For couples, best friends, and whole families. Build habits together, keep each other accountable, celebrate milestones, and turn personal goals into something you achieve side by side."
       center
     />
 
     <div class="action reveal">
       <a class="cta" href="#challenge-create">
-        Challenge Your Friends
+        Start a Challenge Together
       </a>
       <p class="soon">Planned, coming soon</p>
     </div>
 
+    <Together />
     <SharedGraph />
     <ChallengeCreator />
 

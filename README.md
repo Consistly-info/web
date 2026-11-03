@@ -33,7 +33,7 @@ Consistly is still in development. Everything below is planned, and details may 
 | **Personal companions**  | A blue and a pink character to keep you company                                     |
 | **XP and unlocks**       | Earn XP from your habits and unlock hats, clothes, and more for your companion      |
 | **Rewards**              | Gems, achievement badges, milestones, and daily and weekly challenges               |
-| **Social challenges**    | Challenge friends and track a habit together in a shared contribution graph         |
+| **Social challenges**    | Track a habit with a partner, friends, or family in a shared contribution graph     |
 | **Widgets**              | Home Screen and Lock Screen widgets for your checklist, graph, streak, and progress |
 | **Mac app**              | Consistly on your MacBook, with the same widgets on your desktop                    |
 | **Personal insights**    | Completion stats, habit performance, monthly comparisons, and milestones            |
