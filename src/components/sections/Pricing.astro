@@ -1,0 +1,228 @@
+---
+import Mascot from "../Mascot.astro";
+import SectionHead from "../SectionHead.astro";
+
+// Prices aren't decided. Add them here, not as placeholder numbers, once they are.
+const plans = [
+  {
+    id: "solo",
+    name: "Solo",
+    who: "For your own journey",
+    features: [
+      "Habits, goals, and streaks",
+      "Your contribution graph",
+      "A companion that grows with you",
+      "Rewards, widgets, and insights",
+    ],
+  },
+  {
+    id: "duo",
+    name: "Duo",
+    who: "For you and a partner or best friend",
+    features: [
+      "Everything in Solo, for both of you",
+      "A shared contribution graph",
+      "Challenges for two",
+      "Rewards you earn together",
+    ],
+  },
+  {
+    id: "family",
+    name: "Family",
+    who: "For everyone at home",
+    features: [
+      "Everything in Duo, for the whole family",
+      "Family challenges",
+      "A family activity feed",
+      "Milestones to celebrate together",
+    ],
+  },
+];
+---
+
+<section class="section" id="pricing" aria-labelledby="pricing-title">
+  <div class="page">
+    <SectionHead
+      id="pricing-title"
+      eyebrow="Pricing"
+      title="Grow solo, or bring everyone."
+      lead="Three plans are in the works, so you can start on your own or with the people you love."
+      center
+    />
+
+    <ul class="plans reveal">
+      {plans.map((plan) => (
+        <li class:list={["plan", plan.id]}>
+          <div class="art" aria-hidden="true">
+            {plan.id === "solo" && (
+              <div class="one">
+                <Mascot sizes="140px" />
+              </div>
+            )}
+            {plan.id === "duo" && (
+              <>
+                <div class="one">
+                  <Mascot sizes="140px" />
+                </div>
+                <div class="one">
+                  <Mascot character="pink" sizes="140px" />
+                </div>
+              </>
+            )}
+            {plan.id === "family" && (
+              <>
+                <div class="one">
+                  <Mascot sizes="140px" />
+                </div>
+                <div class="kid">
+                  <Mascot character="pink" sizes="100px" />
+                </div>
+                <div class="kid">
+                  <Mascot sizes="100px" />
+                </div>
+                <div class="one">
+                  <Mascot character="pink" sizes="140px" />
+                </div>
+              </>
+            )}
+          </div>
+          <h3>{plan.name}</h3>
+          <p class="who">{plan.who}</p>
+          <p class="price">Price to be announced</p>
+          <ul class="features">
+            {plan.features.map((feature) => (
+              <li>{feature}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+
+    <p class="note foot reveal">
+      Plans are still being worked out and may change before launch. Prices will
+      be shared here before release.
+    </p>
+  </div>
+</section>
+
+<style>
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+
+  .plan {
+    padding: clamp(20px, 2.4vw, 30px);
+    border-radius: 24px;
+  }
+
+  .solo {
+    background: var(--blue-bg);
+  }
+
+  .duo {
+    background: var(--pink-bg);
+  }
+
+  .family {
+    background: linear-gradient(135deg, var(--blue-bg), var(--pink-bg));
+  }
+
+  .art {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    aspect-ratio: 3 / 1;
+    margin-bottom: 20px;
+  }
+
+  .art > div {
+    flex: none;
+  }
+
+  .one {
+    width: 32%;
+  }
+
+  .kid {
+    position: relative;
+    z-index: 1;
+    width: 20%;
+    margin-inline: -3%;
+  }
+
+  h3 {
+    font-size: clamp(26px, 2.8vw, 32px);
+    font-weight: 680;
+    letter-spacing: -0.028em;
+    line-height: 1.1;
+  }
+
+  .who {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 16px;
+    letter-spacing: -0.008em;
+    text-wrap: balance;
+  }
+
+  .price {
+    margin-top: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgb(23 23 23 / 0.08);
+    font-size: 17px;
+    font-weight: 620;
+    letter-spacing: -0.014em;
+  }
+
+  .features {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+    font-size: 15px;
+  }
+
+  .features li {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  /* A filled day from the graph stands in for a check mark. */
+  .features li::before {
+    content: "";
+    position: absolute;
+    top: 0.3em;
+    left: 0;
+    width: 13px;
+    height: 13px;
+    background: var(--blue-accent);
+    border-radius: 22%;
+  }
+
+  .duo .features li::before {
+    background: var(--pink-accent);
+  }
+
+  .family .features li:nth-child(even)::before {
+    background: var(--pink-accent);
+  }
+
+  .foot {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  @media (max-width: 860px) {
+    .plans {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .art {
+      width: 100%;
+      max-width: 380px;
+      margin-inline: auto;
+    }
+  }
+</style>
