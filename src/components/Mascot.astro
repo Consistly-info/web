@@ -14,7 +14,14 @@ import blueBlink from "../assets/mascot/mascot-blue-blink.webp";
 import pinkBlink from "../assets/mascot/mascot-pink-blink.webp";
 
 type Accessory =
-  "scarf" | "glasses" | "hat" | "crown" | "beanie" | "bowtie" | "sweater";
+  | "scarf"
+  | "glasses"
+  | "hat"
+  | "crown"
+  | "tiara"
+  | "beanie"
+  | "bowtie"
+  | "sweater";
 
 const IMAGES = {
   blue: { small: blue240, medium: blue480, large: blue960, blink: blueBlink },
@@ -220,6 +227,41 @@ const hasOverlay = dressable || accessories.length > 0;
             <circle cx="368" cy="74" r="12" fill="#f7c95c" />
             <circle cx="484" cy="46" r="12" fill="#f7c95c" />
             <circle cx="600" cy="74" r="12" fill="#f7c95c" />
+          </g>
+        )}
+        {accessories.includes("tiara") && (
+          <g
+            class="acc acc-tiara"
+            stroke-linejoin="round"
+            transform="rotate(-16 400 180)"
+          >
+            <path
+              d="M306 186 292 128 332 150 350 98 378 136 400 58 422 136 450 98 468 150 508 128 494 186C440 200 360 200 306 186Z"
+              fill="#f7c95c"
+              stroke="#f7c95c"
+              stroke-width="10"
+            />
+            <path
+              d="M304 168c56 16 136 16 192 0l-2 22c-54 16-134 16-188 0Z"
+              fill="#e2a930"
+            />
+            <path
+              d="M400 156c-30-20-38-36-30-48 8-11 24-9 30 3 6-12 22-14 30-3 8 12 0 28-30 48Z"
+              fill="#ef6f9f"
+            />
+            <ellipse
+              cx="384"
+              cy="118"
+              rx="7"
+              ry="5"
+              fill="#ffd3e2"
+              transform="rotate(-30 384 118)"
+            />
+            <circle cx="292" cy="126" r="11" fill="#fff4d2" />
+            <circle cx="350" cy="96" r="11" fill="#fff4d2" />
+            <circle cx="400" cy="54" r="12" fill="#fff4d2" />
+            <circle cx="450" cy="96" r="11" fill="#fff4d2" />
+            <circle cx="508" cy="126" r="11" fill="#fff4d2" />
           </g>
         )}
       </svg>
