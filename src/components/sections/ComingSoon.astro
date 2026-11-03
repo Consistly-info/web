@@ -6,7 +6,17 @@ import Mascot from "../Mascot.astro";
 <section class="soon-section" aria-labelledby="soon-title">
   <div class="page inner reveal">
     <div class="art">
-      <Mascot label="The Consistly companion" sizes="240px" idle />
+      <div>
+        <Mascot label="The blue Consistly companion" sizes="200px" idle />
+      </div>
+      <div>
+        <Mascot
+          character="pink"
+          label="The pink Consistly companion"
+          sizes="200px"
+          idle
+        />
+      </div>
     </div>
     <h2 class="title" id="soon-title">
       Your journey starts with one small habit.
@@ -38,7 +48,16 @@ import Mascot from "../Mascot.astro";
   }
 
   .art {
-    width: clamp(170px, 20vw, 240px);
+    display: flex;
+    justify-content: center;
+  }
+
+  .art > div {
+    width: clamp(130px, 16vw, 200px);
+  }
+
+  .art > div + div {
+    margin-left: -14px;
   }
 
   .title {

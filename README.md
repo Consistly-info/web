@@ -47,7 +47,7 @@ src/
 
 ## Mascot
 
-`src/assets/mascot/` holds the companion as transparent WebP files at 240, 480, and 960px, cut out from the original artwork. Every appearance goes through `src/components/Mascot.astro`.
+`src/assets/mascot/` holds the blue and pink companions as transparent WebP files at 240, 480, and 960px, cut out from the original artwork with the same crop. Pass `character="pink"` to show the pink one. Every appearance goes through `src/components/Mascot.astro`.
 
 XP unlocks items for the companion. These are drawn as an SVG layer over the artwork, in the same 960px coordinate system, with the feet at about 97% of the height.
 

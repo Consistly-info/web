@@ -36,6 +36,27 @@ const next = groups
   .filter((item) => item.cost > XP)
   .sort((a, b) => a.cost - b.cost)[0];
 const DEFAULT_LOOK = ["scarf"];
+const ALL_ITEMS = [
+  "sweater",
+  "bowtie",
+  "scarf",
+  "glasses",
+  "hat",
+  "beanie",
+  "crown",
+] as const;
+const characters = [
+  {
+    id: "blue",
+    name: "Blue",
+    label: "The blue Consistly companion wearing the items you pick",
+  },
+  {
+    id: "pink",
+    name: "Pink",
+    label: "The pink Consistly companion wearing the items you pick",
+  },
+] as const;
 ---
 
 <section class="section companion" aria-labelledby="companion-title">
@@ -46,6 +67,30 @@ const DEFAULT_LOOK = ["scarf"];
       title="Grow together, one habit at a time."
       lead="Every habit you complete earns XP, and XP unlocks new things for your companion, like hats and clothes."
     />
+
+    <div class="meet reveal">
+      <div>
+        <h3 class="meet-title">Your journey. Your companion.</h3>
+        <p class="meet-text">
+          Meet your Consistly companions. Build better habits, grow together,
+          and celebrate every little milestone.
+        </p>
+      </div>
+      <div class="picker" role="group" aria-label="Show companion" data-picker>
+        {characters.map((c, i) => (
+          <button
+            type="button"
+            aria-pressed={i === 0 ? "true" : "false"}
+            data-pick={c.id}
+          >
+            <span class="thumb">
+              <Mascot character={c.id} sizes="96px" />
+            </span>
+            {c.name}
+          </button>
+        ))}
+      </div>
+    </div>
 
     <div class="layout reveal">
       <div class="scene" data-look data-on={DEFAULT_LOOK.join(" ")}>
@@ -70,22 +115,17 @@ const DEFAULT_LOOK = ["scarf"];
           <path d="M120 480C180 404 620 404 680 480Z" fill="#6f9fe2"></path>
         </svg>
 
-        <div class="character">
-          <Mascot
-            label="The Consistly companion wearing the items you pick"
-            accessories={[
-              "sweater",
-              "bowtie",
-              "scarf",
-              "glasses",
-              "hat",
-              "beanie",
-              "crown",
-            ]}
-            sizes="(max-width: 900px) 62vw, 360px"
-            idle
-          />
-        </div>
+        {characters.map((c, i) => (
+          <div class="character" data-companion-char={c.id} hidden={i !== 0}>
+            <Mascot
+              character={c.id}
+              label={c.label}
+              accessories={[...ALL_ITEMS]}
+              sizes="(max-width: 900px) 62vw, 360px"
+              idle
+            />
+          </div>
+        ))}
         <span class="note sample">Example items and XP</span>
       </div>
 
@@ -148,12 +188,73 @@ const DEFAULT_LOOK = ["scarf"];
     background: var(--sky-soft);
   }
 
+  .meet {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 40px;
+    margin-top: clamp(40px, 6vw, 72px);
+    padding-block: 24px;
+    border-block: 1px solid rgb(28 79 146 / 0.14);
+  }
+
+  .meet > div:first-child {
+    flex: 1 1 340px;
+    max-width: 620px;
+  }
+
+  .meet-title {
+    font-size: clamp(22px, 2.6vw, 30px);
+    font-weight: 660;
+    letter-spacing: -0.026em;
+    line-height: 1.15;
+  }
+
+  .meet-text {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .picker {
+    display: flex;
+    gap: 8px;
+  }
+
+  .picker button {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    width: 112px;
+    padding: 10px 8px 8px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+  }
+
+  .picker button:hover {
+    border-color: var(--blue);
+  }
+
+  .picker [aria-pressed="true"] {
+    border-color: var(--blue-deep);
+  }
+
+  .thumb {
+    display: block;
+    width: 76px;
+  }
+
   .layout {
     display: grid;
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: clamp(32px, 5vw, 64px);
     align-items: center;
-    margin-top: clamp(40px, 6vw, 72px);
+    margin-top: clamp(28px, 4vw, 40px);
   }
 
   .scene {
@@ -352,6 +453,19 @@ const DEFAULT_LOOK = ["scarf"];
 <script>
   const wardrobe = document.querySelector<HTMLElement>("[data-wardrobe]");
   const look = document.querySelector<HTMLElement>("[data-look]");
+
+  const picks = document.querySelectorAll<HTMLButtonElement>("[data-pick]");
+  const companions = document.querySelectorAll<HTMLElement>(
+    "[data-companion-char]",
+  );
+  picks.forEach((pick) =>
+    pick.addEventListener("click", () => {
+      picks.forEach((p) => p.setAttribute("aria-pressed", String(p === pick)));
+      companions.forEach((c) => {
+        c.hidden = c.dataset.companionChar !== pick.dataset.pick;
+      });
+    }),
+  );
 
   if (wardrobe && look) {
     const items = wardrobe.querySelectorAll<HTMLButtonElement>("[data-item]");

@@ -4,14 +4,24 @@
  * Images are 960px squares with the feet resting at about 97% of the height,
  * and the accessory layer shares that coordinate system.
  */
-import small from "../assets/mascot/mascot-240.webp";
-import medium from "../assets/mascot/mascot-480.webp";
-import large from "../assets/mascot/mascot-960.webp";
+import blue240 from "../assets/mascot/mascot-blue-240.webp";
+import blue480 from "../assets/mascot/mascot-blue-480.webp";
+import blue960 from "../assets/mascot/mascot-blue-960.webp";
+import pink240 from "../assets/mascot/mascot-pink-240.webp";
+import pink480 from "../assets/mascot/mascot-pink-480.webp";
+import pink960 from "../assets/mascot/mascot-pink-960.webp";
 
 type Accessory =
   "scarf" | "glasses" | "hat" | "crown" | "beanie" | "bowtie" | "sweater";
 
+const IMAGES = {
+  blue: { small: blue240, medium: blue480, large: blue960 },
+  pink: { small: pink240, medium: pink480, large: pink960 },
+};
+
 interface Props {
+  /** Which companion to show. */
+  character?: keyof typeof IMAGES;
   /** Alt text. Leave empty when the mascot is decorative. */
   label?: string;
   /** Rendered width, used to pick the right image file. */
@@ -26,6 +36,7 @@ interface Props {
 }
 
 const {
+  character = "blue",
   label = "",
   sizes = "240px",
   accessories = [],
@@ -34,6 +45,7 @@ const {
   idle = false,
 } = Astro.props;
 
+const { small, medium, large } = IMAGES[character];
 const has = (item: Accessory) => dressable || accessories.includes(item);
 const hasOverlay = dressable || accessories.length > 0;
 ---

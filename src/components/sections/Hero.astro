@@ -40,6 +40,15 @@ import TodayScreen from "../screens/TodayScreen.astro";
         idle
       />
     </div>
+    <div class="buddy pink">
+      <Mascot
+        character="pink"
+        label="A second Consistly companion, a round, soft pink character with a small bow"
+        sizes="(max-width: 680px) 150px, 290px"
+        eager
+        idle
+      />
+    </div>
   </div>
 </section>
 
@@ -113,6 +122,10 @@ import TodayScreen from "../screens/TodayScreen.astro";
     animation: settle 1s 0.5s var(--ease) both;
   }
 
+  .pink {
+    left: calc(50% + var(--phone-w) / 2 + var(--buddy) * 0.06);
+  }
+
   @keyframes rise {
     from {
       opacity: 0;
@@ -141,6 +154,10 @@ import TodayScreen from "../screens/TodayScreen.astro";
       left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 0.5);
       top: calc(var(--phone-w) * 1.28);
       z-index: 2;
+    }
+
+    .pink {
+      left: calc(50% + var(--phone-w) / 2 - var(--buddy) * 0.5);
     }
   }
 </style>

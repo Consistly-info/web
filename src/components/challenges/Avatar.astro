@@ -8,11 +8,16 @@ interface Props {
 }
 
 const { person } = Astro.props;
-const accessories = { you: [], alex: ["hat"], sam: ["glasses"] } as const;
+const accessories = { you: [], alex: [], sam: ["glasses"] } as const;
+const character = person === "alex" ? "pink" : "blue";
 ---
 
 <span class:list={["avatar", person]} aria-hidden="true">
-  <Mascot sizes="60px" accessories={[...accessories[person]]} />
+  <Mascot
+    character={character}
+    sizes="60px"
+    accessories={[...accessories[person]]}
+  />
 </span>
 
 <style>
