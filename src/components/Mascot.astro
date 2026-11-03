@@ -10,6 +10,16 @@ import blue960 from "../assets/mascot/mascot-blue-960.webp";
 import pink240 from "../assets/mascot/mascot-pink-240.webp";
 import pink480 from "../assets/mascot/mascot-pink-480.webp";
 import pink960 from "../assets/mascot/mascot-pink-960.webp";
+import blueArm from "../assets/mascot/mascot-blue-arm.webp";
+import blueBody240 from "../assets/mascot/mascot-blue-body-240.webp";
+import blueBody480 from "../assets/mascot/mascot-blue-body-480.webp";
+import blueBody960 from "../assets/mascot/mascot-blue-body-960.webp";
+import blueWink from "../assets/mascot/mascot-blue-wink.webp";
+import pinkArm from "../assets/mascot/mascot-pink-arm.webp";
+import pinkBody240 from "../assets/mascot/mascot-pink-body-240.webp";
+import pinkBody480 from "../assets/mascot/mascot-pink-body-480.webp";
+import pinkBody960 from "../assets/mascot/mascot-pink-body-960.webp";
+import pinkWink from "../assets/mascot/mascot-pink-wink.webp";
 
 type Accessory =
   "scarf" | "glasses" | "hat" | "crown" | "beanie" | "bowtie" | "sweater";
@@ -17,6 +27,25 @@ type Accessory =
 const IMAGES = {
   blue: { small: blue240, medium: blue480, large: blue960 },
   pink: { small: pink240, medium: pink480, large: pink960 },
+};
+
+// The same art split into a body and a separate outer arm, so the arm can move.
+// At rest the layers line up to look like the images above.
+const GREETING = {
+  blue: {
+    small: blueBody240,
+    medium: blueBody480,
+    large: blueBody960,
+    arm: blueArm,
+    wink: blueWink,
+  },
+  pink: {
+    small: pinkBody240,
+    medium: pinkBody480,
+    large: pinkBody960,
+    arm: pinkArm,
+    wink: pinkWink,
+  },
 };
 
 interface Props {
@@ -33,6 +62,8 @@ interface Props {
   eager?: boolean;
   /** A slow, subtle breathing motion. */
   idle?: boolean;
+  /** Now and then, wave hello and wink. */
+  greet?: boolean;
 }
 
 const {
@@ -43,9 +74,12 @@ const {
   dressable = false,
   eager = false,
   idle = false,
+  greet = false,
 } = Astro.props;
 
-const { small, medium, large } = IMAGES[character];
+const { small, medium, large } = greet
+  ? GREETING[character]
+  : IMAGES[character];
 const has = (item: Accessory) => dressable || accessories.includes(item);
 const hasOverlay = dressable || accessories.length > 0;
 ---
@@ -63,6 +97,24 @@ const hasOverlay = dressable || accessories.length > 0;
       fetchpriority={eager ? "high" : undefined}
       decoding="async"
     />
+    {greet && (
+      <>
+        <img
+          class:list={["wink", character]}
+          src={GREETING[character].wink.src}
+          width="960"
+          height="960"
+          alt=""
+        />
+        <img
+          class:list={["arm", character]}
+          src={GREETING[character].arm.src}
+          width="960"
+          height="960"
+          alt=""
+        />
+      </>
+    )}
     {hasOverlay && (
       <svg class="layer" viewBox="0 0 960 960" aria-hidden="true">
         {accessories.includes("sweater") && (
@@ -261,6 +313,75 @@ const hasOverlay = dressable || accessories.length > 0;
     }
     50% {
       transform: scale(1.012, 0.985);
+    }
+  }
+
+  /* The companions take turns: each waves and winks hello, then winks once more
+     later on. Both animations share a cycle so the first wink lands mid-wave. */
+  .arm,
+  .wink {
+    --cycle: 14s;
+    --start: 1.8s;
+  }
+
+  .pink {
+    --start: 8.8s;
+  }
+
+  .arm {
+    --turn: 1;
+    transform-origin: 19.8% 52.1%;
+    animation: wave var(--cycle) var(--start) ease-in-out infinite;
+  }
+
+  /* The pink companion waves with the arm on the other side. */
+  .arm.pink {
+    --turn: -1;
+    transform-origin: 80.2% 52.1%;
+  }
+
+  .wink {
+    opacity: 0;
+    animation: wink var(--cycle) var(--start) linear infinite;
+  }
+
+  @keyframes wave {
+    0%,
+    21%,
+    100% {
+      transform: rotate(0deg);
+    }
+    4% {
+      transform: rotate(calc(var(--turn) * 118deg));
+    }
+    7% {
+      transform: rotate(calc(var(--turn) * 98deg));
+    }
+    10% {
+      transform: rotate(calc(var(--turn) * 124deg));
+    }
+    13% {
+      transform: rotate(calc(var(--turn) * 98deg));
+    }
+    16% {
+      transform: rotate(calc(var(--turn) * 118deg));
+    }
+  }
+
+  @keyframes wink {
+    0%,
+    8.5%,
+    12.5%,
+    72%,
+    75.5%,
+    100% {
+      opacity: 0;
+    }
+    9%,
+    12%,
+    72.5%,
+    75% {
+      opacity: 1;
     }
   }
 </style>
