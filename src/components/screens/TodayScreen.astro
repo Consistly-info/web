@@ -11,11 +11,11 @@ const { interactive = false } = Astro.props;
 const Row = interactive ? "button" : "div";
 
 const habits = [
-  { name: "Morning walk", note: "14 day streak", done: true, tone: "#4a8bdc" },
-  { name: "Read 20 pages", note: "9 day streak", done: true, tone: "#0e9f8e" },
-  { name: "Drink water", note: "21 day streak", done: true, tone: "#3fb8c9" },
-  { name: "Meditate", note: "3 of 5 this week", done: false, tone: "#8a6fd1" },
-  { name: "Stretch", note: "Evening", done: false, tone: "#d99a1c" },
+  { name: "Morning walk", note: "14 day streak", done: true, tone: "#5b8fd9" },
+  { name: "Read 20 pages", note: "9 day streak", done: true, tone: "#5b8fd9" },
+  { name: "Drink water", note: "21 day streak", done: true, tone: "#5b8fd9" },
+  { name: "Meditate", note: "3 of 5 this week", done: false, tone: "#5b8fd9" },
+  { name: "Stretch", note: "Evening", done: false, tone: "#5b8fd9" },
 ];
 
 const done = habits.filter((h) => h.done).length;

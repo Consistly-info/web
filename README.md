@@ -51,6 +51,10 @@ src/
 
 XP unlocks items for the companion. These are drawn as an SVG layer over the artwork, in the same 960px coordinate system, with the feet at about 97% of the height.
 
+## Color
+
+Blue and pink belong to the two companions and live as tokens in `src/styles/global.css`. Set `data-theme="pink"` on a section to switch its accents. Sections are blue by default, and both colors appear together only where both companions do, such as shared graphs. The mascot images are never tinted.
+
 ## CI and deployment
 
 `.github/workflows/ci.yml` runs on pull requests and pushes to `main`: it installs dependencies, runs lint and type checks, and builds the site. A failure in any step fails the workflow.

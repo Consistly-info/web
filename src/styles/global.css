@@ -8,11 +8,29 @@
   --blue-text: #2466b8; /* Darker step of the brand blue for small text */
   --blue-deep: #1c4f92;
   --navy: #12305a;
-  --sky: #e1effe;
-  --sky-soft: #f1f7ff;
+  --sky: #dcebff;
+  --sky-soft: #f2f8ff;
+
+  /* The two companions. Fills use these directly; the accents are too light
+     for small text, so text and white-on-color controls use the -text steps. */
+  --blue-primary: #a8d0ff;
+  --blue-soft: #dcebff;
+  --blue-bg: #f2f8ff;
+  --blue-accent: #5b8fd9;
+  --pink-primary: #f7bfd0;
+  --pink-soft: #ffe4ec;
+  --pink-bg: #fff5f8;
+  --pink-accent: #d96c94;
+  --pink-text: #a93a66;
+
+  /* What a section's accents resolve to. Blue unless data-theme says pink. */
+  --accent: var(--blue-accent);
+  --accent-text: var(--blue-text);
+  --accent-soft: var(--blue-soft);
+  --accent-bg: var(--blue-bg);
 
   /* Neutrals */
-  --bg: #fafcff;
+  --bg: #ffffff;
   --surface: #ffffff;
   --ink: #171717;
   --muted: #6b6b6b; /* #737373 darkened slightly to hold 4.5:1 on tinted panels */
@@ -20,10 +38,10 @@
 
   /* Contribution scale, shared by every graph on the page */
   --heat-0: #e8edf4;
-  --heat-1: #c8dffa;
-  --heat-2: #8dbcf1;
-  --heat-3: #4a8bdc;
-  --heat-4: #1c4f92;
+  --heat-1: #cfe3ff;
+  --heat-2: #a8d0ff;
+  --heat-3: #5b8fd9;
+  --heat-4: #2f62ad;
 
   /* Rewards accents, used sparingly */
   --gem: #0e9f8e;
@@ -133,6 +151,13 @@ button {
   transform: none;
 }
 
+[data-theme="pink"] {
+  --accent: var(--pink-accent);
+  --accent-text: var(--pink-text);
+  --accent-soft: var(--pink-soft);
+  --accent-bg: var(--pink-bg);
+}
+
 /* Layout */
 .page {
   width: min(100%, calc(var(--page) + var(--gutter) * 2));
@@ -146,7 +171,7 @@ button {
 
 /* Type */
 .eyebrow {
-  color: var(--blue-text);
+  color: var(--accent-text);
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;

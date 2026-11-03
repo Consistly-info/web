@@ -5,15 +5,17 @@ import { DAYS, levelOf } from "../lib/sample";
 
 interface Props {
   weeks?: number;
+  /** Draw the later half in pink, one side for each companion. */
+  split?: boolean;
 }
 
-const { weeks = 52 } = Astro.props;
+const { weeks = 52, split = false } = Astro.props;
 const cells = DAYS.slice(-weeks * 7).map((day) => levelOf(day.mask));
 ---
 
 <div class="heat" style={`--weeks:${weeks}`} aria-hidden="true">
-  {cells.map((level) => (
-    <i class={`l${level}`} />
+  {cells.map((level, i) => (
+    <i class:list={[`l${level}`, { p: split && i >= (weeks / 2) * 7 }]} />
   ))}
 </div>
 
@@ -46,5 +48,21 @@ const cells = DAYS.slice(-weeks * 7).map((day) => levelOf(day.mask));
 
   .l4 {
     background: var(--heat-4);
+  }
+
+  .p.l1 {
+    background: #ffd9e5;
+  }
+
+  .p.l2 {
+    background: var(--pink-primary);
+  }
+
+  .p.l3 {
+    background: #f2a9c1;
+  }
+
+  .p.l4 {
+    background: #e88fb0;
   }
 </style>

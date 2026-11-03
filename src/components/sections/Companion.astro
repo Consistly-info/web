@@ -59,7 +59,12 @@ const characters = [
 ] as const;
 ---
 
-<section class="section companion" aria-labelledby="companion-title">
+<section
+  class="section companion"
+  aria-labelledby="companion-title"
+  data-theme="blue"
+  data-companion-section
+>
   <div class="page">
     <SectionHead
       id="companion-title"
@@ -100,7 +105,7 @@ const characters = [
           preserveAspectRatio="xMidYMax slice"
           aria-hidden="true"
         >
-          <rect width="800" height="480" fill="#b4d3f7"></rect>
+          <rect width="800" height="480" class="s0"></rect>
           <circle cx="570" cy="104" r="36" fill="#fbe6a8"></circle>
           <g fill="#fff">
             <ellipse cx="262" cy="106" rx="50" ry="15"></ellipse>
@@ -109,10 +114,10 @@ const characters = [
           </g>
           <path
             d="M0 340C120 250 250 260 400 330S680 270 800 310V480H0Z"
-            fill="#9fc3f0"
+            class="s1"
           ></path>
-          <path d="M0 386C200 350 600 350 800 386V480H0Z" fill="#8bb5ec"></path>
-          <path d="M120 480C180 404 620 404 680 480Z" fill="#6f9fe2"></path>
+          <path d="M0 386C200 350 600 350 800 386V480H0Z" class="s2"></path>
+          <path d="M120 480C180 404 620 404 680 480Z" class="s3"></path>
         </svg>
 
         {characters.map((c, i) => (
@@ -185,7 +190,42 @@ const characters = [
 
 <style>
   .companion {
-    background: var(--sky-soft);
+    --s0: #b4d3f7;
+    --s1: #9fc3f0;
+    --s2: #8bb5ec;
+    --s3: #6f9fe2;
+    background: var(--accent-bg);
+    transition: background 0.4s;
+  }
+
+  .companion[data-theme="pink"] {
+    --s0: #fbd3e0;
+    --s1: #f7bfd0;
+    --s2: #f2a9c1;
+    --s3: #e88fb0;
+  }
+
+  .s0,
+  .s1,
+  .s2,
+  .s3 {
+    transition: fill 0.4s;
+  }
+
+  .s0 {
+    fill: var(--s0);
+  }
+
+  .s1 {
+    fill: var(--s1);
+  }
+
+  .s2 {
+    fill: var(--s2);
+  }
+
+  .s3 {
+    fill: var(--s3);
   }
 
   .meet {
@@ -228,7 +268,6 @@ const characters = [
     gap: 2px;
     width: 112px;
     padding: 10px 8px 8px;
-    background: var(--surface);
     border: 1.5px solid var(--line);
     border-radius: 18px;
     font-size: 14px;
@@ -236,12 +275,19 @@ const characters = [
     transition: border-color 0.2s;
   }
 
-  .picker button:hover {
-    border-color: var(--blue);
+  [data-pick="blue"] {
+    --own: var(--blue-text);
+    background: var(--blue-bg);
   }
 
+  [data-pick="pink"] {
+    --own: var(--pink-text);
+    background: var(--pink-bg);
+  }
+
+  .picker button:hover,
   .picker [aria-pressed="true"] {
-    border-color: var(--blue-deep);
+    border-color: var(--own);
   }
 
   .thumb {
@@ -300,7 +346,7 @@ const characters = [
     position: absolute;
     top: 14px;
     right: 18px;
-    color: #1f3b63;
+    color: #3b3b3b;
   }
 
   .total {
@@ -334,8 +380,9 @@ const characters = [
   .bar span {
     display: block;
     height: 100%;
-    background: var(--blue);
+    background: var(--accent);
     border-radius: 99px;
+    transition: background 0.4s;
   }
 
   .to-next {
@@ -376,7 +423,7 @@ const characters = [
   }
 
   .item:hover {
-    border-color: var(--blue);
+    border-color: var(--accent);
   }
 
   .item b {
@@ -405,8 +452,12 @@ const characters = [
   }
 
   .item[aria-pressed="true"] {
-    background: var(--sky);
-    border-color: var(--blue-deep);
+    background: var(--accent-soft);
+    border-color: var(--accent-text);
+  }
+
+  .item[aria-pressed="true"] span {
+    color: #3f3f3f;
   }
 
   .wardrobe .note {
@@ -461,6 +512,8 @@ const characters = [
   picks.forEach((pick) =>
     pick.addEventListener("click", () => {
       picks.forEach((p) => p.setAttribute("aria-pressed", String(p === pick)));
+      const section = pick.closest<HTMLElement>("[data-companion-section]");
+      if (section) section.dataset.theme = pick.dataset.pick;
       companions.forEach((c) => {
         c.hidden = c.dataset.companionChar !== pick.dataset.pick;
       });

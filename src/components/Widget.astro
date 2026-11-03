@@ -7,9 +7,10 @@ import { statsOf, DAYS } from "../lib/sample";
 
 interface Props {
   kind: "graph" | "streak" | "progress" | "checklist";
+  tone?: "blue" | "pink";
 }
 
-const { kind } = Astro.props;
+const { kind, tone = "blue" } = Astro.props;
 const streak = statsOf(DAYS).current;
 const checklist = [
   { name: "Morning walk", done: true },
@@ -20,7 +21,7 @@ const checklist = [
 ---
 
 {kind === "graph" && (
-  <div class="widget medium graph">
+  <div class:list={["widget medium graph", tone]}>
     <div class="top">
       <b>Consistency</b>
       <span>Last 24 weeks</span>
@@ -40,7 +41,7 @@ const checklist = [
 )}
 
 {kind === "progress" && (
-  <div class="widget small progress">
+  <div class:list={["widget small progress", tone]}>
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="42" class="track" />
       <circle
@@ -113,6 +114,13 @@ const checklist = [
     --cell-r: 18%;
   }
 
+  .graph.pink {
+    --heat-1: #ffd9e5;
+    --heat-2: var(--pink-primary);
+    --heat-3: #e88fb0;
+    --heat-4: var(--pink-accent);
+  }
+
   .streak {
     position: relative;
     padding: calc(var(--u) * 14) calc(var(--u) * 15);
@@ -162,6 +170,14 @@ const checklist = [
 
   .value {
     stroke: var(--blue);
+  }
+
+  .progress.pink .track {
+    stroke: var(--pink-soft);
+  }
+
+  .progress.pink .value {
+    stroke: var(--pink-accent);
   }
 
   .progress-text {

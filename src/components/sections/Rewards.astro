@@ -93,9 +93,9 @@ const accessories = [
           </div>
           <div class="gems">
             <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
-              <path d="M7 4h10l4 5.5L12 21 3 9.5 7 4Z" fill="#14b8a6"></path>
-              <path d="M3 9.5h18L12 21 3 9.5Z" fill="#0e9f8e"></path>
-              <path d="M8.5 9.5 12 21l3.5-11.5Z" fill="#2dd4bf"></path>
+              <path d="M7 4h10l4 5.5L12 21 3 9.5 7 4Z" fill="#f7bfd0"></path>
+              <path d="M3 9.5h18L12 21 3 9.5Z" fill="#d96c94"></path>
+              <path d="M8.5 9.5 12 21l3.5-11.5Z" fill="#ffe4ec"></path>
             </svg>
             <p>
               <b data-gems>480</b>
@@ -146,7 +146,10 @@ const accessories = [
           {badges.map((badge, i) => (
             <button
               type="button"
-              class:list={["badge", { locked: !badge.earned }]}
+              class:list={[
+                "badge",
+                { locked: !badge.earned, rose: badge.earned && i % 2 === 1 },
+              ]}
               aria-pressed={i === 0 ? "true" : "false"}
               data-badge-name={badge.name}
               data-badge-text={badge.text}
@@ -311,7 +314,7 @@ const accessories = [
   .meter span {
     display: block;
     height: 100%;
-    background: #8cc4ff;
+    background: var(--blue-primary);
     border-radius: 99px;
     transition: width 0.6s var(--ease);
   }
@@ -434,6 +437,11 @@ const accessories = [
       0 0 0 4px var(--blue);
   }
 
+  .rose .medal {
+    background: var(--pink-soft);
+    color: var(--pink-text);
+  }
+
   .locked .medal {
     background: #eef2f7;
     color: #8a919b;
@@ -457,12 +465,12 @@ const accessories = [
     grid-column: span 4;
     display: flex;
     flex-direction: column;
-    background: #cfe3fa;
+    background: var(--pink-soft);
     border-color: transparent;
   }
 
   .dress .tile-name {
-    color: #24426e;
+    color: var(--pink-text);
   }
 
   .dress-art {
@@ -501,7 +509,7 @@ const accessories = [
   }
 
   .chips [aria-pressed="true"] {
-    background: var(--blue-deep);
+    background: var(--pink-text);
     color: #fff;
   }
 
@@ -531,8 +539,8 @@ const accessories = [
   }
 
   .week .on {
-    background: var(--blue);
-    color: #fff;
+    background: var(--pink-primary);
+    color: #6d2746;
   }
 
   .miles {

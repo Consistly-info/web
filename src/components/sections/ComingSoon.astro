@@ -38,7 +38,7 @@ import Mascot from "../Mascot.astro";
 <style>
   .soon-section {
     padding-block: var(--section-y);
-    background: var(--sky);
+    background: linear-gradient(90deg, var(--blue-bg) 50%, var(--pink-bg) 50%);
     text-align: center;
   }
 
@@ -67,7 +67,7 @@ import Mascot from "../Mascot.astro";
 
   .lead {
     margin-top: 20px;
-    color: #2b4a75;
+    color: #3b4657;
   }
 
   /* A row of days filling in on a loop: the site's one ambient animation. */
@@ -81,21 +81,26 @@ import Mascot from "../Mascot.astro";
     width: clamp(12px, 3vw, 18px);
     aspect-ratio: 1;
     border-radius: 22%;
-    background: rgb(28 79 146 / 0.14);
+    --on: var(--blue-accent);
+    background: rgb(23 23 23 / 0.1);
     animation: fill 6s calc(var(--i) * 0.28s) var(--ease) infinite;
+  }
+
+  .grow i:nth-child(n + 8) {
+    --on: var(--pink-accent);
   }
 
   @keyframes fill {
     0% {
-      background: rgb(28 79 146 / 0.14);
+      background: rgb(23 23 23 / 0.1);
     }
     12%,
     72% {
-      background: var(--blue);
+      background: var(--on);
     }
     88%,
     100% {
-      background: rgb(28 79 146 / 0.14);
+      background: rgb(23 23 23 / 0.1);
     }
   }
 
@@ -115,7 +120,7 @@ import Mascot from "../Mascot.astro";
   @media (prefers-reduced-motion: reduce) {
     .grow i {
       animation: none;
-      background: var(--blue);
+      background: var(--on);
     }
   }
 </style>

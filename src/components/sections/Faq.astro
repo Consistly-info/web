@@ -45,7 +45,12 @@ const faqs = [
 ];
 ---
 
-<section class="section" id="faq" aria-labelledby="faq-title">
+<section
+  class="section faq"
+  id="faq"
+  aria-labelledby="faq-title"
+  data-theme="pink"
+>
   <div class="page layout">
     <div class="head reveal">
       <p class="eyebrow">FAQ</p>
@@ -72,6 +77,10 @@ const faqs = [
 </section>
 
 <style>
+  .faq {
+    background: var(--accent-bg);
+  }
+
   .layout {
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
@@ -95,7 +104,7 @@ const faqs = [
   }
 
   details {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid #f3dce5;
     interpolate-size: allow-keywords;
   }
 
@@ -129,7 +138,7 @@ const faqs = [
   }
 
   summary:hover {
-    color: var(--blue-deep);
+    color: var(--accent-text);
   }
 
   .plus {

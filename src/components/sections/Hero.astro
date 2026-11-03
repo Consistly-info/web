@@ -25,7 +25,7 @@ import TodayScreen from "../screens/TodayScreen.astro";
 
   <div class="stage">
     <div class="strip">
-      <Heat weeks={52} />
+      <Heat weeks={52} split />
     </div>
     <div class="phone">
       <IPhone label="Concept of the Consistly Today screen">
@@ -92,6 +92,14 @@ import TodayScreen from "../screens/TodayScreen.astro";
     /* Crop the phone so the page flows on into the next section */
     height: calc(var(--phone-w) * 1.86);
     clip-path: inset(-200px 0 0 0);
+    /* A soft glow behind each companion, in its own color. */
+    background:
+      radial-gradient(closest-side, var(--blue-bg), rgb(242 248 255 / 0))
+        no-repeat calc(50% - var(--phone-w) * 1.05) 0 / calc(var(--phone-w) * 2)
+        100%,
+      radial-gradient(closest-side, var(--pink-bg), rgb(255 245 248 / 0))
+        no-repeat calc(50% + var(--phone-w) * 1.05) 0 / calc(var(--phone-w) * 2)
+        100%;
     animation: rise 1s var(--ease) both;
   }
 

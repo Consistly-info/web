@@ -109,7 +109,12 @@ const DONE = 9;
     flex-direction: column;
     justify-content: flex-end;
     padding: clamp(20px, 2.6vw, 32px);
-    background: #cfe3fa;
+    /* Each companion stands on its own color. */
+    background: linear-gradient(
+      90deg,
+      var(--blue-soft) 50%,
+      var(--pink-soft) 50%
+    );
     border-radius: 24px;
   }
 
@@ -128,7 +133,7 @@ const DONE = 9;
 
   .art-text {
     margin-top: 2px;
-    color: #24426e;
+    color: #3b4657;
     font-size: 15px;
     line-height: 1.4;
   }
