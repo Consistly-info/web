@@ -1,6 +1,6 @@
 # Consistly website
 
-The coming-soon website for **Consistly**, an upcoming habit tracker and personal growth companion for iPhone. Build habits. Watch yourself grow.
+The coming-soon website for **Consistly**, an upcoming habit tracker and personal growth companion for iPhone and Mac. Build habits. Watch yourself grow.
 
 It is a single static page with no backend, database, or tracking. Everything it shows is a concept: the screens are built in HTML and CSS, and the numbers are generated sample data.
 
@@ -33,7 +33,8 @@ src/
   components/
     sections/             One file per page section
     screens/              iPhone screen mockups
-    IPhone.astro          Device frame
+    IPhone.astro          iPhone frame
+    MacBook.astro         MacBook mockup with the Mac app and widgets
     Widget.astro          iOS widget mockups
     Heat.astro            Static contribution graph
     Mascot.astro          The companion and its accessories

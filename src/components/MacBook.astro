@@ -1,0 +1,267 @@
+---
+/**
+ * A CSS MacBook showing the planned Mac app and desktop widgets.
+ * Set --mac-w on a parent to resize it. Everything scales through --u.
+ */
+import Heat from "./Heat.astro";
+import Mascot from "./Mascot.astro";
+import Widget from "./Widget.astro";
+
+const sidebar = ["Today", "Graph", "Companion", "Insights"];
+const habits = [
+  { name: "Morning walk", done: true },
+  { name: "Read 20 pages", done: true },
+  { name: "Drink water", done: true },
+  { name: "Meditate", done: false },
+];
+---
+
+<div
+  class="macbook"
+  role="img"
+  aria-label="Concept of the Consistly Mac app on a MacBook, with habit widgets on the desktop"
+>
+  <div class="lid">
+    <div class="screen">
+      <span class="notch"></span>
+      <div class="menubar">
+        <b>Consistly</b>
+        <span>File</span>
+        <span>View</span>
+        <span class="clock">Mon Nov 2 9:41</span>
+      </div>
+
+      <div class="window">
+        <div class="side">
+          <div class="lights">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+          {sidebar.map((item, i) => (
+            <span class:list={["nav", { on: i === 0 }]}>{item}</span>
+          ))}
+          <div class="buddy">
+            <Mascot sizes="90px" />
+          </div>
+        </div>
+        <div class="main">
+          <p class="title">Today</p>
+          <ul>
+            {habits.map((habit) => (
+              <li class:list={{ done: habit.done }}>
+                <i />
+                {habit.name}
+              </li>
+            ))}
+          </ul>
+          <p class="label">Last 24 weeks</p>
+          <Heat weeks={24} />
+        </div>
+      </div>
+
+      <div class="widgets">
+        <Widget kind="graph" />
+        <div class="pair">
+          <Widget kind="streak" />
+          <Widget kind="progress" />
+        </div>
+        <Widget kind="checklist" />
+      </div>
+    </div>
+  </div>
+  <div class="base"></div>
+</div>
+
+<style>
+  .macbook {
+    --u: calc(var(--mac-w, 900px) / 900);
+    width: var(--mac-w, 900px);
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .lid {
+    margin-inline: calc(var(--u) * 48);
+    padding: calc(var(--u) * 10);
+    background: #1c1e21;
+    border-radius: calc(var(--u) * 20) calc(var(--u) * 20) 0 0;
+    box-shadow: inset 0 0 0 calc(var(--u) * 1.5) #3f4348;
+  }
+
+  .screen {
+    position: relative;
+    height: calc(var(--u) * 550);
+    overflow: hidden;
+    background: linear-gradient(160deg, #d6e8fc 0%, #b1d2f6 55%, #84b3ea 100%);
+    border-radius: calc(var(--u) * 9) calc(var(--u) * 9) 0 0;
+    color: #171717;
+    font-size: calc(var(--u) * 13);
+    line-height: 1.3;
+  }
+
+  .notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 2;
+    width: calc(var(--u) * 86);
+    height: calc(var(--u) * 16);
+    background: #1c1e21;
+    border-radius: 0 0 calc(var(--u) * 7) calc(var(--u) * 7);
+    transform: translateX(-50%);
+  }
+
+  .menubar {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 14);
+    height: calc(var(--u) * 22);
+    padding-inline: calc(var(--u) * 14);
+    background: rgb(255 255 255 / 0.55);
+    font-size: calc(var(--u) * 11);
+  }
+
+  .clock {
+    margin-left: auto;
+  }
+
+  .window {
+    position: absolute;
+    top: calc(var(--u) * 42);
+    left: calc(var(--u) * 20);
+    display: flex;
+    width: calc(var(--u) * 396);
+    height: calc(var(--u) * 356);
+    overflow: hidden;
+    background: #fff;
+    border-radius: calc(var(--u) * 12);
+    box-shadow: 0 calc(var(--u) * 12) calc(var(--u) * 34) rgb(15 35 70 / 0.22);
+  }
+
+  .side {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: calc(var(--u) * 3);
+    width: calc(var(--u) * 112);
+    padding: calc(var(--u) * 12) calc(var(--u) * 8);
+    background: #f0f5fb;
+  }
+
+  .lights {
+    display: flex;
+    gap: calc(var(--u) * 5);
+    margin: 0 0 calc(var(--u) * 14) calc(var(--u) * 4);
+  }
+
+  .lights i {
+    width: calc(var(--u) * 9);
+    height: calc(var(--u) * 9);
+    background: #ced7e2;
+    border-radius: 50%;
+  }
+
+  .nav {
+    padding: calc(var(--u) * 5) calc(var(--u) * 8);
+    border-radius: calc(var(--u) * 6);
+    font-size: calc(var(--u) * 12);
+  }
+
+  .on {
+    background: var(--sky);
+    color: var(--blue-deep);
+    font-weight: 600;
+  }
+
+  .buddy {
+    width: calc(var(--u) * 86);
+    margin: auto auto 0;
+  }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+    padding: calc(var(--u) * 18) calc(var(--u) * 18) 0;
+  }
+
+  .title {
+    font-size: calc(var(--u) * 24);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  ul {
+    display: grid;
+    gap: calc(var(--u) * 8);
+    margin-block: calc(var(--u) * 12) calc(var(--u) * 18);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 9);
+    font-size: calc(var(--u) * 13);
+    font-weight: 500;
+  }
+
+  li i {
+    flex: none;
+    width: calc(var(--u) * 16);
+    height: calc(var(--u) * 16);
+    border: calc(var(--u) * 1.5) solid #d3dbe5;
+    border-radius: 50%;
+  }
+
+  .done i {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
+  .label {
+    margin-bottom: calc(var(--u) * 7);
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 11);
+    font-weight: 600;
+  }
+
+  .main {
+    --gap: calc(var(--u) * 1.5);
+  }
+
+  .widgets {
+    position: absolute;
+    top: calc(var(--u) * 42);
+    right: calc(var(--u) * 20);
+    display: grid;
+    gap: calc(var(--u) * 11);
+    transform-origin: top right;
+    scale: 0.97;
+  }
+
+  .pair {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .base {
+    position: relative;
+    height: calc(var(--u) * 20);
+    background: linear-gradient(180deg, #d9dee5, #aeb6c2);
+    border-radius: 0 0 calc(var(--u) * 16) calc(var(--u) * 16);
+    box-shadow: 0 calc(var(--u) * 24) calc(var(--u) * 40) calc(var(--u) * -18)
+      rgb(18 40 70 / 0.4);
+  }
+
+  .base::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: calc(var(--u) * 120);
+    height: calc(var(--u) * 7);
+    background: #9aa3b0;
+    border-radius: 0 0 calc(var(--u) * 7) calc(var(--u) * 7);
+    transform: translateX(-50%);
+  }
+</style>
