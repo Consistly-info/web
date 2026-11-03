@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="src/assets/mascot/mascot-blue-480.webp" width="170" alt="The blue Consistly companion">
-  <img src="src/assets/mascot/mascot-pink-480.webp" width="170" alt="The pink Consistly companion">
+  <img src="src/assets/mascot/mascot-pink-480.webp" width="200" alt="The pink Consistly companion">
 </p>
 
 <h1 align="center">Consistly</h1>
@@ -18,10 +17,6 @@
   <a href="https://github.com/Consistly-info/web/actions/workflows/ci.yml"><img src="https://github.com/Consistly-info/web/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <img src="https://img.shields.io/badge/status-coming%20soon-5B8FD9" alt="Status: coming soon">
   <img src="https://img.shields.io/badge/built%20with-Astro-D96C94" alt="Built with Astro">
-</p>
-
-<p align="center">
-  <img src="docs/images/hero.webp" alt="The Consistly website hero, with the blue and pink companions beside an iPhone showing the Today screen" width="900">
 </p>
 
 This repository holds the official Consistly website, a fast static page that showcases the upcoming app. The app itself is not in this repository.
@@ -44,26 +39,6 @@ Consistly is still in development. Everything below is planned, and details may 
 | **Privacy-first design** | A local-first approach, with no mandatory account intended for basic usage          |
 
 Consistly will be released on the App Store soon.
-
-## A look inside
-
-The screens below are concept designs with sample data.
-
-**Build habits together.** Shared graphs show who showed up, and when.
-
-<img src="docs/images/shared-graph.webp" alt="A shared 90-day gym challenge graph, with blue, pink, and purple cells for You, Alex, and both" width="900">
-
-**Earn XP, unlock new looks.** Pick a companion and try on what you've earned.
-
-<img src="docs/images/companion.webp" alt="The pink companion in a scarf, beside a wardrobe of hats and clothes with XP costs" width="900">
-
-**Always within reach.** Widgets for your iPhone and your Mac.
-
-<img src="docs/images/widgets.webp" alt="Consistly widgets on an iPhone Home Screen and Lock Screen" width="900">
-
-<p align="center">
-  <img src="docs/images/mac.webp" alt="The Consistly Mac app on a MacBook, with widgets on the desktop" width="720">
-</p>
 
 ## Tech stack
 
@@ -116,7 +91,6 @@ src/
     challenge.ts          Sample data for social challenges
     sample.ts             Sample data for every other graph and chart
   styles/global.css       Design tokens and base styles
-docs/images/              Screenshots used in this README
 ```
 
 ## Design notes
