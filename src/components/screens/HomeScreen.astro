@@ -60,9 +60,15 @@ const apps = ["#e8b64c", "#6aa5d8", "#e2795f", "Consistly"];
     border-radius: calc(var(--u) * 14);
   }
 
-  .own :global(svg) {
-    width: 100%;
-    height: 100%;
+  .own {
+    display: grid;
+    place-items: center;
+    background: #2a6fc4;
+  }
+
+  .own :global(img) {
+    width: 88%;
+    height: 88%;
   }
 
   .dock {

@@ -1,24 +1,19 @@
 ---
-// The mark is the companion's face.
+// The logo is the Consistly companion.
+import mascot from "../assets/mascot/mascot-240.webp";
+
 interface Props {
   size?: number;
 }
 
-const { size = 26 } = Astro.props;
+const { size = 34 } = Astro.props;
 ---
 
-<svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
-  <rect width="32" height="32" rx="7.5" fill="#2a6fc4"></rect>
-  <path
-    d="M16 8.3c6.6 0 10.7 5.2 10.7 11.2 0 3.9-1 6.1-2.3 7.1-2.3 1.3-14.5 1.3-16.8 0-1.3-1-2.3-3.2-2.3-7.1 0-6 4.1-11.2 10.7-11.2Z"
-    fill="#dcecfd"
-  ></path>
-  <path
-    d="M13.4 9.3c-.2-1.3 1-2 2.2-1.9-.8-.9-.3-2 .8-2 1.4 0 2.7 1.7 2.6 3.6"
-    fill="#dcecfd"
-  ></path>
-  <circle cx="11.9" cy="17.3" r="1.6" fill="#14181f"></circle>
-  <circle cx="20.1" cy="17.3" r="1.6" fill="#14181f"></circle>
-  <ellipse cx="16" cy="20.4" rx="3.7" ry="2.8" fill="#fff"></ellipse>
-  <ellipse cx="16" cy="19.5" rx="1.5" ry="1" fill="#56617a"></ellipse>
-</svg>
+<img src={mascot.src} width={size} height={size} alt="" decoding="async" />
+
+<style>
+  img {
+    display: block;
+    flex: none;
+  }
+</style>
