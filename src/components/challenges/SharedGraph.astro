@@ -1,0 +1,570 @@
+---
+import Avatar from "./Avatar.astro";
+import { CHALLENGE_DAYS, CHALLENGE_STATS } from "../../lib/challenge";
+
+const ROWS = 7;
+const COLS = 13;
+const WEEKDAYS = ["Mon", "", "Wed", "", "Fri", "", "Sun"];
+
+const rows = Array.from({ length: ROWS }, (_, row) =>
+  Array.from(
+    { length: COLS },
+    (_, col) => CHALLENGE_DAYS[col * ROWS + row],
+  ).filter(Boolean),
+);
+
+const months: { col: number; label: string }[] = [];
+let seen = "";
+for (let col = 0; col < COLS; col++) {
+  const day = CHALLENGE_DAYS[col * ROWS];
+  const key = day.date.slice(0, 7);
+  if (key !== seen && day.date.slice(8) <= "07") {
+    months.push({
+      col,
+      label: new Date(`${day.date}T00:00:00Z`).toLocaleDateString("en-US", {
+        month: "short",
+        timeZone: "UTC",
+      }),
+    });
+  }
+  seen = key;
+}
+
+const today = CHALLENGE_DAYS.findLastIndex((d) => d.state !== "upcoming");
+const stats = [
+  { label: "Days completed", value: CHALLENGE_STATS.daysCompleted },
+  { label: "Current streak", value: CHALLENGE_STATS.streak, unit: "days" },
+  { label: "Days remaining", value: CHALLENGE_STATS.remaining },
+];
+const legend = [
+  { state: "you", label: "You" },
+  { state: "alex", label: "Alex" },
+  { state: "both", label: "Both of you" },
+  { state: "none", label: "Neither" },
+  { state: "upcoming", label: "Upcoming" },
+];
+---
+
+<div class="panel reveal" data-shared-graph data-view="shared">
+  <div class="top">
+    <div class="who">
+      <div class="faces">
+        <Avatar person="you" />
+        <Avatar person="alex" />
+      </div>
+      <div>
+        <h3>90-Day Gym Challenge</h3>
+        <p>You and Alex</p>
+      </div>
+    </div>
+    <div class="views" role="group" aria-label="Show activity for">
+      <button type="button" aria-pressed="true" data-view-btn="shared">
+        Together
+      </button>
+      <button type="button" aria-pressed="false" data-view-btn="you">
+        You
+      </button>
+      <button type="button" aria-pressed="false" data-view-btn="alex">
+        Alex
+      </button>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="graph" data-graph-area>
+      <div class="months" aria-hidden="true">
+        {months.map((m) => (
+          <span style={`grid-column-start:${m.col + 1}`}>{m.label}</span>
+        ))}
+      </div>
+      <div class="plot">
+        <div class="weekdays" aria-hidden="true">
+          {WEEKDAYS.map((d) => (
+            <span>{d}</span>
+          ))}
+        </div>
+        <div
+          class="days"
+          role="grid"
+          aria-label="Sample 90-day shared activity. Use the arrow keys to move between days."
+          data-days
+        >
+          {rows.map((row) => (
+            <div class="row" role="row">
+              {row.map((day) => (
+                <button
+                  type="button"
+                  role="gridcell"
+                  class:list={["cell", day.state]}
+                  data-i={day.index}
+                  data-state={day.state}
+                  data-date={day.label}
+                  data-who={day.who}
+                  tabindex={day.index === today ? 0 : -1}
+                  aria-label={`${day.label}: ${day.who}`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="tip" aria-hidden="true" hidden data-tip>
+        <b data-tip-date></b>
+        <span data-tip-who></span>
+      </div>
+      <ul class="legend" aria-label="Legend">
+        {legend.map((item) => (
+          <li>
+            <i class:list={["swatch", item.state]} />
+            {item.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="numbers">
+      <div class="completion">
+        <p class="big">{CHALLENGE_STATS.completion}%</p>
+        <p class="cap">Challenge complete</p>
+        <div class="bar">
+          <span style={`width:${CHALLENGE_STATS.completion}%`}></span>
+        </div>
+      </div>
+      <dl>
+        {stats.map((stat) => (
+          <div>
+            <dt>{stat.label}</dt>
+            <dd>
+              {stat.value}
+              {stat.unit && <small> {stat.unit}</small>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <p class="note">
+        A streak counts any day at least one of you showed up. Sample data.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .panel {
+    --you: #36b36a;
+    --alex: #4a8bdc;
+    --both: #7c5fd6;
+    --none: var(--heat-0);
+    margin-top: clamp(40px, 6vw, 72px);
+    padding: clamp(18px, 3vw, 36px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .who {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .faces {
+    display: flex;
+    --avatar: 44px;
+  }
+
+  .faces :global(.avatar + .avatar) {
+    margin-left: -12px;
+    box-shadow: 0 0 0 2px var(--surface);
+  }
+
+  h3 {
+    font-size: clamp(19px, 2.2vw, 24px);
+    font-weight: 650;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+  }
+
+  .who p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .views {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--sky-soft);
+    border-radius: 99px;
+  }
+
+  .views button {
+    min-height: 36px;
+    padding-inline: 14px;
+    border-radius: 99px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .views button:hover {
+    color: var(--ink);
+  }
+
+  .views [aria-pressed="true"] {
+    background: var(--surface);
+    color: var(--blue-deep);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgb(18 40 70 / 0.14);
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+    gap: clamp(28px, 5vw, 64px);
+    margin-top: clamp(24px, 3vw, 36px);
+  }
+
+  .graph {
+    position: relative;
+    --cols: 13;
+    --label: 34px;
+    --gap: clamp(3px, 0.6vw, 6px);
+  }
+
+  .months {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--gap);
+    margin: 0 0 8px var(--label);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .months span {
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  .plot {
+    display: grid;
+    grid-template-columns: var(--label) minmax(0, 1fr);
+  }
+
+  .weekdays {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    gap: var(--gap);
+    align-items: center;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .days {
+    display: grid;
+    gap: var(--gap);
+  }
+
+  .panel.is-visible .days {
+    animation: fill-in 1.5s var(--ease) both;
+  }
+
+  @keyframes fill-in {
+    from {
+      clip-path: inset(-4px 100% -4px -4px);
+    }
+    to {
+      clip-path: inset(-4px -4px -4px -4px);
+    }
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  .cell {
+    display: block;
+    aspect-ratio: 1;
+    border-radius: 24%;
+    transition:
+      transform 0.15s var(--ease),
+      background 0.25s,
+      opacity 0.25s;
+  }
+
+  .cell:hover,
+  .cell:focus-visible {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.14);
+  }
+
+  .you {
+    background: var(--you);
+  }
+
+  .alex {
+    background: var(--alex);
+  }
+
+  .both {
+    background: var(--both);
+  }
+
+  .none {
+    background: var(--none);
+  }
+
+  .upcoming {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--line);
+  }
+
+  /* Single-person views: show that person's sessions in their own color. */
+  [data-view="you"] .cell.alex,
+  [data-view="alex"] .cell.you {
+    background: var(--none);
+  }
+
+  [data-view="you"] .cell.both {
+    background: var(--you);
+  }
+
+  [data-view="alex"] .cell.both {
+    background: var(--alex);
+  }
+
+  .tip {
+    position: absolute;
+    z-index: 3;
+    display: grid;
+    width: max-content;
+    max-width: 200px;
+    padding: 7px 11px;
+    background: var(--ink);
+    border-radius: 9px;
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.3;
+    pointer-events: none;
+    transform: translate(-50%, -100%);
+  }
+
+  .tip[hidden] {
+    display: none;
+  }
+
+  .tip span {
+    color: #d6dbe3;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin: 18px 0 0 var(--label);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+
+  .numbers {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .big {
+    font-size: clamp(56px, 7vw, 84px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+
+  .cap {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  .bar {
+    height: 8px;
+    margin-top: 14px;
+    overflow: hidden;
+    background: var(--heat-0);
+    border-radius: 99px;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    background: var(--both);
+    border-radius: 99px;
+  }
+
+  dl {
+    display: grid;
+    gap: 12px;
+  }
+
+  dl div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  dd {
+    font-size: 24px;
+    font-weight: 660;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  small {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .panel.is-visible .days {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .graph {
+      --label: 28px;
+    }
+
+    .weekdays,
+    .months {
+      font-size: 11px;
+    }
+
+    .views {
+      width: 100%;
+    }
+
+    .views button {
+      flex: 1;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-shared-graph]");
+  const area = root?.querySelector<HTMLElement>("[data-graph-area]");
+  const tip = root?.querySelector<HTMLElement>("[data-tip]");
+  const grid = root?.querySelector<HTMLElement>("[data-days]");
+
+  if (root && area && tip && grid) {
+    const cells = new Map(
+      [...grid.querySelectorAll<HTMLButtonElement>("[data-i]")].map((c) => [
+        Number(c.dataset.i),
+        c,
+      ]),
+    );
+    const date = tip.querySelector("[data-tip-date]");
+    const who = tip.querySelector("[data-tip-who]");
+
+    const showTip = (cell: HTMLElement) => {
+      if (date) date.textContent = cell.dataset.date ?? "";
+      if (who) who.textContent = cell.dataset.who ?? "";
+      tip.hidden = false;
+      const box = area.getBoundingClientRect();
+      const rect = cell.getBoundingClientRect();
+      const half = tip.offsetWidth / 2;
+      const center = rect.left + rect.width / 2 - box.left;
+      const x = Math.min(Math.max(half, center), box.width - half);
+      tip.style.left = `${x}px`;
+      tip.style.top = `${rect.top - box.top - 8}px`;
+    };
+
+    const cellFrom = (target: EventTarget | null) =>
+      (target as Element).closest<HTMLElement>("[data-i]");
+
+    grid.addEventListener("mouseover", (event) => {
+      const cell = cellFrom(event.target);
+      if (cell) showTip(cell);
+    });
+    grid.addEventListener("mouseleave", () => (tip.hidden = true));
+    grid.addEventListener("click", (event) => {
+      const cell = cellFrom(event.target);
+      if (cell) showTip(cell);
+    });
+    grid.addEventListener("focusin", (event) => {
+      const cell = cellFrom(event.target);
+      if (cell?.matches(":focus-visible")) showTip(cell);
+    });
+    grid.addEventListener("focusout", () => (tip.hidden = true));
+
+    grid.addEventListener("keydown", (event) => {
+      const cell = cellFrom(event.target);
+      if (!cell) return;
+      const index = Number(cell.dataset.i);
+      const step: Record<string, number> = {
+        ArrowUp: index % 7 === 0 ? 0 : -1,
+        ArrowDown: index % 7 === 6 ? 0 : 1,
+        ArrowLeft: -7,
+        ArrowRight: 7,
+      };
+      if (!(event.key in step)) return;
+      event.preventDefault();
+      const next = cells.get(index + step[event.key]);
+      if (!next) return;
+      cell.setAttribute("tabindex", "-1");
+      next.setAttribute("tabindex", "0");
+      next.focus();
+    });
+
+    const buttons = root.querySelectorAll<HTMLButtonElement>("[data-view-btn]");
+    buttons.forEach((button) =>
+      button.addEventListener("click", () => {
+        root.dataset.view = button.dataset.viewBtn;
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b === button)),
+        );
+      }),
+    );
+  }
+</script>

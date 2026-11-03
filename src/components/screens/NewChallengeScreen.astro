@@ -1,0 +1,239 @@
+---
+import Avatar from "../challenges/Avatar.astro";
+---
+
+<div class="sheet" data-new-challenge>
+  <div class="bar">
+    <span class="link">Cancel</span>
+    <b>New Challenge</b>
+    <span class="link strong">Start</span>
+  </div>
+
+  <div class="field stack">
+    <span class="tiny">Challenge</span>
+    <b class="name" data-field="name">
+      90 Days of Gym
+    </b>
+    <span class="desc" data-field="description">
+      Build a consistent workout routine together.
+    </span>
+  </div>
+
+  <div class="field between">
+    <span>Duration</span>
+    <b data-field="duration">90 days</b>
+  </div>
+  <div class="field between">
+    <span>Goal</span>
+    <b data-field="goal">4 gym sessions a week</b>
+  </div>
+
+  <p class="label">Participants</p>
+  <ul class="people">
+    <li>
+      <Avatar person="you" />
+      <span class="person">You</span>
+      <span class="state">Host</span>
+    </li>
+    <li>
+      <Avatar person="alex" />
+      <span class="person">Alex</span>
+      <span class="state">Joined</span>
+    </li>
+    <li>
+      <Avatar person="sam" />
+      <span class="person">Sam</span>
+      <button type="button" class="invite" aria-pressed="false" data-invite>
+        Invite
+      </button>
+    </li>
+  </ul>
+
+  <div class="share">
+    <span class="plus" aria-hidden="true"></span>
+    <span class="share-text">
+      <b>Invite more friends</b>
+      <span>Share an invite link</span>
+    </span>
+  </div>
+
+  <div class="start">Start Challenge</div>
+</div>
+
+<style>
+  .sheet {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: calc(var(--u) * 66) calc(var(--u) * 18) 0;
+    font-size: calc(var(--u) * 15.5);
+    --avatar: calc(var(--u) * 38);
+  }
+
+  .bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: calc(var(--u) * 18);
+  }
+
+  .bar b {
+    font-size: calc(var(--u) * 17);
+  }
+
+  .link {
+    color: var(--blue-deep);
+  }
+
+  .strong {
+    font-weight: 650;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 12);
+    margin-bottom: calc(var(--u) * 8);
+    padding: calc(var(--u) * 13) calc(var(--u) * 15);
+    background: #fff;
+    border-radius: calc(var(--u) * 14);
+  }
+
+  .stack {
+    display: grid;
+    gap: calc(var(--u) * 3);
+  }
+
+  .tiny {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 12.5);
+    font-weight: 600;
+  }
+
+  .name {
+    font-size: calc(var(--u) * 21);
+    letter-spacing: -0.015em;
+  }
+
+  .desc {
+    color: #5f5f5f;
+    font-size: calc(var(--u) * 14);
+  }
+
+  .between {
+    justify-content: space-between;
+  }
+
+  .between b {
+    color: var(--blue-deep);
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .label {
+    margin: calc(var(--u) * 18) 0 calc(var(--u) * 8) calc(var(--u) * 4);
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 13);
+    font-weight: 600;
+  }
+
+  .people {
+    background: #fff;
+    border-radius: calc(var(--u) * 14);
+  }
+
+  .people li {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 12);
+    min-height: calc(var(--u) * 58);
+    padding-inline: calc(var(--u) * 14);
+  }
+
+  .people li + li {
+    border-top: 1px solid #e6ebf2;
+  }
+
+  .person {
+    flex: 1;
+    font-weight: 600;
+  }
+
+  .state {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 14);
+  }
+
+  .invite {
+    min-height: max(32px, calc(var(--u) * 34));
+    padding-inline: calc(var(--u) * 15);
+    background: var(--blue-deep);
+    border-radius: 99px;
+    color: #fff;
+    font-size: calc(var(--u) * 14);
+    font-weight: 600;
+  }
+
+  .share {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 12);
+    margin-top: calc(var(--u) * 8);
+    padding: calc(var(--u) * 11) calc(var(--u) * 14);
+    border: calc(var(--u) * 1.5) dashed #ced7e2;
+    border-radius: calc(var(--u) * 14);
+  }
+
+  .plus {
+    position: relative;
+    flex: none;
+    width: var(--avatar);
+    height: var(--avatar);
+    background: var(--sky);
+    border-radius: 50%;
+  }
+
+  .plus::before,
+  .plus::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 42%;
+    height: calc(var(--u) * 2.5);
+    background: var(--blue-deep);
+    border-radius: 99px;
+    transform: translate(-50%, -50%);
+  }
+
+  .plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+
+  .share-text {
+    display: grid;
+    font-size: calc(var(--u) * 14);
+    line-height: 1.25;
+  }
+
+  .share-text span {
+    color: #6b6b6b;
+    font-size: calc(var(--u) * 13);
+  }
+
+  .start {
+    margin-top: auto;
+    margin-bottom: calc(var(--u) * 26);
+    padding-block: calc(var(--u) * 15);
+    background: var(--blue-deep);
+    border-radius: calc(var(--u) * 16);
+    color: #fff;
+    font-weight: 650;
+    text-align: center;
+  }
+
+  .invite[aria-pressed="true"] {
+    background: var(--sky);
+    color: var(--blue-deep);
+  }
+</style>

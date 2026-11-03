@@ -32,6 +32,7 @@ src/
   layouts/Base.astro      HTML shell and scroll reveal
   components/
     sections/             One file per page section
+    challenges/           Social Challenges graph, creator, leaderboard, feed, rewards
     screens/              iPhone screen mockups
     IPhone.astro          iPhone frame
     MacBook.astro         MacBook mockup with the Mac app and widgets
@@ -39,6 +40,7 @@ src/
     Heat.astro            Static contribution graph
     Mascot.astro          The companion and its accessories
   assets/mascot/          Companion images
+  lib/challenge.ts        Sample data for Social Challenges
   lib/sample.ts           Sample data behind every graph and chart
   styles/global.css       Design tokens and base styles
 ```

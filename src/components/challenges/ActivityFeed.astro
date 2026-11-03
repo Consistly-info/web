@@ -1,0 +1,197 @@
+---
+import Avatar from "./Avatar.astro";
+import type { Person } from "../../lib/challenge";
+
+const reactions = [
+  { emoji: "🔥", name: "Fire" },
+  { emoji: "👏", name: "Applause" },
+  { emoji: "💪", name: "Strong" },
+];
+
+const items: {
+  person: Person;
+  kind: string;
+  text: string;
+  time: string;
+  counts?: number[];
+}[] = [
+  {
+    person: "alex",
+    kind: "Friend activity",
+    text: "Alex just completed today's gym session! 🔥",
+    time: "2m",
+    counts: [3, 1, 0],
+  },
+  {
+    person: "sam",
+    kind: "Achievement",
+    text: "Your friend reached a 14-day streak!",
+    time: "1h",
+    counts: [2, 4, 1],
+  },
+  {
+    person: "you",
+    kind: "Challenge update",
+    text: "Both of you completed this week's challenge!",
+    time: "Sun",
+  },
+  {
+    person: "alex",
+    kind: "Milestone",
+    text: "You and Alex passed the 60-day mark together.",
+    time: "Sat",
+    counts: [5, 2, 3],
+  },
+  {
+    person: "sam",
+    kind: "Invitation",
+    text: "Sam invited you to 30 Days of Reading.",
+    time: "Fri",
+  },
+];
+---
+
+<div class="feed" data-feed>
+  <h3>Keep each other going</h3>
+  <p class="sub">Cheer on your friends and celebrate the wins together.</p>
+  <ul>
+    {items.map((item) => (
+      <li>
+        <Avatar person={item.person} />
+        <div class="content">
+          <p class="meta">
+            <span>{item.kind}</span>
+            <span>{item.time}</span>
+          </p>
+          <p class="text">{item.text}</p>
+          {item.counts && (
+            <div class="reactions" role="group" aria-label="React">
+              {reactions.map((r, i) => (
+                <button
+                  type="button"
+                  aria-pressed="false"
+                  aria-label={`${r.name}, ${item.counts?.[i]}`}
+                  data-name={r.name}
+                  data-count={item.counts?.[i]}
+                >
+                  <span aria-hidden="true">{r.emoji}</span>
+                  <span class="n" aria-hidden="true">
+                    {item.counts?.[i]}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  h3 {
+    font-size: 20px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .sub {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  ul {
+    margin-top: 12px;
+    --avatar: 40px;
+  }
+
+  li {
+    display: flex;
+    gap: 12px;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .text {
+    margin-top: 1px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+
+  .reactions {
+    display: flex;
+    gap: 6px;
+    margin-top: 9px;
+  }
+
+  .reactions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 34px;
+    padding-inline: 10px;
+    background: var(--sky-soft);
+    border: 1px solid transparent;
+    border-radius: 99px;
+    font-size: 14px;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      transform 0.2s var(--ease);
+  }
+
+  .reactions button:hover {
+    transform: translateY(-1px);
+  }
+
+  .reactions [aria-pressed="true"] {
+    background: var(--sky);
+    border-color: var(--blue);
+  }
+
+  .n {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  [aria-pressed="true"] .n {
+    color: var(--blue-deep);
+  }
+</style>
+
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-feed] [data-count]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        const on = button.getAttribute("aria-pressed") !== "true";
+        const count = Number(button.dataset.count) + (on ? 1 : 0);
+        button.setAttribute("aria-pressed", String(on));
+        button.setAttribute("aria-label", `${button.dataset.name}, ${count}`);
+        const label = button.querySelector(".n");
+        if (label) label.textContent = String(count);
+      }),
+    );
+</script>

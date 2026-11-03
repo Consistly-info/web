@@ -1,0 +1,186 @@
+---
+import IPhone from "../IPhone.astro";
+import NewChallengeScreen from "../screens/NewChallengeScreen.astro";
+
+const templates = [
+  {
+    name: "90 Days of Gym",
+    description: "Build a consistent workout routine together.",
+    duration: "90 days",
+    goal: "4 gym sessions a week",
+  },
+  {
+    name: "30 Days of Reading",
+    description: "Finish more books, one chapter at a time.",
+    duration: "30 days",
+    goal: "20 pages a day",
+  },
+  {
+    name: "100 Days of Coding",
+    description: "Write a little code every single day.",
+    duration: "100 days",
+    goal: "1 hour a day",
+  },
+  {
+    name: "21 Days of Meditation",
+    description: "Make a few quiet minutes part of your day.",
+    duration: "21 days",
+    goal: "10 minutes a day",
+  },
+  {
+    name: "60 Days of Learning",
+    description: "Pick a skill and keep showing up for it.",
+    duration: "60 days",
+    goal: "5 sessions a week",
+  },
+  {
+    name: "30 Days of Fitness",
+    description: "Move your body and hold each other to it.",
+    duration: "30 days",
+    goal: "30 minutes a day",
+  },
+];
+---
+
+<div class="creator reveal" id="challenge-create" data-creator>
+  <div class="copy">
+    <h3>Start a challenge in seconds.</h3>
+    <p class="text">
+      Pick a goal, set how long it runs, and invite the friends who'll keep you
+      honest.
+    </p>
+    <p class="pick" id="template-label">
+      Try a challenge
+    </p>
+    <div class="templates" role="group" aria-labelledby="template-label">
+      {templates.map((t, i) => (
+        <button
+          type="button"
+          aria-pressed={i === 0 ? "true" : "false"}
+          data-name={t.name}
+          data-description={t.description}
+          data-duration={t.duration}
+          data-goal={t.goal}
+        >
+          {t.name}
+        </button>
+      ))}
+    </div>
+    <p class="note">
+      This is a demo. No invitations are sent, and challenges aren't available
+      yet.
+    </p>
+  </div>
+
+  <div class="phone">
+    <IPhone label="Working sample of the New Challenge screen">
+      <NewChallengeScreen />
+    </IPhone>
+  </div>
+</div>
+
+<style>
+  .creator {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(40px, 7vw, 96px);
+    margin-top: clamp(64px, 9vw, 120px);
+  }
+
+  h3 {
+    font-size: clamp(28px, 3.8vw, 44px);
+    font-weight: 680;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .text {
+    max-width: 480px;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: clamp(17px, 1.7vw, 19px);
+    letter-spacing: -0.01em;
+  }
+
+  .pick {
+    margin-top: 32px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .templates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-block: 12px 16px;
+  }
+
+  .templates button {
+    min-height: 40px;
+    padding-inline: 15px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .templates button:hover {
+    border-color: var(--blue);
+  }
+
+  .templates [aria-pressed="true"] {
+    background: var(--blue-deep);
+    border-color: var(--blue-deep);
+    color: #fff;
+  }
+
+  .phone {
+    --phone-w: clamp(250px, 26vw, 310px);
+  }
+
+  @media (max-width: 760px) {
+    .creator {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .phone {
+      display: flex;
+      justify-content: center;
+      --phone-w: min(78vw, 300px);
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-creator]");
+
+  if (root) {
+    const buttons = root.querySelectorAll<HTMLButtonElement>("[data-name]");
+    const fields = root.querySelectorAll<HTMLElement>("[data-field]");
+
+    buttons.forEach((button) =>
+      button.addEventListener("click", () => {
+        buttons.forEach((b) =>
+          b.setAttribute("aria-pressed", String(b === button)),
+        );
+        fields.forEach((field) => {
+          field.textContent = button.dataset[field.dataset.field ?? ""] ?? "";
+        });
+      }),
+    );
+
+    const invite = root.querySelector<HTMLButtonElement>("[data-invite]");
+    invite?.addEventListener("click", () => {
+      const on = invite.getAttribute("aria-pressed") !== "true";
+      invite.setAttribute("aria-pressed", String(on));
+      invite.textContent = on ? "Invited" : "Invite";
+    });
+  }
+</script>

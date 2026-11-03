@@ -1,0 +1,124 @@
+---
+import ActivityFeed from "../challenges/ActivityFeed.astro";
+import ChallengeCreator from "../challenges/ChallengeCreator.astro";
+import Leaderboard from "../challenges/Leaderboard.astro";
+import SharedGraph from "../challenges/SharedGraph.astro";
+import SharedRewards from "../challenges/SharedRewards.astro";
+import Mascot from "../Mascot.astro";
+import SectionHead from "../SectionHead.astro";
+---
+
+<section class="section" id="challenges" aria-labelledby="challenges-title">
+  <div class="page">
+    <div class="duo reveal">
+      <div>
+        <Mascot accessories={["scarf"]} sizes="200px" idle />
+      </div>
+      <div>
+        <Mascot accessories={["hat"]} sizes="200px" idle />
+      </div>
+    </div>
+
+    <SectionHead
+      id="challenges-title"
+      eyebrow="Social challenges, coming soon"
+      title="Better habits are built together."
+      lead="Challenge your friends, build habits together, and keep each other accountable. Share your progress, celebrate milestones, and turn personal goals into something you achieve together."
+      center
+    />
+
+    <div class="action reveal">
+      <a class="cta" href="#challenge-create">
+        Challenge Your Friends
+      </a>
+      <p class="soon">Planned, coming soon</p>
+    </div>
+
+    <SharedGraph />
+    <ChallengeCreator />
+
+    <div class="social reveal">
+      <div class="tile">
+        <Leaderboard />
+      </div>
+      <div class="tile">
+        <ActivityFeed />
+      </div>
+    </div>
+
+    <SharedRewards />
+
+    <p class="note foot reveal">
+      Concept designs with sample people and data. Social Challenges is a
+      planned feature and isn't available yet.
+    </p>
+  </div>
+</section>
+
+<style>
+  .duo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .duo > div {
+    width: clamp(110px, 15vw, 180px);
+  }
+
+  .duo > div + div {
+    margin-left: -14px;
+  }
+
+  .action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px 14px;
+    margin-top: 28px;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    padding-inline: 22px;
+    background: var(--blue-deep);
+    border-radius: 99px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .cta:hover {
+    background: var(--navy);
+  }
+
+  .social {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 16px;
+    margin-top: clamp(64px, 9vw, 120px);
+  }
+
+  .tile {
+    padding: clamp(20px, 2.6vw, 32px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+  }
+
+  .foot {
+    margin-top: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .social {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
