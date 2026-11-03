@@ -30,8 +30,10 @@ import TodayScreen from "../screens/TodayScreen.astro";
     </div>
     <div class="buddy">
       <Mascot
-        stage="bloom"
-        label="The Consistly companion, a small green sprout character"
+        label="The Consistly companion, a round, soft blue character with a small tuft of hair"
+        sizes="(max-width: 680px) 150px, 290px"
+        eager
+        idle
       />
     </div>
   </div>
@@ -53,7 +55,7 @@ import TodayScreen from "../screens/TodayScreen.astro";
   }
 
   h1 span {
-    color: var(--green-deep);
+    color: var(--blue-deep);
   }
 
   .lead {
@@ -65,14 +67,14 @@ import TodayScreen from "../screens/TodayScreen.astro";
      companion stands on it. */
   .stage {
     --phone-w: clamp(250px, 26vw, 330px);
-    --strip-top: calc(var(--phone-w) * 0.62);
+    --strip-top: calc(var(--phone-w) * 0.8);
     position: relative;
     display: flex;
     justify-content: center;
     margin-top: clamp(48px, 6vw, 72px);
     /* Crop the phone so the page flows on into the next section */
     height: calc(var(--phone-w) * 1.86);
-    overflow: hidden;
+    clip-path: inset(-200px 0 0 0);
     animation: rise 1s var(--ease) both;
   }
 
@@ -96,10 +98,10 @@ import TodayScreen from "../screens/TodayScreen.astro";
   .buddy {
     position: absolute;
     z-index: 2;
-    top: calc(var(--strip-top) - var(--buddy) * 0.93);
-    left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 1.12);
+    top: calc(var(--strip-top) - var(--buddy) * 0.965);
+    left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 1.06);
     width: var(--buddy);
-    --buddy: clamp(112px, 15vw, 196px);
+    --buddy: clamp(130px, 20vw, 290px);
     animation: settle 1s 0.5s var(--ease) both;
   }
 
@@ -128,8 +130,8 @@ import TodayScreen from "../screens/TodayScreen.astro";
 
   @media (max-width: 680px) {
     .buddy {
-      left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 0.56);
-      top: calc(var(--strip-top) + var(--phone-w) * 0.62);
+      left: calc(50% - var(--phone-w) / 2 - var(--buddy) * 0.5);
+      top: calc(var(--phone-w) * 1.28);
       z-index: 2;
     }
   }

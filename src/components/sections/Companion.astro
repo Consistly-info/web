@@ -1,37 +1,48 @@
 ---
-import Mascot, { type Stage } from "../Mascot.astro";
+import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 
-const stages: { id: Stage; name: string; level: number; text: string }[] = [
+const stages: {
+  name: string;
+  level: number;
+  text: string;
+  scale: number;
+  accessories: ("scarf" | "hat" | "crown")[];
+}[] = [
   {
-    id: "seed",
-    name: "Seed",
+    name: "Hatchling",
     level: 1,
-    text: "A tiny beginning, and your very first habit.",
+    text: "Small, curious, and ready for your very first habit.",
+    scale: 0.6,
+    accessories: [],
   },
   {
-    id: "sprout",
-    name: "Sprout",
+    name: "Cub",
     level: 5,
-    text: "Two new leaves. Your first routine is taking root.",
+    text: "A little bigger. Your first routine is starting to stick.",
+    scale: 0.74,
+    accessories: [],
   },
   {
-    id: "sapling",
-    name: "Sapling",
+    name: "Explorer",
     level: 10,
-    text: "Stronger every week, with its first scarf unlocked.",
+    text: "Stronger every week, with a first scarf to show for it.",
+    scale: 0.86,
+    accessories: ["scarf"],
   },
   {
-    id: "bloom",
-    name: "Bloom",
+    name: "Adventurer",
     level: 20,
-    text: "Your first flower opens, and so does the garden around it.",
+    text: "Hat on. Its world opens up along with your routine.",
+    scale: 0.96,
+    accessories: ["scarf", "hat"],
   },
   {
-    id: "grove",
-    name: "Grove",
+    name: "Legend",
     level: 40,
-    text: "Fully grown, in a world you built one day at a time.",
+    text: "Fully grown and crowned, in a world you built one day at a time.",
+    scale: 1.06,
+    accessories: ["scarf", "crown"],
   },
 ];
 
@@ -40,7 +51,10 @@ const steps = [
   ["Level up", "XP raises your companion's level over time."],
   ["Unlock accessories", "New things to wear arrive as you progress."],
   ["Discover new stages", "Your character changes form as you grow."],
-  ["Grow your environment", "Its world fills in along with your routine."],
+  [
+    "Grow your environment",
+    "Its sky and hills fill in along with your routine.",
+  ],
 ];
 ---
 
@@ -62,7 +76,7 @@ const steps = [
             preserveAspectRatio="xMidYMax slice"
             aria-hidden="true"
           >
-            <rect width="800" height="480" fill="#dff4e5"></rect>
+            <rect width="800" height="480" fill="#b4d3f7"></rect>
             <g class="env e3">
               <circle cx="660" cy="96" r="44" fill="#fbe6a8"></circle>
             </g>
@@ -74,9 +88,9 @@ const steps = [
             <g class="env e4">
               <path
                 d="M0 340C120 250 250 260 400 330S680 270 800 310V480H0Z"
-                fill="#c9edd3"
+                fill="#9fc3f0"
               ></path>
-              <g fill="#7ccc92">
+              <g fill="#7fa9e6">
                 <circle cx="110" cy="248" r="40"></circle>
                 <circle cx="150" cy="268" r="30"></circle>
                 <circle cx="664" cy="258" r="34"></circle>
@@ -86,34 +100,34 @@ const steps = [
                 y="270"
                 width="10"
                 height="46"
-                fill="#a58a65"
+                fill="#6f8db8"
               ></rect>
-              <rect x="659" y="280" width="9" height="30" fill="#a58a65"></rect>
+              <rect x="659" y="280" width="9" height="30" fill="#6f8db8"></rect>
             </g>
             <g class="env e2">
               <path
                 d="M0 386C200 350 600 350 800 386V480H0Z"
-                fill="#a6e0b5"
+                fill="#8bb5ec"
               ></path>
             </g>
-            <path d="M120 480C180 404 620 404 680 480Z" fill="#82cf98"></path>
-            <g class="env e1" fill="#3fa75c">
+            <path d="M120 480C180 404 620 404 680 480Z" fill="#6f9fe2"></path>
+            <g class="env e1" fill="#3f75c4">
               <path d="M200 442c-3-14 0-24 8-30 6 10 4 21-8 30Z"></path>
               <path d="M590 442c3-14 0-24-8-30-6 10-4 21 8 30Z"></path>
             </g>
             <g class="env e3">
               <g transform="translate(120 408)">
-                <path d="M0 40V6" stroke="#2f8f4b" stroke-width="4"></path>
+                <path d="M0 40V6" stroke="#3f75c4" stroke-width="4"></path>
                 <circle r="11" fill="#fff"></circle>
                 <circle r="4.5" fill="#f2b632"></circle>
               </g>
               <g transform="translate(700 420)">
-                <path d="M0 32V6" stroke="#2f8f4b" stroke-width="4"></path>
+                <path d="M0 32V6" stroke="#3f75c4" stroke-width="4"></path>
                 <circle r="11" fill="#f7c3b5"></circle>
                 <circle r="4.5" fill="#f2b632"></circle>
               </g>
               <g transform="translate(236 424)">
-                <path d="M0 26V4" stroke="#2f8f4b" stroke-width="3"></path>
+                <path d="M0 26V4" stroke="#3f75c4" stroke-width="3"></path>
                 <circle r="8" fill="#f7c3b5"></circle>
                 <circle r="3.2" fill="#f2b632"></circle>
               </g>
@@ -122,11 +136,16 @@ const steps = [
 
           <div class="characters">
             {stages.map((stage, i) => (
-              <div class="character" data-char={i} hidden={i !== 0}>
+              <div
+                class="character"
+                data-char={i}
+                hidden={i !== 0}
+                style={`--s:${stage.scale}`}
+              >
                 <Mascot
-                  stage={stage.id}
-                  scarf={i === 2}
                   label={`The companion at the ${stage.name} stage`}
+                  accessories={stage.accessories}
+                  sizes="(max-width: 900px) 62vw, 340px"
                 />
               </div>
             ))}
@@ -171,7 +190,7 @@ const steps = [
 
 <style>
   .companion {
-    background: var(--mint-soft);
+    background: var(--sky-soft);
   }
 
   .layout {
@@ -229,7 +248,9 @@ const steps = [
 
   .character {
     grid-area: 1 / 1;
-    width: 40%;
+    width: 44%;
+    transform: scale(var(--s));
+    transform-origin: 50% 97%;
     animation: pop 0.55s var(--ease);
   }
 
@@ -240,11 +261,12 @@ const steps = [
   @keyframes pop {
     from {
       opacity: 0;
-      transform: translateY(10px) scale(0.9);
+      transform: translateY(10px) scale(calc(var(--s) * 0.9));
     }
   }
 
   .sample {
+    color: #1f3b63;
     position: absolute;
     top: 14px;
     right: 18px;
@@ -254,7 +276,7 @@ const steps = [
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     margin-top: 16px;
-    border-top: 2px solid rgb(22 101 52 / 0.14);
+    border-top: 2px solid rgb(28 79 146 / 0.14);
   }
 
   .picker button {
@@ -279,15 +301,15 @@ const steps = [
   }
 
   .picker button:hover b {
-    color: var(--green-deep);
+    color: var(--blue-deep);
   }
 
   .picker [aria-pressed="true"] {
-    border-color: var(--green);
+    border-color: var(--blue);
   }
 
   .picker [aria-pressed="true"] b {
-    color: var(--green-deep);
+    color: var(--blue-deep);
   }
 
   .stage-text {
@@ -313,9 +335,9 @@ const steps = [
     place-items: center;
     width: 26px;
     height: 26px;
-    background: var(--mint);
+    background: var(--sky);
     border-radius: 50%;
-    color: var(--green-deep);
+    color: var(--blue-deep);
     font-size: 13px;
     font-weight: 650;
   }
@@ -345,7 +367,7 @@ const steps = [
     }
 
     .character {
-      width: 62%;
+      width: 68%;
     }
 
     .picker b {

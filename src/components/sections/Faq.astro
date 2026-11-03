@@ -1,4 +1,6 @@
 ---
+import Mascot from "../Mascot.astro";
+
 const faqs = [
   {
     q: "What is Consistly?",
@@ -42,6 +44,9 @@ const faqs = [
       <h2 class="title" id="faq-title">
         Questions, answered.
       </h2>
+      <div class="helper">
+        <Mascot sizes="200px" />
+      </div>
     </div>
 
     <div class="list reveal">
@@ -74,6 +79,11 @@ const faqs = [
   .title {
     margin-top: 12px;
     font-size: clamp(36px, 4.6vw, 54px);
+  }
+
+  .helper {
+    width: clamp(120px, 15vw, 200px);
+    margin-top: 28px;
   }
 
   details {
@@ -111,7 +121,7 @@ const faqs = [
   }
 
   summary:hover {
-    color: var(--green-deep);
+    color: var(--blue-deep);
   }
 
   .plus {
@@ -155,6 +165,10 @@ const faqs = [
 
     .head {
       position: static;
+    }
+
+    .helper {
+      display: none;
     }
   }
 </style>

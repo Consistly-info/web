@@ -11,9 +11,9 @@ const { interactive = false } = Astro.props;
 const Row = interactive ? "button" : "div";
 
 const habits = [
-  { name: "Morning walk", note: "14 day streak", done: true, tone: "#2ea043" },
+  { name: "Morning walk", note: "14 day streak", done: true, tone: "#4a8bdc" },
   { name: "Read 20 pages", note: "9 day streak", done: true, tone: "#0e9f8e" },
-  { name: "Drink water", note: "21 day streak", done: true, tone: "#3b82c4" },
+  { name: "Drink water", note: "21 day streak", done: true, tone: "#3fb8c9" },
   { name: "Meditate", note: "3 of 5 this week", done: false, tone: "#8a6fd1" },
   { name: "Stretch", note: "Evening", done: false, tone: "#d99a1c" },
 ];
@@ -29,7 +29,7 @@ const CIRC = 2 * Math.PI * RADIUS;
 
   <div class="buddy">
     <div class="buddy-art">
-      <Mascot stage="sprout" />
+      <Mascot sizes="60px" />
     </div>
     <div class="buddy-text">
       <p class="buddy-level">Level 12</p>
@@ -123,7 +123,7 @@ const CIRC = 2 * Math.PI * RADIUS;
     margin-top: calc(var(--u) * 12);
     padding: calc(var(--u) * 10) calc(var(--u) * 14) calc(var(--u) * 10)
       calc(var(--u) * 8);
-    background: var(--mint);
+    background: var(--sky);
     border-radius: calc(var(--u) * 20);
   }
 
@@ -138,7 +138,7 @@ const CIRC = 2 * Math.PI * RADIUS;
   }
 
   .buddy-level {
-    color: var(--green-deep);
+    color: var(--blue-deep);
     font-size: calc(var(--u) * 16);
     font-weight: 700;
   }
@@ -147,19 +147,19 @@ const CIRC = 2 * Math.PI * RADIUS;
     height: calc(var(--u) * 6);
     margin-block: calc(var(--u) * 5);
     overflow: hidden;
-    background: rgb(22 101 52 / 0.14);
+    background: rgb(28 79 146 / 0.14);
     border-radius: 99px;
   }
 
   .xp span {
     display: block;
     height: 100%;
-    background: var(--green);
+    background: var(--blue);
     border-radius: 99px;
   }
 
   .buddy-xp {
-    color: var(--green-deep);
+    color: var(--blue-deep);
     font-size: calc(var(--u) * 12);
     font-weight: 500;
   }
@@ -181,11 +181,11 @@ const CIRC = 2 * Math.PI * RADIUS;
   }
 
   .track {
-    stroke: rgb(22 101 52 / 0.14);
+    stroke: rgb(28 79 146 / 0.14);
   }
 
   .value {
-    stroke: var(--green);
+    stroke: var(--blue);
     transition: stroke-dasharray 0.45s var(--ease);
   }
 
@@ -195,7 +195,7 @@ const CIRC = 2 * Math.PI * RADIUS;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--green-deep);
+    color: var(--blue-deep);
     font-size: calc(var(--u) * 13);
     font-weight: 600;
   }
@@ -229,7 +229,7 @@ const CIRC = 2 * Math.PI * RADIUS;
     place-items: center;
     width: calc(var(--u) * 28);
     height: calc(var(--u) * 28);
-    border: calc(var(--u) * 2) solid #d4d9d4;
+    border: calc(var(--u) * 2) solid #d3dbe5;
     border-radius: 50%;
     transition:
       background 0.2s,
@@ -302,7 +302,7 @@ const CIRC = 2 * Math.PI * RADIUS;
   }
 
   .tabs .on {
-    color: var(--green-text);
+    color: var(--blue-text);
     font-weight: 650;
   }
 </style>

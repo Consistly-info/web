@@ -34,7 +34,7 @@ const checklist = [
     <p class="streak-num">{streak}</p>
     <p class="streak-cap">day streak</p>
     <div class="streak-art">
-      <Mascot stage="sprout" />
+      <Mascot sizes="90px" />
     </div>
   </div>
 )}
@@ -82,7 +82,7 @@ const checklist = [
     background: #fff;
     border-radius: calc(var(--u) * 22);
     color: #171717;
-    box-shadow: 0 calc(var(--u) * 4) calc(var(--u) * 18) rgb(10 40 20 / 0.1);
+    box-shadow: 0 calc(var(--u) * 4) calc(var(--u) * 18) rgb(15 35 70 / 0.1);
     overflow: hidden;
   }
 
@@ -116,7 +116,7 @@ const checklist = [
   .streak {
     position: relative;
     padding: calc(var(--u) * 14) calc(var(--u) * 15);
-    background: var(--green-deep);
+    background: var(--blue-deep);
     color: #fff;
   }
 
@@ -157,11 +157,11 @@ const checklist = [
   }
 
   .track {
-    stroke: var(--mint);
+    stroke: var(--sky);
   }
 
   .value {
-    stroke: var(--green);
+    stroke: var(--blue);
   }
 
   .progress-text {
@@ -200,12 +200,12 @@ const checklist = [
     flex: none;
     width: calc(var(--u) * 19);
     height: calc(var(--u) * 19);
-    border: calc(var(--u) * 2) solid #d4d9d4;
+    border: calc(var(--u) * 2) solid #d3dbe5;
     border-radius: 50%;
   }
 
   .checklist .done i {
-    background: var(--green);
-    border-color: var(--green);
+    background: var(--blue);
+    border-color: var(--blue);
   }
 </style>

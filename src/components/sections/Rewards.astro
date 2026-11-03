@@ -176,9 +176,9 @@ const accessories = [
         <p class="tile-name">Customization</p>
         <div class="dress-art">
           <Mascot
-            stage="sapling"
             dressable
             label="The companion wearing the chosen accessories"
+            sizes="210px"
           />
         </div>
         <div class="chips" role="group" aria-label="Accessories">
@@ -254,13 +254,13 @@ const accessories = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: var(--green-ink);
-    border-color: var(--green-ink);
+    background: var(--navy);
+    border-color: var(--navy);
     color: #fff;
   }
 
   .level .tile-name {
-    color: #b7dcc3;
+    color: #bdd3ee;
   }
 
   .level-top {
@@ -295,7 +295,7 @@ const accessories = [
   }
 
   .gems span {
-    color: #b7dcc3;
+    color: #bdd3ee;
     font-size: 13px;
   }
 
@@ -310,14 +310,14 @@ const accessories = [
   .meter span {
     display: block;
     height: 100%;
-    background: #6fe08f;
+    background: #8cc4ff;
     border-radius: 99px;
     transition: width 0.6s var(--ease);
   }
 
   .meter-text {
     margin-top: 10px;
-    color: #b7dcc3;
+    color: #bdd3ee;
     font-size: 14px;
     font-variant-numeric: tabular-nums;
   }
@@ -341,7 +341,7 @@ const accessories = [
     flex: none;
     width: 24px;
     height: 24px;
-    border: 2px solid #cfd5cf;
+    border: 2px solid #ced7e2;
     border-radius: 50%;
     transition:
       background 0.2s,
@@ -349,12 +349,12 @@ const accessories = [
   }
 
   .challenges button:hover i {
-    border-color: var(--green);
+    border-color: var(--blue);
   }
 
   .challenges [aria-pressed="true"] i {
-    background: var(--green);
-    border-color: var(--green);
+    background: var(--blue);
+    border-color: var(--blue);
   }
 
   .challenges [aria-pressed="true"] i::after {
@@ -374,7 +374,7 @@ const accessories = [
   }
 
   .c-gain {
-    color: var(--green-deep);
+    color: var(--blue-deep);
     font-size: 14px;
     font-weight: 600;
   }
@@ -406,9 +406,9 @@ const accessories = [
     place-items: center;
     width: min(100%, 60px);
     aspect-ratio: 1;
-    background: var(--mint);
+    background: var(--sky);
     border-radius: 50%;
-    color: var(--green-deep);
+    color: var(--blue-deep);
     transition:
       transform 0.25s var(--ease),
       box-shadow 0.25s;
@@ -430,12 +430,12 @@ const accessories = [
   .badge[aria-pressed="true"] .medal {
     box-shadow:
       0 0 0 2px var(--bg),
-      0 0 0 4px var(--green);
+      0 0 0 4px var(--blue);
   }
 
   .locked .medal {
-    background: #eff1ef;
-    color: #8a8f8a;
+    background: #eef2f7;
+    color: #8a919b;
   }
 
   .badge-name {
@@ -456,8 +456,12 @@ const accessories = [
     grid-column: span 4;
     display: flex;
     flex-direction: column;
-    background: var(--mint-soft);
+    background: #cfe3fa;
     border-color: transparent;
+  }
+
+  .dress .tile-name {
+    color: #24426e;
   }
 
   .dress-art {
@@ -496,7 +500,7 @@ const accessories = [
   }
 
   .chips [aria-pressed="true"] {
-    background: var(--green-deep);
+    background: var(--blue-deep);
     color: #fff;
   }
 
@@ -526,7 +530,7 @@ const accessories = [
   }
 
   .week .on {
-    background: var(--green);
+    background: var(--blue);
     color: #fff;
   }
 
@@ -562,13 +566,13 @@ const accessories = [
     height: 18px;
     margin-bottom: 14px;
     background: var(--surface);
-    border: 2px solid #cfd5cf;
+    border: 2px solid #ced7e2;
     border-radius: 50%;
   }
 
   .line .on i {
-    background: var(--green);
-    border-color: var(--green);
+    background: var(--blue);
+    border-color: var(--blue);
   }
 
   .line b {
@@ -579,7 +583,7 @@ const accessories = [
   }
 
   .line li:not(.on) b {
-    color: #808580;
+    color: #7d8590;
   }
 
   .line span {

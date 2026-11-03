@@ -36,14 +36,17 @@ src/
     IPhone.astro          Device frame
     Widget.astro          iOS widget mockups
     Heat.astro            Static contribution graph
-    Mascot.astro          Temporary mascot artwork
+    Mascot.astro          The companion and its accessories
+  assets/mascot/          Companion images
   lib/sample.ts           Sample data behind every graph and chart
   styles/global.css       Design tokens and base styles
 ```
 
-## Replacing the mascot
+## Mascot
 
-The mascot is temporary artwork. Every appearance goes through `src/components/Mascot.astro`, so final art only needs to change in that file. Keep the `stage`, `label`, `scarf`, and `dressable` props. The customization demo toggles the `.acc-scarf`, `.acc-glasses`, and `.acc-hat` layers, so it needs matching layers or a change in `sections/Rewards.astro`.
+`src/assets/mascot/` holds the companion as transparent WebP files at 240, 480, and 960px, cut out from the original artwork. Every appearance goes through `src/components/Mascot.astro`.
+
+There is only one piece of artwork so far, so character stages use that image at different sizes, with accessories drawn as an SVG layer on top. To add real stage art, export it as 960px squares with the feet at about 97% of the height, and update `Mascot.astro`.
 
 ## CI and deployment
 

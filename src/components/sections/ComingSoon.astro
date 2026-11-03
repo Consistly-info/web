@@ -5,7 +5,7 @@ import Mascot from "../Mascot.astro";
 <section class="soon-section" aria-labelledby="soon-title">
   <div class="page inner reveal">
     <div class="art">
-      <Mascot stage="seed" label="The Consistly companion as a tiny seedling" />
+      <Mascot label="The Consistly companion" sizes="240px" idle />
     </div>
     <h2 class="title" id="soon-title">
       Your journey starts with one small habit.
@@ -24,7 +24,7 @@ import Mascot from "../Mascot.astro";
 <style>
   .soon-section {
     padding-block: var(--section-y);
-    background: var(--mint);
+    background: var(--sky);
     text-align: center;
   }
 
@@ -34,7 +34,7 @@ import Mascot from "../Mascot.astro";
   }
 
   .art {
-    width: clamp(150px, 19vw, 230px);
+    width: clamp(170px, 20vw, 240px);
   }
 
   .title {
@@ -44,7 +44,7 @@ import Mascot from "../Mascot.astro";
 
   .lead {
     margin-top: 20px;
-    color: #2f5a3d;
+    color: #2b4a75;
   }
 
   /* A row of days filling in on a loop: the site's one ambient animation. */
@@ -58,37 +58,37 @@ import Mascot from "../Mascot.astro";
     width: clamp(12px, 3vw, 18px);
     aspect-ratio: 1;
     border-radius: 22%;
-    background: rgb(22 101 52 / 0.14);
+    background: rgb(28 79 146 / 0.14);
     animation: fill 6s calc(var(--i) * 0.28s) var(--ease) infinite;
   }
 
   @keyframes fill {
     0% {
-      background: rgb(22 101 52 / 0.14);
+      background: rgb(28 79 146 / 0.14);
     }
     12%,
     72% {
-      background: var(--green);
+      background: var(--blue);
     }
     88%,
     100% {
-      background: rgb(22 101 52 / 0.14);
+      background: rgb(28 79 146 / 0.14);
     }
   }
 
   .soon {
-    background: var(--green-deep);
+    background: var(--blue-deep);
     color: #fff;
   }
 
   .soon::before {
-    background: #86e6a2;
+    background: #a9d2ff;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .grow i {
       animation: none;
-      background: var(--green);
+      background: var(--blue);
     }
   }
 </style>

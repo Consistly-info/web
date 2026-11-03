@@ -1,4 +1,6 @@
 ---
+import Mascot from "../Mascot.astro";
+
 const principles = [
   {
     name: "Local-first experience",
@@ -25,15 +27,20 @@ const principles = [
 
 <section class="privacy section" id="privacy" aria-labelledby="privacy-title">
   <div class="page">
-    <div class="reveal">
-      <p class="eyebrow">Privacy</p>
-      <h2 class="title" id="privacy-title">
-        Your progress. Your data.
-      </h2>
-      <p class="lead">
-        Your habits are personal. Privacy is the philosophy Consistly is being
-        built around, not a feature added at the end.
-      </p>
+    <div class="top reveal">
+      <div>
+        <p class="eyebrow">Privacy</p>
+        <h2 class="title" id="privacy-title">
+          Your progress. Your data.
+        </h2>
+        <p class="lead">
+          Your habits are personal. Privacy is the philosophy Consistly is being
+          built around, not a feature added at the end.
+        </p>
+      </div>
+      <div class="art">
+        <Mascot sizes="260px" />
+      </div>
     </div>
 
     <ul class="grid reveal">
@@ -57,12 +64,24 @@ const principles = [
 
 <style>
   .privacy {
-    background: var(--green-ink);
+    background: var(--navy);
     color: #fff;
   }
 
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .art {
+    flex: none;
+    width: clamp(150px, 20vw, 260px);
+  }
+
   .eyebrow {
-    color: #86e6a2;
+    color: #a9d2ff;
   }
 
   .title {
@@ -73,7 +92,7 @@ const principles = [
   .lead {
     max-width: 620px;
     margin-top: 20px;
-    color: #bcd8c5;
+    color: #bdd3ee;
   }
 
   .grid {
@@ -92,7 +111,7 @@ const principles = [
     width: 28px;
     height: 28px;
     fill: none;
-    stroke: #86e6a2;
+    stroke: #a9d2ff;
     stroke-width: 1.6;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -107,15 +126,22 @@ const principles = [
 
   li p {
     margin-top: 6px;
-    color: #bcd8c5;
+    color: #bdd3ee;
     font-size: 15px;
     line-height: 1.45;
   }
 
   .disclaimer {
     margin-top: 48px;
-    color: #bcd8c5;
+    color: #bdd3ee;
     font-size: 14px;
+  }
+
+  @media (max-width: 680px) {
+    .top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   @media (max-width: 860px) {
