@@ -43,4 +43,27 @@
     font-size: 19px;
     letter-spacing: -0.012em;
   }
+
+  @media (max-width: 680px) {
+    /* Keeps the belief line clear of the colored section below. */
+    .about {
+      padding-bottom: 28px;
+    }
+
+    .statement span {
+      display: block;
+      margin-top: 6px;
+    }
+
+    .statement {
+      font-size: clamp(21px, 6vw, 28px);
+      line-height: 1.16;
+    }
+
+    .belief {
+      margin-top: 16px;
+      padding-left: 12px;
+      font-size: 15px;
+    }
+  }
 </style>

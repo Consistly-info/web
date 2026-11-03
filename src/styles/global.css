@@ -254,6 +254,44 @@ button {
   transform: none;
 }
 
+/* Phones. Most of the page tightens up from these shared tokens and styles. */
+@media (max-width: 680px) {
+  :root {
+    --gutter: 16px;
+    --section-y: 44px;
+    --band-r: 24px;
+    --offer-h: 32px;
+  }
+
+  html {
+    scroll-padding-top: calc(54px + var(--offer-h));
+  }
+
+  .eyebrow {
+    font-size: 14px;
+  }
+
+  .title {
+    font-size: clamp(27px, 8vw, 36px);
+    letter-spacing: -0.034em;
+    line-height: 1.08;
+  }
+
+  .lead {
+    font-size: 15.5px;
+    line-height: 1.4;
+  }
+
+  .note {
+    font-size: 12px;
+  }
+
+  .soon {
+    padding: 5px 11px 5px 9px;
+    font-size: 13px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

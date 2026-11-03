@@ -305,6 +305,19 @@ const CIRC = 2 * Math.PI * RADIUS;
     color: var(--blue-text);
     font-weight: 650;
   }
+
+  /* On phones the frame is small, so each row's tap area also covers the gap. */
+  @media (max-width: 680px) {
+    button.row {
+      position: relative;
+    }
+
+    button.row::after {
+      content: "";
+      position: absolute;
+      inset: calc(var(--u) * -3) 0;
+    }
+  }
 </style>
 
 <script>

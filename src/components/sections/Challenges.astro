@@ -123,4 +123,43 @@ import SectionHead from "../SectionHead.astro";
       grid-template-columns: minmax(0, 1fr);
     }
   }
+
+  @media (max-width: 680px) {
+    .duo {
+      margin-bottom: 6px;
+    }
+
+    .duo > div {
+      width: 78px;
+    }
+
+    .duo > div + div {
+      margin-left: -8px;
+    }
+
+    .action {
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .cta {
+      min-height: 44px;
+      padding-inline: 18px;
+      font-size: 15px;
+    }
+
+    .social {
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .tile {
+      padding: 14px;
+      border-radius: 18px;
+    }
+
+    .foot {
+      margin-top: 10px;
+    }
+  }
 </style>

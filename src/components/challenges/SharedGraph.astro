@@ -471,14 +471,31 @@ const legend = [
     }
   }
 
-  @media (max-width: 480px) {
-    .graph {
-      --label: 28px;
+  @media (max-width: 680px) {
+    .panel {
+      margin-top: 8px;
+      padding: 12px;
+      border-radius: 18px;
     }
 
-    .weekdays,
-    .months {
-      font-size: 11px;
+    .top {
+      gap: 10px;
+    }
+
+    .who {
+      gap: 10px;
+    }
+
+    .faces {
+      --avatar: 34px;
+    }
+
+    h3 {
+      font-size: 16.5px;
+    }
+
+    .who p {
+      font-size: 13px;
     }
 
     .views {
@@ -487,6 +504,92 @@ const legend = [
 
     .views button {
       flex: 1;
+    }
+
+    .body {
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .graph {
+      --label: 26px;
+      --gap: 3px;
+    }
+
+    .months {
+      margin-bottom: 4px;
+    }
+
+    .weekdays,
+    .months {
+      font-size: 11px;
+    }
+
+    .legend {
+      gap: 4px 12px;
+      margin: 10px 0 0;
+      font-size: 12px;
+    }
+
+    .legend li {
+      gap: 5px;
+    }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 3px;
+    }
+
+    .numbers {
+      gap: 12px;
+    }
+
+    .completion {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      column-gap: 8px;
+    }
+
+    .big {
+      font-size: 36px;
+    }
+
+    .cap {
+      margin-top: 0;
+      font-size: 13px;
+    }
+
+    .bar {
+      grid-column: 1 / -1;
+      margin-top: 6px;
+    }
+
+    /* The three stats read across instead of down. */
+    dl {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    dl div {
+      display: block;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    dt {
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    dd {
+      margin-top: 2px;
+      font-size: 19px;
+    }
+
+    small {
+      font-size: 11.5px;
     }
   }
 </style>

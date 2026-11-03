@@ -191,6 +191,72 @@ const links = [
     transform: rotate(-45deg);
   }
 
+  @media (max-width: 680px) {
+    .wide {
+      display: none;
+    }
+
+    .offer {
+      gap: 6px;
+      padding-inline: 8px;
+      font-size: 12px;
+    }
+
+    .offer-text {
+      gap: 5px;
+    }
+
+    .left {
+      margin-left: 0;
+      padding-inline: 6px;
+    }
+
+    .offer-cta {
+      padding: 2px 9px;
+      font-size: 12px;
+    }
+
+    .nav-bar {
+      height: 46px;
+    }
+
+    .brand {
+      font-size: 16px;
+    }
+
+    .end .soon {
+      font-size: 12px;
+    }
+
+    .toggle {
+      display: block;
+    }
+
+    .links {
+      display: none;
+      position: absolute;
+      inset: 100% 0 auto;
+      gap: 0 16px;
+      padding: 4px var(--gutter) 10px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .links.is-open {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .links a {
+      display: block;
+      padding: 10px 0;
+      color: var(--ink);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+  }
+
   @media (max-width: 360px) {
     .nav-bar {
       gap: 8px;
@@ -208,50 +274,6 @@ const links = [
     .end .soon {
       padding-inline: 10px;
       font-size: 12px;
-    }
-  }
-
-  @media (max-width: 680px) {
-    .wide {
-      display: none;
-    }
-
-    .offer {
-      gap: 8px;
-      font-size: 13px;
-    }
-
-    .left {
-      margin-left: 0;
-      padding-inline: 7px;
-    }
-
-    .toggle {
-      display: block;
-    }
-
-    .links {
-      display: none;
-      position: absolute;
-      inset: 100% 0 auto;
-      flex-direction: column;
-      gap: 0;
-      padding: 8px var(--gutter) 20px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .links.is-open {
-      display: flex;
-    }
-
-    .links a {
-      display: block;
-      padding: 13px 0;
-      color: var(--ink);
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
     }
   }
 </style>

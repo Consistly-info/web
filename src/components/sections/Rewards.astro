@@ -621,6 +621,163 @@ const accessories = [
       width: min(52%, 210px);
     }
   }
+
+  @media (max-width: 680px) {
+    .board {
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .tile {
+      padding: 14px;
+      border-radius: 18px;
+    }
+
+    .tile-name {
+      font-size: 13px;
+    }
+
+    /* Customization and the weekly challenge share a row. */
+    .dress,
+    .dress + .tile {
+      grid-column: span 6;
+    }
+
+    .xp-num {
+      font-size: clamp(42px, 13vw, 60px);
+    }
+
+    .gems svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .gems b {
+      font-size: 18px;
+    }
+
+    .gems span {
+      font-size: 12px;
+    }
+
+    .meter {
+      height: 8px;
+      margin-top: 12px;
+    }
+
+    .meter-text {
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    .challenges {
+      margin-block: 2px 8px;
+    }
+
+    .challenges button {
+      gap: 10px;
+      min-height: 44px;
+    }
+
+    .challenges i {
+      width: 20px;
+      height: 20px;
+    }
+
+    .challenges [aria-pressed="true"] i::after {
+      inset: 2px 5px 5px;
+    }
+
+    .c-name {
+      font-size: 14px;
+    }
+
+    .c-gain {
+      font-size: 12.5px;
+    }
+
+    .badges {
+      gap: 4px;
+      padding-block: 8px;
+    }
+
+    .badge {
+      gap: 4px;
+      padding-block: 4px;
+    }
+
+    .medal {
+      width: min(100%, 42px);
+    }
+
+    .badge-name {
+      font-size: 11px;
+    }
+
+    .badge-detail {
+      margin-top: 4px;
+      padding-top: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .dress-art {
+      width: min(62%, 120px);
+      padding-block: 4px;
+    }
+
+    .chips {
+      gap: 4px;
+    }
+
+    .chips button {
+      min-height: 34px;
+      padding-inline: 10px;
+      font-size: 12.5px;
+    }
+
+    .weekly {
+      margin-top: 4px;
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .week {
+      gap: 3px;
+      margin-block: 10px 8px;
+    }
+
+    .week li {
+      font-size: 10px;
+    }
+
+    .line {
+      margin-top: 12px;
+    }
+
+    .line::before {
+      top: 6px;
+      left: 6px;
+    }
+
+    .line i {
+      width: 14px;
+      height: 14px;
+      margin-bottom: 6px;
+    }
+
+    .line b {
+      font-size: 24px;
+    }
+
+    .line span {
+      font-size: 12px;
+    }
+
+    .foot {
+      margin-top: 10px;
+    }
+  }
 </style>
 
 <script>

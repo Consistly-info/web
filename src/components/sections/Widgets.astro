@@ -140,18 +140,41 @@ import LockScreen from "../screens/LockScreen.astro";
 
   @media (max-width: 680px) {
     .wall {
-      grid-template-columns: 1fr;
+      gap: 14px 8px;
+      margin-top: 20px;
     }
 
     .phones {
-      flex-direction: column;
-      align-items: center;
-      gap: 36px;
-      --phone-w: min(76vw, 300px);
+      gap: 8px;
+      --phone-w: min(calc((100vw - var(--gutter) * 2 - 8px) / 2), 260px);
     }
 
+    /* Flatten the columns: wide widgets run full width, small ones pair up. */
     .col {
-      --u: min(0.9px, calc((100vw - 40px) / 338));
+      --u: min(0.9px, calc((100vw - var(--gutter) * 2) / 338));
+      display: contents;
+    }
+
+    .col figure {
+      order: 2;
+      justify-items: center;
+    }
+
+    .col figure:has(.wide) {
+      order: 1;
+      grid-column: 1 / -1;
+    }
+
+    figure {
+      gap: 6px;
+    }
+
+    figcaption {
+      font-size: 12px;
+    }
+
+    .foot {
+      margin-top: 14px;
     }
   }
 </style>

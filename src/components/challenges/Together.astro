@@ -226,4 +226,72 @@ const groups = [
       margin-inline: auto;
     }
   }
+
+  @media (max-width: 680px) {
+    .groups {
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    /* The companions sit beside the heading instead of above it. */
+    .group {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      column-gap: 12px;
+      padding: 12px 14px;
+      border-radius: 18px;
+    }
+
+    .art {
+      grid-row: 1 / 3;
+      align-self: center;
+      aspect-ratio: 2 / 1;
+      margin: 0;
+    }
+
+    .grown {
+      width: 50%;
+    }
+
+    .pal {
+      width: 38%;
+    }
+
+    .parent {
+      width: 36%;
+    }
+
+    .heart {
+      top: -4px;
+      width: 14%;
+    }
+
+    .who {
+      font-size: 13px;
+    }
+
+    h3 {
+      margin-top: 0;
+      font-size: 16.5px;
+      line-height: 1.2;
+    }
+
+    .text {
+      grid-column: 1 / -1;
+      margin-top: 8px;
+      font-size: 13.5px;
+      line-height: 1.4;
+    }
+
+    .habits {
+      grid-column: 1 / -1;
+      gap: 4px;
+      padding-top: 8px;
+    }
+
+    .habits li {
+      padding: 3px 9px;
+      font-size: 12px;
+    }
+  }
 </style>

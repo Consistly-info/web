@@ -126,4 +126,30 @@ import Mascot from "../Mascot.astro";
       background: var(--on);
     }
   }
+
+  @media (max-width: 680px) {
+    .art > div {
+      width: 84px;
+    }
+
+    .art > div + div {
+      margin-left: -8px;
+    }
+
+    .title {
+      margin-top: 6px;
+    }
+
+    .lead {
+      margin-top: 8px;
+    }
+
+    .grow {
+      margin-block: 18px 12px;
+    }
+
+    .store {
+      margin-top: 12px;
+    }
+  }
 </style>

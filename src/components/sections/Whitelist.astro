@@ -224,6 +224,59 @@ const endpoint = import.meta.env.PUBLIC_WHITELIST_URL;
       flex-direction: column;
     }
   }
+
+  @media (max-width: 680px) {
+    .card {
+      gap: 10px;
+      padding: 16px;
+      border-radius: 22px;
+    }
+
+    .art {
+      width: 130px;
+    }
+
+    h2 {
+      margin-top: 4px;
+      font-size: 25px;
+    }
+
+    .lead {
+      margin-top: 8px;
+    }
+
+    .meter {
+      margin-top: 12px;
+    }
+
+    .meter p {
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 8px;
+      margin-top: 6px;
+    }
+
+    form {
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    input,
+    button {
+      min-height: 44px;
+    }
+
+    button {
+      font-size: 15px;
+    }
+
+    .status {
+      margin-top: 6px;
+      font-size: 12px;
+    }
+  }
 </style>
 
 <script>

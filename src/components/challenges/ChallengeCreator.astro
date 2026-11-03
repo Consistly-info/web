@@ -168,6 +168,49 @@ const templates = [
       --phone-w: min(78vw, 300px);
     }
   }
+
+  @media (max-width: 680px) {
+    .creator {
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    h3 {
+      font-size: 23px;
+    }
+
+    .text {
+      margin-top: 6px;
+      font-size: 14.5px;
+      line-height: 1.4;
+    }
+
+    .pick {
+      margin-top: 12px;
+      font-size: 13.5px;
+    }
+
+    /* Eight templates become one swipeable row running out to the screen edges. */
+    .templates {
+      flex-wrap: nowrap;
+      gap: 6px;
+      margin: 6px calc(var(--gutter) * -1) 8px;
+      padding: 2px var(--gutter);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .templates button {
+      flex: none;
+      min-height: 38px;
+      padding-inline: 13px;
+      font-size: 13px;
+    }
+
+    .phone {
+      --phone-w: min(56vw, 250px);
+    }
+  }
 </style>
 
 <script>
@@ -182,6 +225,16 @@ const templates = [
         buttons.forEach((b) =>
           b.setAttribute("aria-pressed", String(b === button)),
         );
+        // Where the templates scroll, bring the active one fully into view.
+        const row = button.parentElement;
+        if (row) {
+          const from = row.getBoundingClientRect();
+          const to = button.getBoundingClientRect();
+          row.scrollBy({
+            left: to.left - from.left - (from.width - to.width) / 2,
+            behavior: "smooth",
+          });
+        }
         fields.forEach((field) => {
           field.textContent = button.dataset[field.dataset.field ?? ""] ?? "";
         });

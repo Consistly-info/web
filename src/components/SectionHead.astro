@@ -40,4 +40,14 @@ const { id, eyebrow, title, lead, center = false } = Astro.props;
   .center .lead {
     margin-inline: auto;
   }
+
+  @media (max-width: 680px) {
+    .title {
+      margin-top: 6px;
+    }
+
+    .lead {
+      margin-top: 8px;
+    }
+  }
 </style>

@@ -94,7 +94,7 @@ const bestSaving = Math.max(
       center
     />
 
-    <ul class="plans reveal">
+    <ul class="plans reveal" id="pricing-plans">
       {plans.map((plan) => (
         <li class:list={["plan", plan.id]}>
           {plan.id === "pro" && <p class="badge">Recommended</p>}
@@ -195,6 +195,16 @@ const bestSaving = Math.max(
         </li>
       ))}
     </ul>
+
+    <button
+      class="more reveal"
+      type="button"
+      aria-expanded="false"
+      aria-controls="pricing-plans"
+      data-details-btn
+    >
+      Show feature details
+    </button>
 
     <p class="note foot reveal">
       Planned launch pricing in USD. The {trialDays}-day trial is for new
@@ -423,8 +433,13 @@ const bestSaving = Math.max(
     text-align: center;
   }
 
+  /* Only phones collapse the feature details, so this stays hidden elsewhere. */
+  .more {
+    display: none;
+  }
+
   /* Keeps the prices lined up across the two cards. */
-  @media (min-width: 861px) {
+  @media (min-width: 681px) {
     .pitch {
       min-height: 2lh;
     }
@@ -434,15 +449,169 @@ const bestSaving = Math.max(
     }
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 680px) {
+    /* Pro gets the wider card, since it holds the billing switch. Each card
+       borrows the same rows, so art, prices, and features line up across them. */
     .plans {
-      grid-template-columns: minmax(0, 1fr);
+      --switch-h: 44px;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+      grid-template-rows: repeat(7, auto);
+      gap: 0 8px;
+      margin-top: 22px;
+    }
+
+    .plan {
+      display: grid;
+      grid-row: span 7;
+      grid-template-rows: subgrid;
+      padding: 14px 10px;
+      border-radius: 18px;
+    }
+
+    .badge {
+      padding: 2px 9px;
+      font-size: 11.5px;
     }
 
     .art {
+      grid-row: 1;
+      aspect-ratio: auto;
+      margin-bottom: 6px;
+    }
+
+    .art > div {
+      width: 58px;
+    }
+
+    h3 {
+      grid-row: 2;
+      font-size: 20px;
+    }
+
+    .pitch {
+      grid-row: 3;
+      margin-top: 2px;
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
+
+    .switch {
+      grid-row: 4;
+      margin-top: 8px;
+      border-radius: 12px;
+    }
+
+    .switch button {
+      border-radius: 9px;
+      font-size: 11.5px;
+    }
+
+    .save {
+      font-size: 9.5px;
+      white-space: nowrap;
+    }
+
+    .price {
+      grid-row: 5;
+      margin-top: 10px;
+      padding-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .trial {
+      margin-bottom: 4px;
+      padding: 1px 7px;
+      font-size: 11px;
+    }
+
+    .price b {
+      font-size: 26px;
+    }
+
+    .billed {
+      font-size: 11.5px;
+      line-height: 1.3;
+    }
+
+    .includes {
+      grid-row: 6;
+      margin-top: 10px;
+      font-size: 12.5px;
+    }
+
+    .features {
+      grid-row: 7;
+      align-content: start;
+      gap: 7px;
+      margin-top: 7px;
+      font-size: 12.5px;
+      line-height: 1.3;
+    }
+
+    .free .features {
+      grid-row: 6 / 8;
+      margin-top: 10px;
+    }
+
+    .features li {
+      padding-left: 14px;
+    }
+
+    .features li::before {
+      top: 0.25em;
+      width: 9px;
+      height: 9px;
+    }
+
+    .features span {
+      font-size: 11.5px;
+      line-height: 1.3;
+    }
+
+    /* Names only until asked. Without JS there's no button, so nothing hides. */
+    :global(.js) [data-pricing]:not([data-details]) .features span {
+      display: none;
+    }
+
+    :global(.js) .more {
+      display: block;
       width: 100%;
-      max-width: 380px;
-      margin-inline: auto;
+      min-height: 44px;
+      margin-top: 8px;
+      background: var(--blue-bg);
+      border-radius: 14px;
+      color: var(--blue-deep);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .foot {
+      margin-top: 10px;
+      font-size: 11.5px;
+    }
+  }
+
+  /* Too narrow for three labels across, so the billing switch stacks. */
+  @media (max-width: 359px) {
+    .switch {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+
+    .switch button {
+      flex-direction: row;
+      gap: 4px;
+      min-height: 32px;
+      font-size: 12px;
+    }
+
+    /* The stacked switch is tall, so Free moves up rather than leave a gap. */
+    .free .price {
+      grid-row: 4;
+    }
+
+    .free .features {
+      grid-row: 5 / 8;
     }
   }
 </style>
@@ -451,6 +620,13 @@ const bestSaving = Math.max(
   const root = document.querySelector<HTMLElement>("[data-pricing]");
   const buttons =
     root?.querySelectorAll<HTMLButtonElement>("[data-billing-btn]");
+
+  const more = root?.querySelector<HTMLButtonElement>("[data-details-btn]");
+  more?.addEventListener("click", () => {
+    const open = root?.toggleAttribute("data-details") ?? false;
+    more.setAttribute("aria-expanded", String(open));
+    more.textContent = open ? "Hide feature details" : "Show feature details";
+  });
 
   buttons?.forEach((button) =>
     button.addEventListener("click", () => {
