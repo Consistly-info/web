@@ -4,45 +4,89 @@ import SectionHead from "../SectionHead.astro";
 
 const usd = (amount: number) => `$${amount.toFixed(2)}`;
 
+const trialDays = 7;
+
 // Planned launch prices in USD. Everything shown on the page derives from these.
 const plans = [
   {
     id: "seed",
     name: "Seed",
-    pitch: "All you need to start your first streak.",
+    pitch: "A real start with the habits that matter most.",
     features: [
-      "Up to 3 habits",
-      "Your contribution graph",
-      "One companion to grow with",
-      "2 widgets",
+      [
+        "Up to 3 habits",
+        "Custom names and colors, daily or weekly goals, and your own schedule.",
+      ],
+      [
+        "Your contribution graph and streaks",
+        "Watch your year fill in, one day at a time.",
+      ],
+      [
+        "One companion",
+        "Earn XP and gems, collect badges, and unlock starter outfits.",
+      ],
+      ["2 widgets", "Keep your habits on your Home or Lock Screen."],
     ],
   },
   {
     id: "grow",
     name: "Grow",
-    pitch: "No limits, and someone to do it with.",
+    pitch: "Everything you need to make your habits stick.",
     monthly: 3.99,
     annual: 29.99,
     includes: "Everything in Seed, plus",
     features: [
-      "Unlimited habits",
-      "Every Home and Lock Screen widget",
-      "Duo mode: share a graph with a partner or friend",
-      "More outfits and colors for your companion",
+      [
+        "Unlimited habits",
+        "Track your whole routine, with no limit on what you can add.",
+      ],
+      [
+        "Every widget",
+        "Checklist, graph, streak, and progress on your Home and Lock Screen.",
+      ],
+      [
+        "The Mac app",
+        "Check in on a bigger screen, with the same widgets on your desktop.",
+      ],
+      [
+        "Full insights",
+        "Completion trends, habit-by-habit rates, and milestones, so you can see what's working.",
+      ],
+      [
+        "Duo mode",
+        "Share a graph with a partner or friend and keep each other going.",
+      ],
+      [
+        "Both companions",
+        "Meet the whole pair, with more outfits and colors to unlock.",
+      ],
     ],
   },
   {
     id: "bloom",
     name: "Bloom",
-    pitch: "All of Consistly, made completely yours.",
+    pitch: "The fun extras that make Consistly completely yours.",
     monthly: 6.99,
     annual: 49.99,
     includes: "Everything in Grow, plus",
     features: [
-      "Group challenges with friends and family",
-      "Every outfit, color, and theme",
-      "Full insights and monthly reports",
-      "Early access to new features",
+      [
+        "Group challenges",
+        "Invite friends or the whole family, with a leaderboard, shared graph, and shared rewards.",
+      ],
+      [
+        "Every outfit, color, and theme",
+        "Dress up your companions and style the app however you like.",
+      ],
+      [
+        "Monthly reports and a year in review",
+        "A look back at how far you've come, every month and every year.",
+      ],
+      [
+        "Custom app icons",
+        "Pick the icon that looks best on your Home Screen.",
+      ],
+      ["Early access", "Try new features before anyone else."],
     ],
   },
 ];
@@ -66,7 +110,7 @@ const bestSaving = Math.max(
       id="pricing-title"
       eyebrow="Pricing"
       title="Start free. Grow when you're ready."
-      lead="Every plan is just for you. Upgrade when you want more widgets, a duo partner, or more ways to make Consistly your own."
+      lead={`Seed gets you started. Grow has everything most people need, and Bloom adds the nice-to-haves. Try Grow or Bloom free for ${trialDays} days.`}
       center
     />
 
@@ -124,25 +168,28 @@ const bestSaving = Math.max(
           {plan.monthly ? (
             <>
               <div class="price" data-show="annual">
+                <p class="trial">{trialDays} days free</p>
                 <p>
                   <b>{usd(plan.annual / 12)}</b> / month
                 </p>
                 <p class="billed">
-                  {usd(plan.annual)} billed annually, save{" "}
-                  {saving(plan.monthly, plan.annual)}%
+                  Then {usd(plan.annual)} billed annually. Save{" "}
+                  {saving(plan.monthly, plan.annual)}%.
                 </p>
               </div>
               <div class="price" data-show="monthly">
+                <p class="trial">{trialDays} days free</p>
                 <p>
                   <b>{usd(plan.monthly)}</b> / month
                 </p>
-                <p class="billed">Billed monthly, cancel anytime</p>
+                <p class="billed">Then billed monthly. Cancel anytime.</p>
               </div>
             </>
           ) : (
             <div class="price">
+              <p class="trial">Free forever</p>
               <p>
-                <b>Free</b>
+                <b>$0</b>
               </p>
               <p class="billed">No payment needed</p>
             </div>
@@ -150,8 +197,11 @@ const bestSaving = Math.max(
 
           {plan.includes && <p class="includes">{plan.includes}</p>}
           <ul class="features">
-            {plan.features.map((feature) => (
-              <li>{feature}</li>
+            {plan.features.map(([name, detail]) => (
+              <li>
+                <b>{name}</b>
+                <span>{detail}</span>
+              </li>
             ))}
           </ul>
         </li>
@@ -159,8 +209,10 @@ const bestSaving = Math.max(
     </ul>
 
     <p class="note foot reveal">
-      Planned launch pricing in USD. Consistly isn't available yet, and plans,
-      features, and prices may change before release.
+      Planned launch pricing in USD. The {trialDays}-day trial is for new
+      subscribers, and you won't be charged if you cancel at least 24 hours
+      before it ends. Consistly isn't available yet, and plans, features, and
+      prices may change before release.
     </p>
   </div>
 </section>
@@ -286,6 +338,22 @@ const bestSaving = Math.max(
     font-size: 16px;
   }
 
+  .trial {
+    width: fit-content;
+    margin-bottom: 8px;
+    padding: 3px 10px;
+    background: var(--pink-soft);
+    border-radius: 99px;
+    color: var(--pink-text);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .seed .trial {
+    background: var(--surface);
+    color: var(--blue-deep);
+  }
+
   .price b {
     font-size: clamp(36px, 3.8vw, 44px);
     font-weight: 700;
@@ -308,7 +376,7 @@ const bestSaving = Math.max(
 
   .features {
     display: grid;
-    gap: 10px;
+    gap: 14px;
     margin-top: 14px;
     font-size: 15px;
   }
@@ -320,6 +388,19 @@ const bestSaving = Math.max(
   .features li {
     position: relative;
     padding-left: 24px;
+  }
+
+  .features b {
+    display: block;
+    font-weight: 600;
+  }
+
+  .features span {
+    display: block;
+    margin-top: 1px;
+    color: var(--muted);
+    font-size: 14px;
+    text-wrap: pretty;
   }
 
   /* A filled day from the graph stands in for a check mark. */
@@ -345,6 +426,13 @@ const bestSaving = Math.max(
   .foot {
     margin-top: 20px;
     text-align: center;
+  }
+
+  /* Keeps the prices lined up across the three cards. */
+  @media (min-width: 861px) {
+    .pitch {
+      min-height: 2lh;
+    }
   }
 
   @media (max-width: 860px) {
