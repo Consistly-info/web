@@ -1,8 +1,8 @@
 ---
 import {
-  BLOOM_PRICE,
   CLAIMED,
   LIFETIME_PRICE,
+  PRO_LIFETIME_PRICE,
   REMAINING,
   TOTAL_SPOTS,
 } from "../../lib/launch";
@@ -29,9 +29,9 @@ const endpoint = import.meta.env.PUBLIC_WHITELIST_URL;
         <p class="eyebrow">Founding members</p>
         <h2 id="whitelist-title">Pay once. Keep it for life.</h2>
         <p class="lead">
-          The first {TOTAL_SPOTS} members get everything in Bloom for a one-time
-          ${LIFETIME_PRICE}, with no subscription. That's less than half the
-          regular ${BLOOM_PRICE} price.
+          The first {TOTAL_SPOTS} members get Pro for life for a one-time $
+          {LIFETIME_PRICE}, with no subscription. That's less than half the
+          regular ${PRO_LIFETIME_PRICE} price.
         </p>
 
         <div class="meter">

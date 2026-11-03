@@ -1,5 +1,5 @@
 ---
-import { BLOOM_PRICE } from "../../lib/launch";
+import { PRO_LIFETIME_PRICE } from "../../lib/launch";
 import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 
@@ -30,11 +30,12 @@ const plans = [
     ],
   },
   {
-    id: "grow",
-    name: "Grow",
+    id: "pro",
+    name: "Pro",
     pitch: "Everything you need to make your habits stick.",
     monthly: 2.79,
     annual: 19.99,
+    lifetime: PRO_LIFETIME_PRICE,
     includes: "Everything in Seed, plus",
     features: [
       [
@@ -68,23 +69,6 @@ const plans = [
       ["Early access", "Try new features before anyone else."],
     ],
   },
-  {
-    id: "bloom",
-    name: "Bloom",
-    pitch: "All of Grow. Pay once and keep it for life.",
-    lifetime: BLOOM_PRICE,
-    includes: "The same plan as Grow, with one difference",
-    features: [
-      [
-        "Every Grow feature",
-        "Unlimited habits, every widget, the Mac app, insights, challenges, and more.",
-      ],
-      [
-        "One payment, for life",
-        "No monthly or yearly bills. Buy it once and it's yours.",
-      ],
-    ],
-  },
 ];
 
 const saving = (monthly: number, annual: number) =>
@@ -106,7 +90,7 @@ const bestSaving = Math.max(
       id="pricing-title"
       eyebrow="Pricing"
       title="Start free. Grow when you're ready."
-      lead={`Seed gets you started. Grow has everything you need. Bloom is the same plan, paid once and yours for life. Try Grow free for ${trialDays} days.`}
+      lead={`Seed gets you started for free. Pro has everything else: pay monthly or annually with a ${trialDays}-day free trial, or pay once for lifetime access.`}
       center
     />
 
@@ -117,33 +101,23 @@ const bestSaving = Math.max(
       <button type="button" aria-pressed="true" data-billing-btn="annual">
         Annual <span class="save">Save {bestSaving}%</span>
       </button>
+      <button type="button" aria-pressed="false" data-billing-btn="lifetime">
+        Lifetime
+      </button>
     </div>
 
     <ul class="plans reveal">
       {plans.map((plan) => (
         <li class:list={["plan", plan.id]}>
-          {plan.id === "grow" && <p class="badge">Recommended</p>}
+          {plan.id === "pro" && <p class="badge">Recommended</p>}
           <div class="art" aria-hidden="true">
             {plan.id === "seed" && (
               <div class="one">
                 <Mascot sizes="140px" />
               </div>
             )}
-            {plan.id === "grow" && (
+            {plan.id === "pro" && (
               <>
-                <div class="one">
-                  <Mascot accessories={["scarf"]} sizes="140px" />
-                </div>
-                <div class="one">
-                  <Mascot character="pink" sizes="140px" />
-                </div>
-              </>
-            )}
-            {plan.id === "bloom" && (
-              <>
-                <div class="one">
-                  <Mascot accessories={["beanie"]} sizes="140px" />
-                </div>
                 <div class="one">
                   <Mascot accessories={["crown", "bowtie"]} sizes="140px" />
                 </div>
@@ -180,15 +154,14 @@ const bestSaving = Math.max(
                 </p>
                 <p class="billed">Then billed monthly. Cancel anytime.</p>
               </div>
+              <div class="price" data-show="lifetime">
+                <p class="trial">Pay once</p>
+                <p>
+                  <b>{usd(plan.lifetime)}</b> one time
+                </p>
+                <p class="billed">No subscription. Yours for life.</p>
+              </div>
             </>
-          ) : plan.lifetime ? (
-            <div class="price">
-              <p class="trial">Pay once</p>
-              <p>
-                <b>{usd(plan.lifetime)}</b> one time
-              </p>
-              <p class="billed">No subscription. Yours for life.</p>
-            </div>
           ) : (
             <div class="price">
               <p class="trial">Free forever</p>
@@ -213,10 +186,10 @@ const bestSaving = Math.max(
     </ul>
 
     <p class="note foot reveal">
-      Planned launch pricing in USD. The {trialDays}-day Grow trial is for new
-      subscribers, and you won't be charged if you cancel at least 24 hours
-      before it ends. Consistly isn't available yet, and plans, features, and
-      prices may change before release.
+      Planned launch pricing in USD. The {trialDays}-day trial is for new
+      monthly and annual subscribers, and you won't be charged if you cancel at
+      least 24 hours before it ends. Consistly isn't available yet, and plans,
+      features, and prices may change before release.
     </p>
   </div>
 </section>
@@ -257,14 +230,21 @@ const bestSaving = Math.max(
     font-weight: 600;
   }
 
-  [data-billing="annual"] [data-show="monthly"],
-  [data-billing="monthly"] [data-show="annual"] {
+  [data-show] {
     display: none;
+  }
+
+  [data-billing="monthly"] [data-show="monthly"],
+  [data-billing="annual"] [data-show="annual"],
+  [data-billing="lifetime"] [data-show="lifetime"] {
+    display: block;
   }
 
   .plans {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 880px;
+    margin-inline: auto;
     gap: 16px;
     align-items: stretch;
     margin-top: 28px;
@@ -281,15 +261,11 @@ const bestSaving = Math.max(
   }
 
   /* The plan to look at first. */
-  .grow {
+  .pro {
     --muted: #c6d2e4;
     background: var(--navy);
     color: #fff;
     box-shadow: 0 18px 44px rgb(18 48 90 / 0.24);
-  }
-
-  .bloom {
-    background: linear-gradient(135deg, var(--blue-bg), var(--pink-bg));
   }
 
   .badge {
@@ -419,12 +395,8 @@ const bestSaving = Math.max(
     border-radius: 22%;
   }
 
-  .grow .features li::before {
+  .pro .features li::before {
     background: var(--pink-primary);
-  }
-
-  .bloom .features li:nth-child(even)::before {
-    background: var(--pink-accent);
   }
 
   .foot {
