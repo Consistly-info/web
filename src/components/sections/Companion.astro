@@ -2,60 +2,40 @@
 import Mascot from "../Mascot.astro";
 import SectionHead from "../SectionHead.astro";
 
-const stages: {
-  name: string;
-  level: number;
-  text: string;
-  scale: number;
-  accessories: ("scarf" | "hat" | "crown")[];
-}[] = [
-  {
-    name: "Hatchling",
-    level: 1,
-    text: "Small, curious, and ready for your very first habit.",
-    scale: 0.6,
-    accessories: [],
-  },
-  {
-    name: "Cub",
-    level: 5,
-    text: "A little bigger. Your first routine is starting to stick.",
-    scale: 0.74,
-    accessories: [],
-  },
-  {
-    name: "Explorer",
-    level: 10,
-    text: "Stronger every week, with a first scarf to show for it.",
-    scale: 0.86,
-    accessories: ["scarf"],
-  },
-  {
-    name: "Adventurer",
-    level: 20,
-    text: "Hat on. Its world opens up along with your routine.",
-    scale: 0.96,
-    accessories: ["scarf", "hat"],
-  },
-  {
-    name: "Legend",
-    level: 40,
-    text: "Fully grown and crowned, in a world you built one day at a time.",
-    scale: 1.06,
-    accessories: ["scarf", "crown"],
-  },
-];
+const XP = 2900;
 
-const steps = [
-  ["Earn XP", "Completing a habit earns experience points."],
-  ["Level up", "XP raises your companion's level over time."],
-  ["Unlock accessories", "New things to wear arrive as you progress."],
-  ["Discover new stages", "Your character changes form as you grow."],
-  [
-    "Grow your environment",
-    "Its sky and hills fill in along with your routine.",
-  ],
-];
+const groups = [
+  {
+    name: "Hats",
+    slot: "hat",
+    items: [
+      { id: "hat", name: "Sun hat", cost: 1000 },
+      { id: "beanie", name: "Beanie", cost: 2400 },
+      { id: "crown", name: "Crown", cost: 5000 },
+    ],
+  },
+  {
+    name: "Clothes",
+    slot: "clothes",
+    items: [
+      { id: "scarf", name: "Scarf", cost: 300 },
+      { id: "bowtie", name: "Bow tie", cost: 1500 },
+      { id: "sweater", name: "Sweater", cost: 3000 },
+    ],
+  },
+  {
+    name: "Extras",
+    slot: "extra",
+    items: [{ id: "glasses", name: "Glasses", cost: 600 }],
+  },
+] as const;
+
+const fmt = (n: number) => n.toLocaleString("en-US");
+const next = groups
+  .flatMap((group) => [...group.items])
+  .filter((item) => item.cost > XP)
+  .sort((a, b) => a.cost - b.cost)[0];
+const DEFAULT_LOOK = ["scarf"];
 ---
 
 <section class="section companion" aria-labelledby="companion-title">
@@ -64,126 +44,101 @@ const steps = [
       id="companion-title"
       eyebrow="Personal companion"
       title="Grow together, one habit at a time."
-      lead="Your habits raise a small character who changes as you do. Show up, and it thrives."
+      lead="Every habit you complete earns XP, and XP unlocks new things for your companion, like hats and clothes."
     />
 
     <div class="layout reveal">
-      <div class="showcase" data-companion data-stage="0">
-        <div class="scene">
-          <svg
-            class="world"
-            viewBox="0 0 800 480"
-            preserveAspectRatio="xMidYMax slice"
-            aria-hidden="true"
-          >
-            <rect width="800" height="480" fill="#b4d3f7"></rect>
-            <g class="env e3">
-              <circle cx="660" cy="96" r="44" fill="#fbe6a8"></circle>
-            </g>
-            <g class="env e4" fill="#fff">
-              <ellipse cx="170" cy="96" rx="58" ry="17"></ellipse>
-              <ellipse cx="206" cy="82" rx="36" ry="17"></ellipse>
-              <ellipse cx="500" cy="62" rx="40" ry="12"></ellipse>
-            </g>
-            <g class="env e4">
-              <path
-                d="M0 340C120 250 250 260 400 330S680 270 800 310V480H0Z"
-                fill="#9fc3f0"
-              ></path>
-              <g fill="#7fa9e6">
-                <circle cx="110" cy="248" r="40"></circle>
-                <circle cx="150" cy="268" r="30"></circle>
-                <circle cx="664" cy="258" r="34"></circle>
-              </g>
-              <rect
-                x="104"
-                y="270"
-                width="10"
-                height="46"
-                fill="#6f8db8"
-              ></rect>
-              <rect x="659" y="280" width="9" height="30" fill="#6f8db8"></rect>
-            </g>
-            <g class="env e2">
-              <path
-                d="M0 386C200 350 600 350 800 386V480H0Z"
-                fill="#8bb5ec"
-              ></path>
-            </g>
-            <path d="M120 480C180 404 620 404 680 480Z" fill="#6f9fe2"></path>
-            <g class="env e1" fill="#3f75c4">
-              <path d="M200 442c-3-14 0-24 8-30 6 10 4 21-8 30Z"></path>
-              <path d="M590 442c3-14 0-24-8-30-6 10-4 21 8 30Z"></path>
-            </g>
-            <g class="env e3">
-              <g transform="translate(120 408)">
-                <path d="M0 40V6" stroke="#3f75c4" stroke-width="4"></path>
-                <circle r="11" fill="#fff"></circle>
-                <circle r="4.5" fill="#f2b632"></circle>
-              </g>
-              <g transform="translate(700 420)">
-                <path d="M0 32V6" stroke="#3f75c4" stroke-width="4"></path>
-                <circle r="11" fill="#f7c3b5"></circle>
-                <circle r="4.5" fill="#f2b632"></circle>
-              </g>
-              <g transform="translate(236 424)">
-                <path d="M0 26V4" stroke="#3f75c4" stroke-width="3"></path>
-                <circle r="8" fill="#f7c3b5"></circle>
-                <circle r="3.2" fill="#f2b632"></circle>
-              </g>
-            </g>
-          </svg>
+      <div class="scene" data-look data-on={DEFAULT_LOOK.join(" ")}>
+        <svg
+          class="world"
+          viewBox="0 0 800 480"
+          preserveAspectRatio="xMidYMax slice"
+          aria-hidden="true"
+        >
+          <rect width="800" height="480" fill="#b4d3f7"></rect>
+          <circle cx="570" cy="104" r="36" fill="#fbe6a8"></circle>
+          <g fill="#fff">
+            <ellipse cx="262" cy="106" rx="50" ry="15"></ellipse>
+            <ellipse cx="292" cy="92" rx="32" ry="15"></ellipse>
+            <ellipse cx="450" cy="58" rx="34" ry="10"></ellipse>
+          </g>
+          <path
+            d="M0 340C120 250 250 260 400 330S680 270 800 310V480H0Z"
+            fill="#9fc3f0"
+          ></path>
+          <path d="M0 386C200 350 600 350 800 386V480H0Z" fill="#8bb5ec"></path>
+          <path d="M120 480C180 404 620 404 680 480Z" fill="#6f9fe2"></path>
+        </svg>
 
-          <div class="characters">
-            {stages.map((stage, i) => (
-              <div
-                class="character"
-                data-char={i}
-                hidden={i !== 0}
-                style={`--s:${stage.scale}`}
-              >
-                <Mascot
-                  label={`The companion at the ${stage.name} stage`}
-                  accessories={stage.accessories}
-                  sizes="(max-width: 900px) 62vw, 340px"
-                />
-              </div>
-            ))}
-          </div>
-          <span class="note sample">Example levels</span>
+        <div class="character">
+          <Mascot
+            label="The Consistly companion wearing the items you pick"
+            accessories={[
+              "sweater",
+              "bowtie",
+              "scarf",
+              "glasses",
+              "hat",
+              "beanie",
+              "crown",
+            ]}
+            sizes="(max-width: 900px) 62vw, 360px"
+            idle
+          />
         </div>
-
-        <div class="picker" role="group" aria-label="Choose a character stage">
-          {stages.map((stage, i) => (
-            <button
-              type="button"
-              aria-pressed={i === 0 ? "true" : "false"}
-              data-stage-btn={i}
-              data-text={stage.text}
-            >
-              <b>{stage.name}</b>
-              <span>Level {stage.level}</span>
-            </button>
-          ))}
-        </div>
-        <p class="stage-text" aria-live="polite" data-stage-text>
-          {stages[0].text}
-        </p>
+        <span class="note sample">Example items and XP</span>
       </div>
 
-      <ol class="steps">
-        {steps.map(([name, text], i) => (
-          <li>
-            <span class="n" aria-hidden="true">
-              {i + 1}
-            </span>
-            <div>
-              <h3>{name}</h3>
-              <p>{text}</p>
+      <div class="wardrobe" data-wardrobe>
+        <div class="total">
+          <p class="amount">
+            <b>{fmt(XP)}</b> XP
+          </p>
+          <div class="bar">
+            <span style={`width:${(XP / next.cost) * 100}%`}></span>
+          </div>
+          <p class="to-next">
+            {fmt(next.cost - XP)} XP to unlock the {next.name}
+          </p>
+        </div>
+
+        {groups.map((group) => (
+          <div class="group">
+            <h3 id={`wardrobe-${group.slot}`}>{group.name}</h3>
+            <div
+              class="items"
+              role="group"
+              aria-labelledby={`wardrobe-${group.slot}`}
+            >
+              {group.items.map((item) => {
+                const locked = item.cost > XP;
+                return (
+                  <button
+                    type="button"
+                    class:list={["item", { locked }]}
+                    aria-pressed={
+                      DEFAULT_LOOK.includes(item.id) ? "true" : "false"
+                    }
+                    data-item={item.id}
+                    data-slot={group.slot}
+                  >
+                    <b>{item.name}</b>
+                    <span>
+                      {locked && (
+                        <svg viewBox="0 0 12 12" aria-hidden="true">
+                          <path d="M3.5 5.5V4a2.5 2.5 0 0 1 5 0v1.5M2.5 5.5h7v5h-7Z" />
+                        </svg>
+                      )}
+                      {locked ? `${fmt(item.cost)} XP` : "Unlocked"}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-          </li>
+          </div>
         ))}
-      </ol>
+        <p class="note">Try it: tap an item to try it on, even locked ones.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -195,15 +150,20 @@ const steps = [
 
   .layout {
     display: grid;
-    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
-    gap: clamp(40px, 6vw, 80px);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(32px, 5vw, 64px);
     align-items: center;
     margin-top: clamp(40px, 6vw, 72px);
   }
 
   .scene {
     position: relative;
-    aspect-ratio: 5 / 3;
+    display: grid;
+    align-items: end;
+    justify-items: center;
+    aspect-ratio: 1 / 1;
+    max-height: 640px;
+    width: 100%;
     overflow: hidden;
     border-radius: 24px;
   }
@@ -215,149 +175,154 @@ const steps = [
     height: 100%;
   }
 
-  .env {
-    opacity: 0;
-    transform: translateY(14px);
-    transition:
-      opacity 0.7s var(--ease),
-      transform 0.7s var(--ease);
-  }
-
-  [data-stage="1"] .e1,
-  [data-stage="2"] .e1,
-  [data-stage="3"] .e1,
-  [data-stage="4"] .e1,
-  [data-stage="2"] .e2,
-  [data-stage="3"] .e2,
-  [data-stage="4"] .e2,
-  [data-stage="3"] .e3,
-  [data-stage="4"] .e3,
-  [data-stage="4"] .e4 {
-    opacity: 1;
-    transform: none;
-  }
-
-  .characters {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    align-items: end;
-    justify-items: center;
-    padding-bottom: 3.4%;
-  }
-
   .character {
-    grid-area: 1 / 1;
-    width: 44%;
-    transform: scale(var(--s));
-    transform-origin: 50% 97%;
-    animation: pop 0.55s var(--ease);
+    position: relative;
+    width: min(66%, 400px);
+    margin-bottom: 4%;
   }
 
-  .character[hidden] {
+  .scene :global(.acc) {
     display: none;
   }
 
-  @keyframes pop {
-    from {
-      opacity: 0;
-      transform: translateY(10px) scale(calc(var(--s) * 0.9));
-    }
+  [data-on~="hat"] :global(.acc-hat),
+  [data-on~="beanie"] :global(.acc-beanie),
+  [data-on~="crown"] :global(.acc-crown),
+  [data-on~="scarf"] :global(.acc-scarf),
+  [data-on~="bowtie"] :global(.acc-bowtie),
+  [data-on~="sweater"] :global(.acc-sweater),
+  [data-on~="glasses"] :global(.acc-glasses) {
+    display: block;
   }
 
   .sample {
-    color: #1f3b63;
     position: absolute;
     top: 14px;
     right: 18px;
+    color: #1f3b63;
   }
 
-  .picker {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    margin-top: 16px;
-    border-top: 2px solid rgb(28 79 146 / 0.14);
+  .total {
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgb(28 79 146 / 0.14);
   }
 
-  .picker button {
-    display: flex;
-    flex-direction: column;
-    margin-top: -2px;
-    padding: 12px 4px 4px 0;
-    border-top: 2px solid transparent;
-    text-align: left;
-    transition: border-color 0.25s;
-  }
-
-  .picker b {
-    font-size: 15px;
-    font-weight: 620;
-    letter-spacing: -0.012em;
-  }
-
-  .picker span {
+  .amount {
     color: var(--muted);
-    font-size: 13px;
+    font-size: 18px;
+    font-weight: 500;
   }
 
-  .picker button:hover b {
-    color: var(--blue-deep);
+  .amount b {
+    color: var(--ink);
+    font-size: clamp(44px, 5vw, 60px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
   }
 
-  .picker [aria-pressed="true"] {
-    border-color: var(--blue);
-  }
-
-  .picker [aria-pressed="true"] b {
-    color: var(--blue-deep);
-  }
-
-  .stage-text {
-    min-height: 3em;
+  .bar {
+    height: 8px;
     margin-top: 12px;
+    overflow: hidden;
+    background: rgb(28 79 146 / 0.14);
+    border-radius: 99px;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    background: var(--blue);
+    border-radius: 99px;
+  }
+
+  .to-next {
+    margin-top: 8px;
     color: var(--muted);
-    font-size: 16px;
+    font-size: 15px;
   }
 
-  .steps {
-    display: grid;
-    gap: 26px;
-  }
-
-  .steps li {
-    display: flex;
-    gap: 14px;
-  }
-
-  .n {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    background: var(--sky);
-    border-radius: 50%;
-    color: var(--blue-deep);
-    font-size: 13px;
-    font-weight: 650;
+  .group {
+    margin-top: 22px;
   }
 
   h3 {
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 620;
-    letter-spacing: -0.014em;
-    line-height: 1.5;
+    letter-spacing: -0.01em;
   }
 
-  .steps p {
-    color: var(--muted);
+  .items {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .item {
+    display: grid;
+    gap: 1px;
+    min-height: 60px;
+    padding: 9px 11px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    text-align: left;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
+  }
+
+  .item:hover {
+    border-color: var(--blue);
+  }
+
+  .item b {
     font-size: 15px;
-    line-height: 1.42;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .item span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .item svg {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.2;
+    stroke-linejoin: round;
+  }
+
+  .item[aria-pressed="true"] {
+    background: var(--sky);
+    border-color: var(--blue-deep);
+  }
+
+  .wardrobe .note {
+    margin-top: 16px;
   }
 
   @media (max-width: 900px) {
     .layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .scene {
+      aspect-ratio: 4 / 3;
+    }
+
+    .character {
+      width: min(52%, 340px);
     }
   }
 
@@ -367,36 +332,44 @@ const steps = [
     }
 
     .character {
-      width: 68%;
+      width: 72%;
     }
 
-    .picker b {
-      font-size: 13px;
+    .item {
+      padding-inline: 9px;
     }
 
-    .picker span {
-      font-size: 11px;
+    .item b {
+      font-size: 14px;
+    }
+
+    .item span {
+      font-size: 12px;
     }
   }
 </style>
 
 <script>
-  const root = document.querySelector<HTMLElement>("[data-companion]");
+  const wardrobe = document.querySelector<HTMLElement>("[data-wardrobe]");
+  const look = document.querySelector<HTMLElement>("[data-look]");
 
-  if (root) {
-    const buttons =
-      root.querySelectorAll<HTMLButtonElement>("[data-stage-btn]");
-    const characters = root.querySelectorAll<HTMLElement>("[data-char]");
-    const text = root.querySelector<HTMLElement>("[data-stage-text]");
+  if (wardrobe && look) {
+    const items = wardrobe.querySelectorAll<HTMLButtonElement>("[data-item]");
 
-    buttons.forEach((button, index) =>
-      button.addEventListener("click", () => {
-        root.dataset.stage = String(index);
-        buttons.forEach((b) =>
-          b.setAttribute("aria-pressed", String(b === button)),
-        );
-        characters.forEach((c, i) => (c.hidden = i !== index));
-        if (text) text.textContent = button.dataset.text ?? "";
+    items.forEach((item) =>
+      item.addEventListener("click", () => {
+        const on = item.getAttribute("aria-pressed") !== "true";
+        // One item per slot, so hats replace hats and clothes replace clothes.
+        items.forEach((other) => {
+          if (other.dataset.slot === item.dataset.slot) {
+            other.setAttribute("aria-pressed", "false");
+          }
+        });
+        item.setAttribute("aria-pressed", String(on));
+        look.dataset.on = [...items]
+          .filter((i) => i.getAttribute("aria-pressed") === "true")
+          .map((i) => i.dataset.item)
+          .join(" ");
       }),
     );
   }

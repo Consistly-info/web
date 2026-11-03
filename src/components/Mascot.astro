@@ -8,7 +8,8 @@ import small from "../assets/mascot/mascot-240.webp";
 import medium from "../assets/mascot/mascot-480.webp";
 import large from "../assets/mascot/mascot-960.webp";
 
-type Accessory = "scarf" | "glasses" | "hat" | "crown";
+type Accessory =
+  "scarf" | "glasses" | "hat" | "crown" | "beanie" | "bowtie" | "sweater";
 
 interface Props {
   /** Alt text. Leave empty when the mascot is decorative. */
@@ -52,6 +53,49 @@ const hasOverlay = dressable || accessories.length > 0;
     />
     {hasOverlay && (
       <svg class="layer" viewBox="0 0 960 960" aria-hidden="true">
+        {accessories.includes("sweater") && (
+          <g class="acc acc-sweater">
+            <path
+              d="M188 482c110 62 482 62 592 0 34 84 48 196 22 276-104 92-540 92-644 0-26-80-8-192 30-276Z"
+              fill="#f4c35f"
+            />
+            <path
+              d="M168 610c120 44 512 44 632 0l4 44c-122 46-518 46-640 0ZM160 712c124 46 524 46 648 0l-6 46c-104 92-540 92-644 0Z"
+              fill="#ee9f4d"
+            />
+            <path
+              d="M188 482c110 62 482 62 592 0l16 42c-120 66-504 66-624 0Z"
+              fill="#ee9f4d"
+            />
+          </g>
+        )}
+        {accessories.includes("bowtie") && (
+          <g class="acc acc-bowtie">
+            <path
+              d="M478 516c-40-34-92-52-132-48-14 34-14 96 0 130 40 4 92-16 132-50Z"
+              fill="#e8796b"
+            />
+            <path
+              d="M490 516c40-34 92-52 132-48 14 34 14 96 0 130-40 4-92-16-132-50Z"
+              fill="#e8796b"
+            />
+            <path
+              d="M370 492c28-2 58 8 84 26M598 492c-28-2-58 8-84 26"
+              fill="none"
+              stroke="#f9b4a8"
+              stroke-width="10"
+              stroke-linecap="round"
+            />
+            <rect
+              x="452"
+              y="500"
+              width="64"
+              height="66"
+              rx="20"
+              fill="#d9604f"
+            />
+          </g>
+        )}
         {has("scarf") && (
           <g class="acc acc-scarf">
             <path
@@ -111,6 +155,26 @@ const hasOverlay = dressable || accessories.length > 0;
               stroke-width="12"
               stroke-linecap="round"
             />
+          </g>
+        )}
+        {accessories.includes("beanie") && (
+          <g class="acc acc-beanie">
+            <path
+              d="M268 214C262 16 706 16 700 214c-140 40-292 40-432 0Z"
+              fill="#5b8fd9"
+            />
+            <path
+              d="M256 174c144 44 312 44 456 0 16 16 18 58 2 74-144 44-324 44-468 0-16-16-6-58 10-74Z"
+              fill="#2f62ad"
+            />
+            <path
+              d="M340 92c-14 26-20 56-22 86M430 66c-8 30-12 72-12 114M538 66c8 30 12 72 12 114M628 92c14 26 20 56 22 86"
+              fill="none"
+              stroke="#477cc7"
+              stroke-width="10"
+              stroke-linecap="round"
+            />
+            <circle cx="484" cy="40" r="38" fill="#f4f8fe" />
           </g>
         )}
         {has("crown") && (

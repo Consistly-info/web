@@ -83,12 +83,12 @@ const accessories = [
     />
 
     <div class="board reveal" data-rewards>
-      <section class="tile level" aria-label="Level and rewards">
-        <div class="level-top">
+      <section class="tile xp-tile" aria-label="XP and rewards">
+        <div class="xp-top">
           <div>
-            <p class="tile-name">Level</p>
-            <p class="level-num" data-level>
-              12
+            <p class="tile-name">Total XP</p>
+            <p class="xp-num" data-xp>
+              2,900
             </p>
           </div>
           <div class="gems">
@@ -115,7 +115,7 @@ const accessories = [
           <span style="width:96.67%" data-xp-bar></span>
         </div>
         <p class="meter-text">
-          <span data-xp>2,900</span> / 3,000 XP to the next level
+          <span data-next>100 XP to unlock the Sweater</span>
         </p>
       </section>
 
@@ -137,7 +137,7 @@ const accessories = [
             </li>
           ))}
         </ul>
-        <p class="note">Try it: finish all three to reach level 13.</p>
+        <p class="note">Try it: finish all three to unlock the Sweater.</p>
       </section>
 
       <section class="tile badges-tile" aria-label="Achievement badges">
@@ -249,7 +249,7 @@ const accessories = [
     font-weight: 550;
   }
 
-  .level {
+  .xp-tile {
     grid-column: span 7;
     display: flex;
     flex-direction: column;
@@ -259,17 +259,17 @@ const accessories = [
     color: #fff;
   }
 
-  .level .tile-name {
+  .xp-tile .tile-name {
     color: #bdd3ee;
   }
 
-  .level-top {
+  .xp-top {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
   }
 
-  .level-num {
+  .xp-num {
     font-size: clamp(72px, 10vw, 120px);
     font-weight: 700;
     letter-spacing: -0.05em;
@@ -597,7 +597,7 @@ const accessories = [
 
   @media (max-width: 860px) {
     .tile,
-    .level,
+    .xp-tile,
     .badges-tile,
     .dress,
     .miles {
@@ -618,8 +618,10 @@ const accessories = [
   const root = document.querySelector<HTMLElement>("[data-rewards]");
 
   if (root) {
-    const LEVEL_XP = 3000;
-    let level = 12;
+    const GOALS = [
+      { xp: 3000, item: "Sweater" },
+      { xp: 5000, item: "Crown" },
+    ];
     let xp = 2900;
     let gems = 480;
 
@@ -629,14 +631,19 @@ const accessories = [
     };
 
     const render = () => {
-      text("[data-level]", String(level));
       text("[data-xp]", xp.toLocaleString("en-US"));
       text("[data-gems]", gems.toLocaleString("en-US"));
-      root
-        .querySelector("[data-xp-meter]")
-        ?.setAttribute("aria-valuenow", String(xp));
+      const goal = GOALS.find((g) => xp < g.xp) ?? GOALS[GOALS.length - 1];
+      const unlocked = xp >= GOALS[0].xp ? `${GOALS[0].item} unlocked! ` : "";
+      text(
+        "[data-next]",
+        `${unlocked}${(goal.xp - xp).toLocaleString("en-US")} XP to unlock the ${goal.item}`,
+      );
+      const meter = root.querySelector("[data-xp-meter]");
+      meter?.setAttribute("aria-valuenow", String(xp));
+      meter?.setAttribute("aria-valuemax", String(goal.xp));
       const bar = root.querySelector<HTMLElement>("[data-xp-bar]");
-      if (bar) bar.style.width = `${(xp / LEVEL_XP) * 100}%`;
+      if (bar) bar.style.width = `${(xp / goal.xp) * 100}%`;
     };
 
     root
@@ -648,14 +655,6 @@ const accessories = [
           button.setAttribute("aria-pressed", String(on));
           xp += sign * Number(button.dataset.xpGain);
           gems += sign * Number(button.dataset.gemGain);
-          // Levels roll over in both directions so unticking stays consistent.
-          if (xp >= LEVEL_XP) {
-            xp -= LEVEL_XP;
-            level += 1;
-          } else if (xp < 0) {
-            xp += LEVEL_XP;
-            level -= 1;
-          }
           render();
         }),
       );

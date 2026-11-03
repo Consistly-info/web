@@ -49,7 +49,7 @@ src/
 
 `src/assets/mascot/` holds the companion as transparent WebP files at 240, 480, and 960px, cut out from the original artwork. Every appearance goes through `src/components/Mascot.astro`.
 
-There is only one piece of artwork so far, so character stages use that image at different sizes, with accessories drawn as an SVG layer on top. To add real stage art, export it as 960px squares with the feet at about 97% of the height, and update `Mascot.astro`.
+XP unlocks items for the companion. These are drawn as an SVG layer over the artwork, in the same 960px coordinate system, with the feet at about 97% of the height.
 
 ## CI and deployment
 
