@@ -8,8 +8,8 @@ interface Props {
 }
 
 const { person } = Astro.props;
-const accessories = { you: [], alex: [], sam: ["glasses"] } as const;
-const character = person === "alex" ? "pink" : "blue";
+const accessories = { you: [], mia: [], sam: ["glasses"] } as const;
+const character = person === "mia" ? "pink" : "blue";
 ---
 
 <span class:list={["avatar", person]} aria-hidden="true">
@@ -38,7 +38,7 @@ const character = person === "alex" ? "pink" : "blue";
     background: var(--blue-primary);
   }
 
-  .alex {
+  .mia {
     background: var(--pink-primary);
   }
 

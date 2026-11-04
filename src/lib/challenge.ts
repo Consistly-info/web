@@ -6,7 +6,7 @@
  */
 const YOU =
   "1010101 1100110 0110100 1011010 1101010 1010010 0101001 1100110 1010110";
-const ALEX =
+const MIA =
   "0110010 1001010 1010011 0100110 1010010 1100101 1011010 0110001 0101001";
 
 const flags = (weeks: string) =>
@@ -16,14 +16,14 @@ const flags = (weeks: string) =>
     .map((c) => c === "1");
 
 const you = flags(YOU);
-const alex = flags(ALEX);
+const mia = flags(MIA);
 
 export const DURATION = 90;
 export const ELAPSED = you.length;
 const START = Date.UTC(2026, 7, 31); // A Monday, so each row is one weekday
 const DAY_MS = 86_400_000;
 
-export type DayState = "you" | "alex" | "both" | "none" | "upcoming";
+export type DayState = "you" | "mia" | "both" | "none" | "upcoming";
 
 export interface ChallengeDay {
   index: number;
@@ -35,17 +35,17 @@ export interface ChallengeDay {
 
 function stateOf(index: number): DayState {
   if (index >= ELAPSED) return "upcoming";
-  if (you[index] && alex[index]) return "both";
+  if (you[index] && mia[index]) return "both";
   if (you[index]) return "you";
-  if (alex[index]) return "alex";
+  if (mia[index]) return "mia";
   return "none";
 }
 
 const WHO: Record<DayState, string> = {
-  both: "You and Alex",
+  both: "You and Mia",
   you: "You",
-  alex: "Alex",
-  none: "No sessions",
+  mia: "Mia",
+  none: "No cooking",
   upcoming: "Upcoming",
 };
 
@@ -91,8 +91,7 @@ const recent = (list: boolean[]) =>
 
 export const LEADERBOARD = [
   { person: "you", name: "You", sessions: recent(you) },
-  { person: "alex", name: "Alex", sessions: recent(alex) },
-  { person: "sam", name: "Sam", sessions: 14 },
+  { person: "mia", name: "Mia", sessions: recent(mia) },
 ].map((row) => ({
   ...row,
   person: row.person as Person,
@@ -100,4 +99,4 @@ export const LEADERBOARD = [
   rate: Math.round((row.sessions / 20) * 100),
 }));
 
-export type Person = "you" | "alex" | "sam";
+export type Person = "you" | "mia" | "sam";

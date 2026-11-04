@@ -38,7 +38,7 @@ const stats = [
 ];
 const legend = [
   { state: "you", label: "You" },
-  { state: "alex", label: "Alex" },
+  { state: "mia", label: "Mia" },
   { state: "both", label: "Both of you" },
   { state: "none", label: "Neither" },
   { state: "upcoming", label: "Upcoming" },
@@ -50,11 +50,11 @@ const legend = [
     <div class="who">
       <div class="faces">
         <Avatar person="you" />
-        <Avatar person="alex" />
+        <Avatar person="mia" />
       </div>
       <div>
-        <h3>90-Day Gym Challenge</h3>
-        <p>You and Alex</p>
+        <h3>90-Day Cooking Challenge</h3>
+        <p>You and Mia</p>
       </div>
     </div>
     <div class="views" role="group" aria-label="Show activity for">
@@ -64,8 +64,8 @@ const legend = [
       <button type="button" aria-pressed="false" data-view-btn="you">
         You
       </button>
-      <button type="button" aria-pressed="false" data-view-btn="alex">
-        Alex
+      <button type="button" aria-pressed="false" data-view-btn="mia">
+        Mia
       </button>
     </div>
   </div>
@@ -151,7 +151,7 @@ const legend = [
 <style>
   .panel {
     --you: var(--blue-accent);
-    --alex: var(--pink-accent);
+    --mia: var(--pink-accent);
     --both: #7c5fd6;
     --none: var(--heat-0);
     margin-top: clamp(40px, 6vw, 72px);
@@ -315,8 +315,8 @@ const legend = [
     background: var(--you);
   }
 
-  .alex {
-    background: var(--alex);
+  .mia {
+    background: var(--mia);
   }
 
   .both {
@@ -333,8 +333,8 @@ const legend = [
   }
 
   /* Single-person views: show that person's sessions in their own color. */
-  [data-view="you"] .cell.alex,
-  [data-view="alex"] .cell.you {
+  [data-view="you"] .cell.mia,
+  [data-view="mia"] .cell.you {
     background: var(--none);
   }
 
@@ -342,8 +342,8 @@ const legend = [
     background: var(--you);
   }
 
-  [data-view="alex"] .cell.both {
-    background: var(--alex);
+  [data-view="mia"] .cell.both {
+    background: var(--mia);
   }
 
   .tip {
